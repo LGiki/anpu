@@ -1,0 +1,54 @@
+---
+import Button from "@/components/Button.astro";
+import ButtonGroup from "@/components/ButtonGroup.astro";
+import { Icon } from "astro-icon/components";
+import { getLangFromUrl, useTranslations } from "@/i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<div>
+  <ButtonGroup>
+    <Button
+      square
+      id="font-size-enlarge"
+      title={t("lyricFontSizeSwitcher.enlarge")}
+      aria-label={t("lyricFontSizeSwitcher.enlarge")}
+    >
+      <Icon name="ph:plus" />
+    </Button>
+    <Button
+      square
+      id="font-size-reduce"
+      title={t("lyricFontSizeSwitcher.reduce")}
+      aria-label={t("lyricFontSizeSwitcher.reduce")}
+    >
+      <Icon name="ph:minus" />
+    </Button>
+  </ButtonGroup>
+</div>
+
+<script>
+  const fontSizeEnlarge = document.getElementById("font-size-enlarge");
+  const fontSizeReduce = document.getElementById("font-size-reduce");
+  const lyricText = document.getElementById("lyric-text");
+
+  let fontSize = parseInt(localStorage.getItem("fontSize") || "1");
+
+  const fontSizeList = [
+    {
+      fontSizeClass: "text-xl",
+      lineHeightClass: "",
+    },
+  ];
+
+  fontSizeEnlarge?.addEventListener("click", () => {
+    lyricText?.classList.add("text-3xl");
+    console.log("Font size enlarge clicked");
+  });
+
+  fontSizeReduce?.addEventListener("click", () => {
+    console.log("Font size reduce clicked");
+  });
+</script>

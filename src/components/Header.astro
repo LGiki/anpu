@@ -1,0 +1,22 @@
+---
+import "@fontsource/cinzel/700.css";
+import LanguageSwitcher from "./LanguageSwitcher.astro";
+---
+
+<header
+  class="bg-white/75 h-12 w-full shadow-md backdrop-blur-xl sticky top-0 left-0 flex items-center justify-between px-10"
+>
+  <a href="/">
+    <div class="flex gap-1 items-center font-['Cinzel'] text-xl">
+      <div>Anpu</div>
+      <div>·</div>
+      <div>Lyrics</div>
+    </div>
+  </a>
+  <nav>
+    <div class="flex gap-2">
+      <slot name="header-right" />
+      <LanguageSwitcher/>
+    </div>
+  </nav>
+</header>

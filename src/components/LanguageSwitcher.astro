@@ -1,0 +1,31 @@
+---
+import { languages } from "@/i18n/ui";
+import { Icon } from "astro-icon/components";
+---
+
+<label
+  class="flex items-center gap-1 relative rounded-md border cursor-pointer hover:bg-gray-100 transition-colors duration-200 h-7"
+>
+  <Icon
+    name="ph:translate"
+    class="cursor-pointer absolute left-1 pointer-events-none"
+  />
+  <select
+    id="language-select"
+    class="cursor-pointer w-[6.6rem] pl-6 bg-transparent appearance-none py-1 text-sm"
+  >
+    {
+      Object.entries(languages).map(([locale, language]) => (
+        <option value={locale}>{language}</option>
+      ))
+    }
+  </select>
+  <Icon
+    name="ph:caret-down-bold"
+    class="cursor-pointer absolute right-1 pointer-events-none"
+  />
+</label>
+
+<script>
+  const languageSelect = document.getElementById("language-select");
+</script>

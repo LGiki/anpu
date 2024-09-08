@@ -1,0 +1,109 @@
+---
+import { Icon } from "astro-icon/components";
+import Button from "./Button.astro";
+import { getLangFromUrl, useTranslations } from "@/i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<Button
+  square
+  id="banlam-tone-switch-button"
+  title={t("banlamToneSwitcher.showBanlamTone")}
+  aria-label={t("banlamToneSwitcher.showBanlamTone")}
+  data-show-banlam-tone-title={t("banlamToneSwitcher.showBanlamTone")}
+  data-hide-banlam-tone-title={t("banlamToneSwitcher.hideBanlamTone")}
+>
+  <Icon name="ph:book-bookmark" class="w-4 h-4" id="banlam-tone-switch-icon" />
+</Button>
+
+<script>
+  const banlamToneSwitchButton = document.getElementById(
+    "banlam-tone-switch-button"
+  );
+  const banlamToneSwitchIcon = document.getElementById(
+    "banlam-tone-switch-icon"
+  );
+  const lyricTones = document.querySelectorAll(".lyric-tone");
+  const lyricTones2 = document.querySelectorAll(".lyric-tone2");
+
+  let availableTone = 1;
+  if (lyricTones.length > 0) {
+    availableTone++;
+  }
+  if (lyricTones2.length > 0) {
+    availableTone++;
+  }
+
+  let banlamToneDisplayIndex = 0;
+
+  const switchBanlamTone = (displayIndex: number) => {
+    switch (displayIndex) {
+      case 0:
+        lyricTones.forEach((lyricToneElement) => {
+          lyricToneElement.classList.add("hidden");
+          lyricToneElement.ariaHidden = "true";
+        });
+        lyricTones2.forEach((lyricToneElement) => {
+          lyricToneElement.classList.add("hidden");
+          lyricToneElement.ariaHidden = "true";
+        });
+        break;
+      case 1:
+        lyricTones.forEach((lyricToneElement) => {
+          lyricToneElement.classList.remove("hidden");
+          lyricToneElement.ariaHidden = "false";
+        });
+        lyricTones2.forEach((lyricToneElement) => {
+          lyricToneElement.classList.add("hidden");
+          lyricToneElement.ariaHidden = "true";
+        });
+        break;
+      case 2:
+        lyricTones.forEach((lyricToneElement) => {
+          lyricToneElement.classList.add("hidden");
+          lyricToneElement.ariaHidden = "true";
+        });
+        lyricTones2.forEach((lyricToneElement) => {
+          lyricToneElement.classList.remove("hidden");
+          lyricToneElement.ariaHidden = "false";
+        });
+        break;
+      default:
+        break;
+    }
+  };
+
+  banlamToneSwitchButton?.addEventListener("click", () => {
+    banlamToneDisplayIndex = (banlamToneDisplayIndex + 1) % availableTone;
+    switchBanlamTone(banlamToneDisplayIndex);
+    if (banlamToneDisplayIndex > 0) {
+      // 台语注音激活状态
+      if (!banlamToneSwitchButton.classList.contains("bg-rose-100")) {
+        banlamToneSwitchButton.classList.add("bg-rose-100");
+        banlamToneSwitchButton.classList.add("border-rose-200");
+        banlamToneSwitchButton.classList.add("hover:bg-rose-200");
+        banlamToneSwitchIcon?.classList.add("text-rose-500");
+        if (banlamToneSwitchButton.dataset["hideBanlamToneTitle"]) {
+          banlamToneSwitchButton.title =
+            banlamToneSwitchButton.dataset["hideBanlamToneTitle"];
+          banlamToneSwitchButton.ariaLabel =
+            banlamToneSwitchButton.dataset["hideBanlamToneTitle"];
+        }
+      }
+    } else {
+      // 台语注音关闭状态
+      banlamToneSwitchButton.classList.remove("bg-rose-100");
+      banlamToneSwitchButton.classList.remove("border-rose-200");
+      banlamToneSwitchButton.classList.remove("hover:bg-rose-200");
+      banlamToneSwitchIcon?.classList.remove("text-rose-500");
+      if (banlamToneSwitchButton.dataset["showBanlamToneTitle"]) {
+        banlamToneSwitchButton.title =
+          banlamToneSwitchButton.dataset["showBanlamToneTitle"];
+        banlamToneSwitchButton.ariaLabel =
+          banlamToneSwitchButton.dataset["showBanlamToneTitle"];
+      }
+    }
+  });
+</script>

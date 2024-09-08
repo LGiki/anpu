@@ -1,0 +1,98 @@
+---
+import { getLangFromUrl, useTranslations } from "@/i18n/utils";
+import { durationToHms } from "@/utils";
+import dayjs from "dayjs";
+
+interface Props {
+  album?: string;
+  // 长度（秒）
+  duration?: number;
+  // 歌手
+  artist?: string;
+  // 作词者
+  lyricist?: string;
+  // 编曲者
+  arranger?: string;
+  // 作曲者
+  composer?: string;
+  // 制作人
+  producer?: string;
+  // 发布日期
+  releaseDate?: Date;
+  // ISRC, see <https://en.wikipedia.org/wiki/International_Standard_Recording_Code>.
+  isrc?: string;
+  // 混音师
+  maxingEngineer?: string;
+}
+
+const props = Astro.props;
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+{
+  props.album && (
+    <p>
+      {t("songMetadata.album")}：{props.album}
+    </p>
+  )
+}
+{
+  props.duration && (
+    <p>
+      {t("songMetadata.duration")}：{durationToHms(props.duration)}
+    </p>
+  )
+}
+{
+  props.artist && (
+    <p>
+      {t("songMetadata.artist")}：{props.artist}
+    </p>
+  )
+}
+{
+  props.lyricist && (
+    <p>
+      {t("songMetadata.lyricist")}：{props.lyricist}
+    </p>
+  )
+}
+{
+  props.arranger && (
+    <p>
+      {t("songMetadata.arranger")}：{props.arranger}
+    </p>
+  )
+}
+{
+  props.composer && (
+    <p>
+      {t("songMetadata.composer")}：{props.composer}
+    </p>
+  )
+}
+{
+  props.producer && (
+    <p>
+      {t("songMetadata.producer")}：{props.producer}
+    </p>
+  )
+}
+{
+  props.releaseDate && (
+    <p>
+      {t("songMetadata.releaseDate")}：
+      {dayjs(props.releaseDate).format("YYYY-MM-DD")}
+    </p>
+  )
+}
+{props.isrc && <p>ISRC：{props.isrc}</p>}
+{
+  props.maxingEngineer && (
+    <p>
+      {t("songMetadata.maxingEngineer")}：{props.maxingEngineer}
+    </p>
+  )
+}
