@@ -8,6 +8,7 @@ export const defaultLang = 'zh-hans'
 export const ui = {
     'zh-hans': {
         'lyricFontSizeSwitcher.enlarge': '放大字体',
+        'lyricFontSizeSwitcher.reset': '重置字体',
         'lyricFontSizeSwitcher.reduce': '缩小字体',
         'songMetadata.album': '专辑',
         'songMetadata.duration': '时长',
@@ -23,6 +24,7 @@ export const ui = {
     },
     'zh-hant': {
         'lyricFontSizeSwitcher.enlarge': '放大字體',
+        'lyricFontSizeSwitcher.reset': '重置字體',
         'lyricFontSizeSwitcher.reduce': '縮小字體',
         'songMetadata.album': '專輯',
         'songMetadata.duration': '時長',
