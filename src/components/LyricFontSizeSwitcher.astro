@@ -20,6 +20,14 @@ const t = useTranslations(lang);
     </Button>
     <Button
       square
+      id="font-size-reset"
+      title={t("lyricFontSizeSwitcher.reset")}
+      aria-label={t("lyricFontSizeSwitcher.reset")}
+    >
+      <Icon name="ph:text-aa" />
+    </Button>
+    <Button
+      square
       id="font-size-reduce"
       title={t("lyricFontSizeSwitcher.reduce")}
       aria-label={t("lyricFontSizeSwitcher.reduce")}
@@ -31,24 +39,115 @@ const t = useTranslations(lang);
 
 <script>
   const fontSizeEnlarge = document.getElementById("font-size-enlarge");
+  const fontSizeReset = document.getElementById("font-size-reset");
   const fontSizeReduce = document.getElementById("font-size-reduce");
   const lyricText = document.getElementById("lyric-text");
+  const DEFAULT_FONT_SIZE_INDEX = 2;
 
-  let fontSize = parseInt(localStorage.getItem("fontSize") || "1");
+  let selectedFontSizeIndex = parseInt(
+    localStorage.getItem("fontSize") || `${DEFAULT_FONT_SIZE_INDEX}`
+  );
 
   const fontSizeList = [
     {
+      fontSizeClass: "text-xs",
+      lineHeightClass: "leading-5",
+    },
+    {
+      fontSizeClass: "text-sm",
+      lineHeightClass: "leading-6",
+    },
+    {
+      fontSizeClass: "text-base",
+      lineHeightClass: "leading-7",
+    },
+    {
+      fontSizeClass: "text-lg",
+      lineHeightClass: "leading-8",
+    },
+    {
       fontSizeClass: "text-xl",
-      lineHeightClass: "",
+      lineHeightClass: "leading-9",
+    },
+    {
+      fontSizeClass: "text-2xl",
+      lineHeightClass: "leading-10",
+    },
+    {
+      fontSizeClass: "text-3xl",
+      lineHeightClass: "leading-[3rem]",
+    },
+    {
+      fontSizeClass: "text-4xl",
+      lineHeightClass: "leading-[3.25rem]",
+    },
+    {
+      fontSizeClass: "text-5xl",
+      lineHeightClass: "leading-[3.75rem]",
+    },
+    {
+      fontSizeClass: "text-6xl",
+      lineHeightClass: "leading-[4.75rem]",
     },
   ];
 
+  const switchLyricFontSize = (delteIndex: number) => {
+    const oldFontSize = fontSizeList[selectedFontSizeIndex];
+    const newFontSizeIndex = selectedFontSizeIndex + delteIndex;
+    if (newFontSizeIndex === fontSizeList.length - 1) {
+      // 禁用放大按钮
+      (fontSizeEnlarge as HTMLButtonElement).disabled = true;
+      (fontSizeEnlarge as HTMLButtonElement).ariaDisabled = "true";
+    } else if (newFontSizeIndex === 0) {
+      (fontSizeReduce as HTMLButtonElement).disabled = true;
+      (fontSizeReduce as HTMLButtonElement).ariaDisabled = "true";
+      // 禁用缩小按钮
+    } else {
+      // 启用放大和缩小按钮
+      (fontSizeEnlarge as HTMLButtonElement).disabled = false;
+      (fontSizeEnlarge as HTMLButtonElement).ariaDisabled = "false";
+      (fontSizeReduce as HTMLButtonElement).disabled = false;
+      (fontSizeReduce as HTMLButtonElement).ariaDisabled = "false";
+    }
+    selectedFontSizeIndex = newFontSizeIndex;
+    localStorage.setItem("fontSize", `${newFontSizeIndex}`);
+    const targetFontSize = fontSizeList[selectedFontSizeIndex];
+    if (oldFontSize.fontSizeClass !== "") {
+      lyricText?.classList.remove(oldFontSize.fontSizeClass);
+    }
+    if (oldFontSize.lineHeightClass !== "") {
+      lyricText?.classList.remove(oldFontSize.lineHeightClass);
+    }
+    if (targetFontSize.fontSizeClass !== "") {
+      lyricText?.classList.add(targetFontSize.fontSizeClass);
+    }
+    if (targetFontSize.lineHeightClass !== "") {
+      lyricText?.classList.add(targetFontSize.lineHeightClass);
+    }
+  };
+
+  if (
+    selectedFontSizeIndex !== DEFAULT_FONT_SIZE_INDEX &&
+    fontSizeList.length > DEFAULT_FONT_SIZE_INDEX
+  ) {
+    lyricText?.classList.remove(
+      fontSizeList[DEFAULT_FONT_SIZE_INDEX].fontSizeClass
+    );
+    lyricText?.classList.remove(
+      fontSizeList[DEFAULT_FONT_SIZE_INDEX].lineHeightClass
+    );
+  }
+  switchLyricFontSize(0);
+
   fontSizeEnlarge?.addEventListener("click", () => {
-    lyricText?.classList.add("text-3xl");
-    console.log("Font size enlarge clicked");
+    switchLyricFontSize(1);
   });
 
   fontSizeReduce?.addEventListener("click", () => {
-    console.log("Font size reduce clicked");
+    switchLyricFontSize(-1);
+  });
+
+  fontSizeReset?.addEventListener("click", () => {
+    switchLyricFontSize(DEFAULT_FONT_SIZE_INDEX - selectedFontSizeIndex);
   });
 </script>
