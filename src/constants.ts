@@ -1,0 +1,1 @@
+export const DEFAULT_TITLE = import.meta.env.PUBLIC_DEFAULT_TITLE || 'Anpu'
