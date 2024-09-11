@@ -1,0 +1,55 @@
+---
+import { getCollection } from "astro:content";
+import { slugify } from "@/utils";
+import Layout from "@/layouts/Layout.astro";
+import LyricRenderer from "@/components/LyricRenderer.astro";
+import SongMetadata from "@/components/SongMetadata.astro";
+import LyricFontSizeSwitcher from "@/components/LyricFontSizeSwitcher.astro";
+import BanlamToneSwitcher from "@/components/BanlamToneSwitcher.astro";
+import { defaultLang } from "@/i18n/ui";
+
+export async function getStaticPaths() {
+  const songs = await getCollection("song", (song) => {
+    const [lyricLanguage] = song.slug.split("/");
+    return lyricLanguage !== defaultLang;
+  });
+
+  return songs.map((song) => {
+    const [lyricLanguage, ...slug] = song.slug.split("/");
+    return {
+      params: { lang: lyricLanguage, slug: slugify(slug.join()) },
+      props: song,
+    };
+  });
+}
+
+const song = Astro.props;
+---
+
+<Layout title={song.data.title}>
+  <article
+    class="max-w-3xl mx-auto px-6 py-8 text-base leading-7"
+    id="lyric-text"
+  >
+    <h1 class="font-medium text-2xl">{song.data.title}</h1>
+    <hr class="my-2" />
+    <SongMetadata
+      album={song.data.album}
+      duration={song.data.duration}
+      artist={song.data.artist}
+      lyricist={song.data.lyricist}
+      arranger={song.data.arranger}
+      composer={song.data.composer}
+      producer={song.data.producer}
+      releaseDate={song.data.releaseDate}
+      isrc={song.data.isrc}
+      maxingEngineer={song.data.maxingEngineer}
+    />
+    <hr class="my-2" />
+    <LyricRenderer data={song.body} />
+  </article>
+  <slot slot="header-right">
+    <LyricFontSizeSwitcher />
+    {song.data.hasBanlamTone && <BanlamToneSwitcher />}
+  </slot>
+</Layout>
