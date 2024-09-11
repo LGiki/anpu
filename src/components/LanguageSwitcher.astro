@@ -1,6 +1,13 @@
 ---
 import { languages } from "@/i18n/ui";
 import { Icon } from "astro-icon/components";
+import { localizedUrl } from "@/i18n/utils";
+
+function localizedPathname(locale: string): string {
+  return localizedUrl(Astro.url, locale).pathname;
+}
+
+const currentPathname = Astro.url.pathname;
 ---
 
 <label
@@ -16,7 +23,12 @@ import { Icon } from "astro-icon/components";
   >
     {
       Object.entries(languages).map(([locale, language]) => (
-        <option value={locale}>{language}</option>
+        <option
+          value={localizedPathname(locale)}
+          selected={localizedPathname(locale) === currentPathname}
+        >
+          {language}
+        </option>
       ))
     }
   </select>
@@ -28,4 +40,9 @@ import { Icon } from "astro-icon/components";
 
 <script>
   const languageSelect = document.getElementById("language-select");
+  languageSelect?.addEventListener("change", (event) => {
+    if (event.currentTarget instanceof HTMLSelectElement) {
+      window.location.pathname = event.currentTarget.value;
+    }
+  });
 </script>

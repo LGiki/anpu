@@ -5,6 +5,8 @@ export const languages = {
 
 export const defaultLang = 'zh-hans'
 
+export const showDefaultLang = false
+
 export const ui = {
     'zh-hans': {
         'lyricFontSizeSwitcher.enlarge': '放大字体',
