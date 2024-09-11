@@ -96,18 +96,26 @@ const t = useTranslations(lang);
     const newFontSizeIndex = selectedFontSizeIndex + delteIndex;
     if (newFontSizeIndex === fontSizeList.length - 1) {
       // 禁用放大按钮
-      (fontSizeEnlarge as HTMLButtonElement).disabled = true;
-      (fontSizeEnlarge as HTMLButtonElement).ariaDisabled = "true";
+      if (fontSizeEnlarge) {
+        (fontSizeEnlarge as HTMLButtonElement).disabled = true;
+        (fontSizeEnlarge as HTMLButtonElement).ariaDisabled = "true";
+      }
     } else if (newFontSizeIndex === 0) {
-      (fontSizeReduce as HTMLButtonElement).disabled = true;
-      (fontSizeReduce as HTMLButtonElement).ariaDisabled = "true";
       // 禁用缩小按钮
+      if (fontSizeReduce) {
+        (fontSizeReduce as HTMLButtonElement).disabled = true;
+        (fontSizeReduce as HTMLButtonElement).ariaDisabled = "true";
+      }
     } else {
       // 启用放大和缩小按钮
-      (fontSizeEnlarge as HTMLButtonElement).disabled = false;
-      (fontSizeEnlarge as HTMLButtonElement).ariaDisabled = "false";
-      (fontSizeReduce as HTMLButtonElement).disabled = false;
-      (fontSizeReduce as HTMLButtonElement).ariaDisabled = "false";
+      if (fontSizeEnlarge) {
+        (fontSizeEnlarge as HTMLButtonElement).disabled = false;
+        (fontSizeEnlarge as HTMLButtonElement).ariaDisabled = "false";
+      }
+      if (fontSizeReduce) {
+        (fontSizeReduce as HTMLButtonElement).disabled = false;
+        (fontSizeReduce as HTMLButtonElement).ariaDisabled = "false";
+      }
     }
     selectedFontSizeIndex = newFontSizeIndex;
     localStorage.setItem("fontSize", `${newFontSizeIndex}`);
