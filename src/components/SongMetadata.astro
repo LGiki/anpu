@@ -33,65 +33,65 @@ const t = useTranslations(lang);
 
 {
   props.album && (
-    <p>
+    <p class="break-all">
       {t("songMetadata.album")}：{props.album}
     </p>
   )
 }
 {
   props.duration && (
-    <p>
+    <p class="break-all">
       {t("songMetadata.duration")}：{durationToHms(props.duration)}
     </p>
   )
 }
 {
   props.artist && (
-    <p>
+    <p class="break-all">
       {t("songMetadata.artist")}：{props.artist}
     </p>
   )
 }
 {
   props.lyricist && (
-    <p>
+    <p class="break-all">
       {t("songMetadata.lyricist")}：{props.lyricist}
     </p>
   )
 }
 {
   props.arranger && (
-    <p>
+    <p class="break-all">
       {t("songMetadata.arranger")}：{props.arranger}
     </p>
   )
 }
 {
   props.composer && (
-    <p>
+    <p class="break-all">
       {t("songMetadata.composer")}：{props.composer}
     </p>
   )
 }
 {
   props.producer && (
-    <p>
+    <p class="break-all">
       {t("songMetadata.producer")}：{props.producer}
     </p>
   )
 }
 {
   props.releaseDate && (
-    <p>
+    <p class="break-all">
       {t("songMetadata.releaseDate")}：
       {dayjs(props.releaseDate).format("YYYY-MM-DD")}
     </p>
   )
 }
-{props.isrc && <p>ISRC：{props.isrc}</p>}
+{props.isrc && <p class="break-all">ISRC：{props.isrc}</p>}
 {
   props.maxingEngineer && (
-    <p>
+    <p class="break-all">
       {t("songMetadata.maxingEngineer")}：{props.maxingEngineer}
     </p>
   )
