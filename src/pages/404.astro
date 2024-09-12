@@ -1,0 +1,26 @@
+---
+import Button from "@/components/Button.astro";
+import EmptyLayout from "@/layouts/EmptyLayout.astro";
+import { Icon } from "astro-icon/components";
+import { getLangFromUrl, useTranslations } from "@/i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<EmptyLayout title="404 Not Found">
+  <div class="w-screen h-svh flex items-center justify-center flex-col gap-7 sm:gap-8">
+    <span class="text-7xl sm:text-8xl" title={t("404.easterEgg")}>404</span>
+    <span class="text-4xl sm:text-5xl text-center" title={t("404.easterEgg")}>Page Not Found</span>
+    <a href="/">
+      <Button
+        buttonClass="flex gap-2 h-10 px-4 sm:h-12 sm:px-5 text-lg"
+        title={t("404.backToHome")}
+        aria-label={t("404.backToHome")}
+      >
+        <Icon name="ph:arrow-left-bold" />
+        <span>{t("404.backToHome")}</span>
+      </Button>
+    </a>
+  </div>
+</EmptyLayout>
