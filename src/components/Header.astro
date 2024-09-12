@@ -4,6 +4,10 @@ import LanguageSwitcher from "./LanguageSwitcher.astro";
 import Button from "./Button.astro";
 import { Icon } from "astro-icon/components";
 import { DEFAULT_TITLE } from "@/constants";
+import { getLangFromUrl, useTranslations } from "@/i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <header
@@ -20,7 +24,12 @@ import { DEFAULT_TITLE } from "@/constants";
     <div class="flex gap-2">
       <slot name="header-right" />
       <LanguageSwitcher labelClass="sm:flex hidden" />
-      <Button square id="mobile-menu">
+      <Button
+        square
+        id="mobile-menu"
+        title={t("header.mobileMenu")}
+        aria-label={t("header.mobileMenu")}
+      >
         <Icon name="ph:list-bold" />
       </Button>
     </div>
