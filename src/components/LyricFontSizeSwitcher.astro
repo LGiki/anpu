@@ -41,6 +41,7 @@ const t = useTranslations(lang);
   const fontSizeEnlarge = document.getElementById("font-size-enlarge");
   const fontSizeReset = document.getElementById("font-size-reset");
   const fontSizeReduce = document.getElementById("font-size-reduce");
+  const songTitle = document.getElementById("song-title");
   const lyricText = document.getElementById("lyric-text");
   const DEFAULT_FONT_SIZE_INDEX = 2;
 
@@ -52,42 +53,52 @@ const t = useTranslations(lang);
     {
       fontSizeClass: "text-xs",
       lineHeightClass: "leading-5",
+      songTitleClass: "text-lg",
     },
     {
       fontSizeClass: "text-sm",
       lineHeightClass: "leading-6",
+      songTitleClass: "text-xl",
     },
     {
       fontSizeClass: "text-base",
       lineHeightClass: "leading-7",
+      songTitleClass: "text-2xl",
     },
     {
       fontSizeClass: "text-lg",
       lineHeightClass: "leading-8",
+      songTitleClass: "text-3xl",
     },
     {
       fontSizeClass: "text-xl",
       lineHeightClass: "leading-9",
+      songTitleClass: "text-4xl",
     },
     {
       fontSizeClass: "text-2xl",
       lineHeightClass: "leading-10",
+      songTitleClass: "text-5xl",
     },
     {
       fontSizeClass: "text-3xl",
       lineHeightClass: "leading-[3rem]",
+      songTitleClass: "text-6xl",
     },
     {
       fontSizeClass: "text-4xl",
       lineHeightClass: "leading-[3.25rem]",
+      songTitleClass: "text-7xl",
     },
     {
       fontSizeClass: "text-5xl",
       lineHeightClass: "leading-[3.75rem]",
+      songTitleClass: "text-8xl",
     },
     {
       fontSizeClass: "text-6xl",
-      lineHeightClass: "leading-[4.75rem]",
+      lineHeightClass: "leading-[6rem]",
+      songTitleClass: "text-9xl",
     },
   ];
 
@@ -120,17 +131,23 @@ const t = useTranslations(lang);
     selectedFontSizeIndex = newFontSizeIndex;
     localStorage.setItem("fontSize", `${newFontSizeIndex}`);
     const targetFontSize = fontSizeList[selectedFontSizeIndex];
-    if (oldFontSize.fontSizeClass !== "") {
+    if (oldFontSize.fontSizeClass) {
       lyricText?.classList.remove(oldFontSize.fontSizeClass);
     }
-    if (oldFontSize.lineHeightClass !== "") {
+    if (oldFontSize.lineHeightClass) {
       lyricText?.classList.remove(oldFontSize.lineHeightClass);
     }
-    if (targetFontSize.fontSizeClass !== "") {
+    if (oldFontSize.songTitleClass) {
+      songTitle?.classList.remove(oldFontSize.songTitleClass);
+    }
+    if (targetFontSize.fontSizeClass) {
       lyricText?.classList.add(targetFontSize.fontSizeClass);
     }
-    if (targetFontSize.lineHeightClass !== "") {
+    if (targetFontSize.lineHeightClass) {
       lyricText?.classList.add(targetFontSize.lineHeightClass);
+    }
+    if (targetFontSize.songTitleClass) {
+      songTitle?.classList.add(targetFontSize.songTitleClass);
     }
   };
 

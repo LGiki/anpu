@@ -28,7 +28,7 @@ const song = Astro.props;
     class="max-w-3xl mx-auto px-6 py-8 text-base leading-7"
     id="lyric-text"
   >
-    <h1 class="font-medium text-2xl">{song.data.title}</h1>
+    <h1 class="font-medium text-2xl" id="song-title">{song.data.title}</h1>
     <hr class="my-2" />
     <SongMetadata
       album={song.data.album}
