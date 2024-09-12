@@ -2,16 +2,27 @@
 import { languages } from "@/i18n/ui";
 import { Icon } from "astro-icon/components";
 import { localizedUrl } from "@/i18n/utils";
+import { cn } from "@/utils";
+
+interface Props {
+  labelClass?: string;
+  selectClass?: string;
+}
 
 function localizedPathname(locale: string): string {
   return localizedUrl(Astro.url, locale).pathname;
 }
 
 const currentPathname = Astro.url.pathname;
+
+const props: Props = Astro.props;
 ---
 
 <label
-  class="flex items-center gap-1 relative rounded-md border cursor-pointer hover:bg-gray-100 transition-colors duration-200 h-7"
+  class={cn(
+    "flex items-center gap-1 relative rounded-md border cursor-pointer hover:bg-gray-100 transition-colors duration-200 h-7",
+    props.labelClass
+  )}
 >
   <Icon
     name="ph:translate"
@@ -19,7 +30,10 @@ const currentPathname = Astro.url.pathname;
   />
   <select
     id="language-select"
-    class="cursor-pointer w-[6.6rem] pl-6 bg-transparent appearance-none py-1 text-sm"
+    class={cn(
+      "cursor-pointer w-[6.6rem] h-full pl-6 rounded-md bg-transparent appearance-none text-sm",
+      props.selectClass
+    )}
   >
     {
       Object.entries(languages).map(([locale, language]) => (
