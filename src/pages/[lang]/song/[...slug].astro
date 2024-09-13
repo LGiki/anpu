@@ -31,22 +31,36 @@ const song = Astro.props;
     class="max-w-3xl mx-auto px-6 py-8 text-base leading-7"
     id="lyric-text"
   >
-    <h1 class="font-medium text-2xl">{song.data.title}</h1>
-    <hr class="my-2" />
-    <SongMetadata
-      album={song.data.album}
-      duration={song.data.duration}
-      artist={song.data.artist}
-      lyricist={song.data.lyricist}
-      arranger={song.data.arranger}
-      composer={song.data.composer}
-      producer={song.data.producer}
-      releaseDate={song.data.releaseDate}
-      isrc={song.data.isrc}
-      maxingEngineer={song.data.maxingEngineer}
-    />
-    <hr class="my-2" />
+    <h1 class="font-medium text-2xl mb-4" id="song-title">{song.data.title}</h1>
     <LyricRenderer data={song.body} />
+    {
+      (song.data.album ||
+        song.data.duration ||
+        song.data.artist ||
+        song.data.lyricist ||
+        song.data.arranger ||
+        song.data.composer ||
+        song.data.producer ||
+        song.data.releaseDate ||
+        song.data.isrc ||
+        song.data.maxingEngineer) && (
+        <>
+          <hr class="my-5" />
+          <SongMetadata
+            album={song.data.album}
+            duration={song.data.duration}
+            artist={song.data.artist}
+            lyricist={song.data.lyricist}
+            arranger={song.data.arranger}
+            composer={song.data.composer}
+            producer={song.data.producer}
+            releaseDate={song.data.releaseDate}
+            isrc={song.data.isrc}
+            maxingEngineer={song.data.maxingEngineer}
+          />
+        </>
+      )
+    }
   </article>
   <slot slot="header-right">
     <LyricFontSizeSwitcher />
