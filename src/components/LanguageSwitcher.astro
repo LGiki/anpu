@@ -34,6 +34,7 @@ const props: Props = Astro.props;
       "cursor-pointer w-[6.6rem] h-full pl-6 rounded-md bg-transparent appearance-none text-sm",
       props.selectClass
     )}
+    onchange="(function(target){window.location.pathname = target.value})(this)"
   >
     {
       Object.entries(languages).map(([locale, language]) => (
@@ -51,12 +52,3 @@ const props: Props = Astro.props;
     class="cursor-pointer absolute right-1 pointer-events-none"
   />
 </label>
-
-<script>
-  const languageSelect = document.getElementById("language-select");
-  languageSelect?.addEventListener("change", (event) => {
-    if (event.currentTarget instanceof HTMLSelectElement) {
-      window.location.pathname = event.currentTarget.value;
-    }
-  });
-</script>
