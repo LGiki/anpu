@@ -2,9 +2,8 @@
 import { getCollection } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
 import { defaultLang, languages } from "@/i18n/ui";
-import Badge from "@/components/Badge.astro";
-import { slugify } from "@/utils";
 import { getLangFromUrl } from "@/i18n/utils";
+import SongGroupList from "@/components/SongGroupList.astro";
 
 const urlLanguage = getLangFromUrl(Astro.url);
 
@@ -27,20 +26,7 @@ export async function getStaticPaths() {
 ---
 
 <Layout title="Lyric">
-  <div class="flex flex-col gap-2 max-w-3xl mx-auto px-6 py-8">
-    {
-      songs.map((song) => {
-        const [lyricLanguage, ...slug] = song.slug.split("/");
-        return (
-          <a
-            href={`/${lyricLanguage}/song/${slugify(slug.join())}`}
-            class="flex items-center gap-1"
-          >
-            {song.data.title}
-            {song.data.hasBanlamTone && <Badge>台</Badge>}
-          </a>
-        );
-      })
-    }
+  <div class="max-w-3xl mx-auto px-6 py-8">
+    <SongGroupList songs={songs} />
   </div>
 </Layout>

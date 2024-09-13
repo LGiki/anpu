@@ -1,0 +1,42 @@
+---
+import { generateContentGroups } from "@/utils";
+import type { CollectionEntry, AnyEntryMap } from "astro:content";
+import Badge from "./Badge.astro";
+import { defaultLang } from "@/i18n/ui";
+
+interface Props {
+  songs: CollectionEntry<"song">[];
+}
+
+const props: Props = Astro.props;
+
+const songGroups = generateContentGroups(
+  props.songs,
+  (song) => song.slug.split("/"),
+  defaultLang
+);
+---
+
+<div class="flex flex-col">
+  {
+    songGroups.map((songGroup) => (
+      <div class="flex border-b last:border-b-0">
+        <div class="flex items-center h-12 w-10 text-gray-400 flex-shrink-0">
+          {songGroup.key}
+        </div>
+        <div class="flex flex-col flex-1">
+          {songGroup.list.map((song) => (
+            <a
+              href={song.url}
+              title={song.data.title}
+              class="flex items-center border-b last:border-b-0 h-12 gap-2"
+            >
+              <span>{song.data.title}</span>
+              {song.data.hasBanlamTone && <Badge>台</Badge>}
+            </a>
+          ))}
+        </div>
+      </div>
+    ))
+  }
+</div>

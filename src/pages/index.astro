@@ -2,43 +2,17 @@
 import Layout from "@/layouts/Layout.astro";
 
 import { getCollection } from "astro:content";
-import { generateContentGroups } from "@/utils";
-import Badge from "@/components/Badge.astro";
 import { defaultLang } from "@/i18n/ui";
+import SongGroupList from "@/components/SongGroupList.astro";
 
 const songs = await getCollection("song", (song) => {
   const [lyricLanguage] = song.slug.split("/");
   return lyricLanguage === defaultLang;
 });
-
-const songGroups = generateContentGroups(
-  songs,
-  (song) => song.slug.split("/"),
-  defaultLang
-);
 ---
 
 <Layout title="Lyric">
-  <div class="flex flex-col max-w-3xl mx-auto px-6 py-8">
-    {
-      songGroups.map((songGroup) => (
-        <div class="flex border-b last:border-b-0">
-          <div class="flex items-center h-12 w-10 text-gray-400 flex-shrink-0">
-            {songGroup.key}
-          </div>
-          <div class="flex flex-col flex-1">
-            {songGroup.list.map((song) => (
-              <a
-                href={song.url}
-                class="flex items-center border-b last:border-b-0 h-12 gap-2"
-              >
-                <span>{song.data.title}</span>
-                {song.data.hasBanlamTone && <Badge>台</Badge>}
-              </a>
-            ))}
-          </div>
-        </div>
-      ))
-    }
+  <div class="max-w-3xl mx-auto px-6 py-8">
+    <SongGroupList songs={songs} />
   </div>
 </Layout>
