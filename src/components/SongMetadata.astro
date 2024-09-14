@@ -2,27 +2,28 @@
 import { getLangFromUrl, useTranslations } from "@/i18n/utils";
 import { durationToHms } from "@/utils";
 import dayjs from "dayjs";
+import SongMetadataStringsItem from "./SongMetadataStringsItem.astro";
 
 interface Props {
   album?: string;
   // 长度（秒）
   duration?: number;
   // 歌手
-  artist?: string;
+  artist?: string[] | string;
   // 作词者
-  lyricist?: string;
+  lyricist?: string[] | string;
   // 编曲者
-  arranger?: string;
+  arranger?: string[] | string;
   // 作曲者
-  composer?: string;
+  composer?: string[] | string;
   // 制作人
-  producer?: string;
+  producer?: string[] | string;
   // 发布日期
   releaseDate?: Date;
   // ISRC, see <https://en.wikipedia.org/wiki/International_Standard_Recording_Code>.
   isrc?: string;
   // 混音师
-  maxingEngineer?: string;
+  maxingEngineer?: string[] | string;
 }
 
 const props = Astro.props;
@@ -51,35 +52,42 @@ const t = useTranslations(lang);
   {
     props.artist && (
       <p class="break-all">
-        {t("songMetadata.artist")}：{props.artist}
+        {t("songMetadata.artist")}：<SongMetadataStringsItem value={props.artist}></SongMetadataStringsItem>
       </p>
     )
   }
   {
     props.lyricist && (
       <p class="break-all">
-        {t("songMetadata.lyricist")}：{props.lyricist}
+        {t("songMetadata.lyricist")}：<SongMetadataStringsItem value={props.lyricist}></SongMetadataStringsItem>
       </p>
     )
   }
   {
     props.arranger && (
       <p class="break-all">
-        {t("songMetadata.arranger")}：{props.arranger}
+        {t("songMetadata.arranger")}：<SongMetadataStringsItem value={props.arranger}>
       </p>
     )
   }
   {
     props.composer && (
       <p class="break-all">
-        {t("songMetadata.composer")}：{props.composer}
+        {t("songMetadata.composer")}：<SongMetadataStringsItem value={props.composer}>
       </p>
     )
   }
   {
     props.producer && (
       <p class="break-all">
-        {t("songMetadata.producer")}：{props.producer}
+        {t("songMetadata.producer")}：<SongMetadataStringsItem value={props.producer}>
+      </p>
+    )
+  }
+  {
+    props.maxingEngineer && (
+      <p class="break-all">
+        {t("songMetadata.maxingEngineer")}：<SongMetadataStringsItem value={props.maxingEngineer}></SongMetadataStringsItem>
       </p>
     )
   }
@@ -92,11 +100,4 @@ const t = useTranslations(lang);
     )
   }
   {props.isrc && <p class="break-all">ISRC：{props.isrc}</p>}
-  {
-    props.maxingEngineer && (
-      <p class="break-all">
-        {t("songMetadata.maxingEngineer")}：{props.maxingEngineer}
-      </p>
-    )
-  }
 </div>

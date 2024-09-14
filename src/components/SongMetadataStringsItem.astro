@@ -1,0 +1,14 @@
+---
+interface Props {
+  value: string | string[];
+  separator?: string;
+}
+
+const props: Props = Astro.props;
+---
+
+{
+  Array.isArray(props.value)
+    ? props.value.join(props.separator || "、")
+    : props.value
+}
