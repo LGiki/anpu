@@ -1,8 +1,8 @@
 :root {
     --mobile-header-height: 2.5rem;
     --background: #fdfdfd;
-    /* gray-700 */
-    --foreground: #374151;
+    /* gray-800 */
+    --foreground: #1f2937;
 }
 
 @media (prefers-color-scheme: dark) {
