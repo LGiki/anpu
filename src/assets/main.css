@@ -1,3 +1,27 @@
 :root {
     --mobile-header-height: 2.5rem;
+    --background: #fdfdfd;
+    /* gray-700 */
+    --foreground: #374151;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        /* zinc-900 */
+        --background: #18181b;
+        /* gray-200 */
+        --foreground: #e5e7eb;
+    }
+}
+
+.lyric-text-line {
+    @apply empty:after:content-['_'] empty:after:whitespace-pre;
+}
+
+.song-group-link {
+    @apply flex items-center border-b last:border-b-0 h-12 gap-2 text-[var(--foreground)] dark:border-b-zinc-700/90;
+}
+
+.banlam-tone-switch-button {
+    @apply data-[banlam-tone-visible=true]:bg-rose-100 data-[banlam-tone-visible=true]:border-rose-200 data-[banlam-tone-visible=true]:hover:bg-rose-200 data-[banlam-tone-visible=true]:text-rose-400 dark:data-[banlam-tone-visible=true]:bg-rose-950 dark:data-[banlam-tone-visible=true]:border-rose-700 dark:data-[banlam-tone-visible=true]:text-rose-600 dark:hover:data-[banlam-tone-visible=true]:bg-rose-900/70;
 }

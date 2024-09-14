@@ -25,7 +25,7 @@ const song = Astro.props;
 
 <Layout title={song.data.title}>
   <article
-    class="max-w-3xl mx-auto px-6 py-8 text-base leading-7"
+    class="max-w-3xl mx-auto px-6 py-8 text-base leading-7 text-[var(--foreground)]"
     id="lyric-text"
   >
     <h1 class="font-medium text-2xl mb-4" id="song-title">{song.data.title}</h1>
@@ -42,7 +42,7 @@ const song = Astro.props;
         song.data.isrc ||
         song.data.maxingEngineer) && (
         <>
-          <hr class="my-5" />
+          <hr class="my-5 dark:bg-zinc-700/90 dark:color-zinc-700/90 dark:border-zinc-700/90" />
           <SongMetadata
             album={song.data.album}
             duration={song.data.duration}

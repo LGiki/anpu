@@ -13,6 +13,9 @@ export const ui = {
         'lyricFontSizeSwitcher.reset': '重置字体',
         'lyricFontSizeSwitcher.reduce': '缩小字体',
         'header.mobileMenu': '菜单',
+        'header.closeMobileMenu': '关闭菜单',
+        'header.lyric': '歌词',
+        'header.concert': '演唱会歌单',
         'songMetadata.album': '专辑',
         'songMetadata.duration': '时长',
         'songMetadata.artist': '歌手',
@@ -24,12 +27,17 @@ export const ui = {
         'songMetadata.maxingEngineer': '混音',
         'banlamToneSwitcher.showBanlamTone': '显示台语注音',
         'banlamToneSwitcher.hideBanlamTone': '隐藏台语注音',
+        '404.backToHome': '返回主页',
+        '404.easterEgg': '如果你在前方回头，而我亦回头，我们就错过。',
     },
     'zh-hant': {
         'lyricFontSizeSwitcher.enlarge': '放大字體',
         'lyricFontSizeSwitcher.reset': '重置字體',
         'lyricFontSizeSwitcher.reduce': '縮小字體',
         'header.mobileMenu': '選單',
+        'header.closeMobileMenu': '關閉選單',
+        'header.lyric': '歌詞',
+        'header.concert': '演唱會歌單',
         'songMetadata.album': '專輯',
         'songMetadata.duration': '時長',
         'songMetadata.artist': '歌手',
@@ -41,5 +49,7 @@ export const ui = {
         'songMetadata.maxingEngineer': '混音',
         'banlamToneSwitcher.showBanlamTone': '顯示台語註音',
         'banlamToneSwitcher.hideBanlamTone': '隱藏台語註音',
+        '404.backToHome': '返回主頁',
+        '404.easterEgg': '如果你在前方回頭，而我亦回頭，我們就錯過。'
     }
 }

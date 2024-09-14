@@ -14,8 +14,13 @@ const t = useTranslations(lang);
   aria-label={t("banlamToneSwitcher.showBanlamTone")}
   data-show-banlam-tone-title={t("banlamToneSwitcher.showBanlamTone")}
   data-hide-banlam-tone-title={t("banlamToneSwitcher.hideBanlamTone")}
+  buttonClass="banlam-tone-switch-button"
 >
-  <Icon name="ph:book-bookmark" class="w-4 h-4" id="banlam-tone-switch-icon" />
+  <Icon
+    name="ph:book-bookmark"
+    class="w-4 h-4"
+    id="banlam-tone-switch-icon"
+  />
 </Button>
 
 <script>
@@ -80,29 +85,29 @@ const t = useTranslations(lang);
     switchBanlamTone(banlamToneDisplayIndex);
     if (banlamToneDisplayIndex > 0) {
       // 台语注音激活状态
-      if (!banlamToneSwitchButton.classList.contains("bg-rose-100")) {
-        banlamToneSwitchButton.classList.add("bg-rose-100");
-        banlamToneSwitchButton.classList.add("border-rose-200");
-        banlamToneSwitchButton.classList.add("hover:bg-rose-200");
-        banlamToneSwitchIcon?.classList.add("text-rose-500");
-        if (banlamToneSwitchButton.dataset["hideBanlamToneTitle"]) {
+      if (
+        typeof banlamToneSwitchButton.dataset.banlamToneVisible ===
+          "undefined" ||
+        banlamToneSwitchButton.dataset.banlamToneVisible === "false"
+      ) {
+        banlamToneSwitchButton.dataset.banlamToneVisible = "true";
+        // banlamToneSwitchIcon?.classList.add("text-rose-500");
+        if (banlamToneSwitchButton.dataset.hideBanlamToneTitle) {
           banlamToneSwitchButton.title =
-            banlamToneSwitchButton.dataset["hideBanlamToneTitle"];
+            banlamToneSwitchButton.dataset.hideBanlamToneTitle;
           banlamToneSwitchButton.ariaLabel =
-            banlamToneSwitchButton.dataset["hideBanlamToneTitle"];
+            banlamToneSwitchButton.dataset.hideBanlamToneTitle;
         }
       }
     } else {
       // 台语注音关闭状态
-      banlamToneSwitchButton.classList.remove("bg-rose-100");
-      banlamToneSwitchButton.classList.remove("border-rose-200");
-      banlamToneSwitchButton.classList.remove("hover:bg-rose-200");
-      banlamToneSwitchIcon?.classList.remove("text-rose-500");
-      if (banlamToneSwitchButton.dataset["showBanlamToneTitle"]) {
+      banlamToneSwitchButton.dataset.banlamToneVisible = "false";
+      // banlamToneSwitchIcon?.classList.remove("text-rose-500");
+      if (banlamToneSwitchButton.dataset.showBanlamToneTitle) {
         banlamToneSwitchButton.title =
-          banlamToneSwitchButton.dataset["showBanlamToneTitle"];
+          banlamToneSwitchButton.dataset.showBanlamToneTitle;
         banlamToneSwitchButton.ariaLabel =
-          banlamToneSwitchButton.dataset["showBanlamToneTitle"];
+          banlamToneSwitchButton.dataset.showBanlamToneTitle;
       }
     }
   });

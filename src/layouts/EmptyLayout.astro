@@ -25,7 +25,7 @@ const pageTitle = title ? `${title} | ${DEFAULT_TITLE}` : DEFAULT_TITLE;
     <meta name="generator" content={Astro.generator} />
     <title>{pageTitle}</title>
   </head>
-  <body class="bg-[#fdfdfd]">
+  <body class="bg-[var(--background)]">
     <main>
       <slot />
     </main>

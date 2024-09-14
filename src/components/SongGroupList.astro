@@ -20,7 +20,7 @@ const songGroups = generateContentGroups(
 <div class="flex flex-col">
   {
     songGroups.map((songGroup) => (
-      <div class="flex border-b last:border-b-0">
+      <div class="flex border-b last:border-b-0 dark:border-b-zinc-700/90">
         <div class="flex items-center h-12 w-10 text-gray-400 flex-shrink-0">
           {songGroup.key}
         </div>
@@ -29,7 +29,7 @@ const songGroups = generateContentGroups(
             <a
               href={song.url}
               title={song.data.title}
-              class="flex items-center border-b last:border-b-0 h-12 gap-2"
+              class="song-group-link"
             >
               <span>{song.data.title}</span>
               {song.data.hasBanlamTone && <Badge>台</Badge>}

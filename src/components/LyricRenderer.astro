@@ -56,7 +56,7 @@ if (lyricLines.length > 0 && lyricLines[lyricLines.length - 1].text.trim() === "
           lyricLine.toneText2 && 
           <p class={cn(lyricLine.isHightlight && HIGHLIGHT_TEXT_COLOR, "leading-tight opacity-70 font-serif break-words hidden lyric-tone2")} aria-hidden="true">{lyricLine.toneText2}</p>
         }
-        <p class={cn(lyricLine.isHightlight && HIGHLIGHT_TEXT_COLOR, "empty:after:content-['_'] empty:after:whitespace-pre")}>{lyricLine.text}</p>
+        <p class={cn(lyricLine.isHightlight && HIGHLIGHT_TEXT_COLOR, "lyric-text-line")}>{lyricLine.text}</p>
       </>
     ))
   }
