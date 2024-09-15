@@ -5,6 +5,8 @@ const songCollection = defineCollection({
     schema: z.object({
         // 标题
         title: z.string(),
+        // 英文标题
+        englishTitle: z.string().optional(),
         // 专辑
         album: z.string().optional(),
         // 长度（秒）
@@ -24,7 +26,25 @@ const songCollection = defineCollection({
         // ISRC, see <https://en.wikipedia.org/wiki/International_Standard_Recording_Code>.
         isrc: z.string().optional(),
         // 混音师
-        maxingEngineer: z.array(z.string()).or(z.string()).optional(),
+        mixingEngineer: z.array(z.string()).or(z.string()).optional(),
+        // 电吉他
+        electricGuitar: z.array(z.string()).or(z.string()).optional(),
+        // 贝斯
+        bass: z.array(z.string()).or(z.string()).optional(),
+        // 鼓
+        drums: z.array(z.string()).or(z.string()).optional(),
+        // 键盘
+        keyboard: z.array(z.string()).or(z.string()).optional(),
+        // 吉他
+        guitar: z.array(z.string()).or(z.string()).optional(),
+        // 钢琴
+        piano: z.array(z.string()).or(z.string()).optional(),
+        // 录音工程师
+        recordingEngineer: z.array(z.string()).or(z.string()).optional(),
+        // 母带工程师
+        masteringEngineer: z.array(z.string()).or(z.string()).optional(),
+        // 录音室
+        recordingStudio: z.array(z.string()).or(z.string()).optional(),
         // 是否有台语
         hasBanlamTone: z.boolean().optional().default(false),
     })

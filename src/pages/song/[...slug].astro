@@ -40,10 +40,21 @@ const song = Astro.props;
         song.data.producer ||
         song.data.releaseDate ||
         song.data.isrc ||
-        song.data.maxingEngineer) && (
+        song.data.mixingEngineer ||
+        song.data.electricGuitar ||
+        song.data.bass ||
+        song.data.piano ||
+        song.data.drums ||
+        song.data.guitar ||
+        song.data.keyboard ||
+        song.data.recordingEngineer ||
+        song.data.masteringEngineer ||
+        song.data.recordingStudio ||
+        song.data.englishTitle) && (
         <>
           <hr class="my-5 dark:bg-zinc-700/90 dark:color-zinc-700/90 dark:border-zinc-700/90" />
           <SongMetadata
+            englishTitle={song.data.englishTitle}
             album={song.data.album}
             duration={song.data.duration}
             artist={song.data.artist}
@@ -53,7 +64,16 @@ const song = Astro.props;
             producer={song.data.producer}
             releaseDate={song.data.releaseDate}
             isrc={song.data.isrc}
-            maxingEngineer={song.data.maxingEngineer}
+            mixingEngineer={song.data.mixingEngineer}
+            electricGuitar={song.data.electricGuitar}
+            bass={song.data.bass}
+            piano={song.data.piano}
+            drums={song.data.drums}
+            guitar={song.data.guitar}
+            keyboard={song.data.keyboard}
+            recordingEngineer={song.data.recordingEngineer}
+            masteringEngineer={song.data.masteringEngineer}
+            recordingStudio={song.data.recordingStudio}
           />
         </>
       )
