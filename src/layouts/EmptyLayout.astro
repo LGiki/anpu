@@ -1,15 +1,16 @@
 ---
-import Header from "@/components/Header.astro";
 import { DEFAULT_TITLE } from "@/constants";
 import "@/assets/main.css";
 
 interface Props {
-  title: string;
+  title: string | string[];
 }
 
 const { title } = Astro.props;
 
-const pageTitle = title ? `${title} | ${DEFAULT_TITLE}` : DEFAULT_TITLE;
+const pageTitle = title
+  ? `${Array.isArray(title) ? title.join(" | ") : title} | ${DEFAULT_TITLE}`
+  : DEFAULT_TITLE;
 ---
 
 <!doctype html>
