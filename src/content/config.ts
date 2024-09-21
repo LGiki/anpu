@@ -50,6 +50,57 @@ const songCollection = defineCollection({
     })
 })
 
+const albumCollection = defineCollection({
+    type: 'data',
+    schema: z.object({
+        // 标题
+        title: z.string(),
+        // 英文标题
+        englishTitle: z.string().optional(),
+        // 发布日期
+        releaseDate: z.date().optional(),
+        // 总监制
+        executiveProducer: z.string().optional(),
+        // 音乐总监
+        musicDirector: z.string().optional(),
+        // 制作人
+        producer: z.array(z.string()).or(z.string()).optional(),
+        // 格式
+        format: z.union([
+            // 光盘
+            z.literal('CD'),
+            // 黑胶
+            z.literal('Vinyl'),
+            // 数字格式
+            z.literal('Digital'),
+            // 磁带
+            z.literal('Cassette'),
+            // 流媒体，不提供下载，仅通过网络播放的音乐格式
+            z.literal('Streaming'),
+        ]).optional(),
+        // 专辑类型
+        albumType: z.union([
+            // Extended Play
+            z.literal('EP'),
+            // Long Play
+            z.literal('LP'),
+            // Maxtape
+            z.literal('Mixtape'),
+            // 单曲
+            z.literal('Single'),
+            // 精选集
+            z.literal('Compilation'),
+            // 现场专辑
+            z.literal('LiveAlbum'),
+            // 混音专辑
+            z.literal('RemixAlbum'),
+        ]).optional(),
+        // 歌曲列表
+        list: z.array(z.string()).optional(),
+    })
+})
+
 export const collections = {
     'song': songCollection,
+    'album': albumCollection,
 }
