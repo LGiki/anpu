@@ -1,8 +1,8 @@
 :root {
     --mobile-header-height: 2.5rem;
-    --background: #fdfdfd;
-    /* gray-800 */
-    --foreground: #1f2937;
+    --background: #fafafa;
+    /* gray-900 */
+    --foreground: #111827;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -19,7 +19,7 @@
 }
 
 .song-group-link {
-    @apply flex items-center border-b last:border-b-0 h-12 gap-2 text-[var(--foreground)] dark:border-b-zinc-700/90;
+    @apply flex items-center border-b last:border-b-0 min-h-12 gap-2 text-[var(--foreground)] dark:border-b-zinc-700/90 py-2;
 }
 
 .banlam-tone-switch-button {

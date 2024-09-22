@@ -50,6 +50,18 @@ const songCollection = defineCollection({
     })
 })
 
+const talkingCollection = defineCollection({
+    type: 'content',
+    schema: z.object({
+        // 演唱会
+        concert: z.string().optional(),
+        // 地点
+        location: z.string().optional(),
+        // 日期
+        date: z.date().optional(),
+    })
+})
+
 const concertCollection = defineCollection({
     type: 'data',
     schema: z.object({

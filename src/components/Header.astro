@@ -9,8 +9,17 @@ import {
   useTranslations,
   useTranslatedPath,
 } from "@/i18n/utils";
+import { getCollectionNameFromUrl } from "@/utils";
+
+const collectionNameToHeaderTitle = {
+  song: "Lyric",
+  album: "Album",
+  concert: "Concert",
+  talking: "Talking",
+};
 
 const lang = getLangFromUrl(Astro.url);
+const collectionName = getCollectionNameFromUrl(Astro.url);
 const t = useTranslations(lang);
 const translatePath = useTranslatedPath(lang);
 ---
@@ -18,14 +27,28 @@ const translatePath = useTranslatedPath(lang);
 <header
   class="bg-white/75 dark:bg-zinc-900/50 sm:h-12 h-[var(--mobile-header-height)] w-full shadow-md backdrop-blur-xl fixed top-0 left-0 z-10 px-3 sm:px-10 transition-all print:hidden flex items-center"
 >
-  <div class="max-w-3xl w-full flex items-center justify-between mx-auto sm:px-6">
+  <div
+    class="max-w-3xl w-full flex items-center justify-between mx-auto sm:px-6"
+  >
     <a href={translatePath("/")}>
       <div
         class="text-[var(--foreground)] flex gap-1 items-center font-['Cinzel'] sm:text-xl text-sm"
       >
         <div>{DEFAULT_TITLE}</div>
-        <div>·</div>
-        <div>Lyrics</div>
+        {
+          collectionName in collectionNameToHeaderTitle && (
+            <>
+              <div>·</div>
+              <div>
+                {
+                  collectionNameToHeaderTitle[
+                    collectionName as keyof typeof collectionNameToHeaderTitle
+                  ]
+                }
+              </div>
+            </>
+          )
+        }
       </div>
     </a>
     <nav>
@@ -37,7 +60,6 @@ const translatePath = useTranslatedPath(lang);
           id="mobile-menu"
           title={t("header.mobileMenu")}
           aria-label={t("header.mobileMenu")}
-          buttonClass="inline-flex sm:hidden"
         >
           <Icon name="ph:list-bold" />
         </Button>
@@ -47,7 +69,7 @@ const translatePath = useTranslatedPath(lang);
 </header>
 <div
   id="drawer-container"
-  class="absolute max-w-[24rem] w-3/4 translate-x-[-100%] duration-500 ease-in-out transition-transform bg-white/80 dark:bg-zinc-900/80 backdrop-blur left-0 top-0 h-svh z-50 justify-center overflow-y-auto flex flex-col py-5 rounded-tr-xl rounded-br-xl"
+  class="fixed max-w-[24rem] w-3/4 translate-x-[-100%] duration-[400ms] ease-in-out transition-transform bg-white/80 dark:bg-zinc-900/80 backdrop-blur left-0 top-0 h-svh z-50 justify-center overflow-y-auto flex flex-col py-5 rounded-tr-xl rounded-br-xl"
 >
   <div
     class="absolute right-0 top-0"
@@ -70,10 +92,32 @@ const translatePath = useTranslatedPath(lang);
     </a>
     <a
       class="transition-all text-xl duration-50 flex items-center gap-3 group flex-shrink-0 px-5 py-1.5 text-gray-500 dark:text-gray-300 hover:text-gray-800 hover:bg-gray-200 cursor-pointer"
+      href={translatePath("/album")}
+    >
+      <Icon name="ph:vinyl-record" class="w-6 h-6" />
+      <span>{t("header.album")}</span>
+    </a>
+    <a
+      class="transition-all text-xl duration-50 flex items-center gap-3 group flex-shrink-0 px-5 py-1.5 text-gray-500 dark:text-gray-300 hover:text-gray-800 hover:bg-gray-200 cursor-pointer"
       href={translatePath("/concert")}
     >
       <Icon name="ph:microphone-stage" class="w-6 h-6" />
       <span>{t("header.concert")}</span>
+    </a>
+    <a
+      class="transition-all text-xl duration-50 flex items-center gap-3 group flex-shrink-0 px-5 py-1.5 text-gray-500 dark:text-gray-300 hover:text-gray-800 hover:bg-gray-200 cursor-pointer"
+      href={translatePath("/talking")}
+    >
+      <Icon name="ph:chat-dots" class="w-6 h-6" />
+      <span>{t("header.talking")}</span>
+    </a>
+    <a
+      class="transition-all text-xl duration-50 flex items-center gap-3 group flex-shrink-0 px-5 py-1.5 text-gray-500 dark:text-gray-300 hover:text-gray-800 hover:bg-gray-200 cursor-pointer"
+      href="https://ar.anpu.me"
+      target="_blank"
+    >
+      <Icon name="ph:cube-focus" class="w-6 h-6" />
+      <span>{t("header.xiaoheirenAR")}</span>
     </a>
   </div>
   <div class="flex-shrink-0 mx-5">
@@ -82,7 +126,7 @@ const translatePath = useTranslatedPath(lang);
 </div>
 <div
   id="mobile-menu-background"
-  class="bg-gray-600/20 dark:bg-black/80 absolute top-0 left-0 z-20 w-screen h-svh transition-opacity duration-500 translate-x-[-100%] opacity-0"
+  class="bg-gray-600/30 dark:bg-black/80 fixed top-0 left-0 z-20 w-screen h-svh transition-opacity duration-500 translate-x-[-100%] opacity-0"
 >
 </div>
 
