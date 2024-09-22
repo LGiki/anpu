@@ -53,12 +53,19 @@ const songCollection = defineCollection({
 const talkingCollection = defineCollection({
     type: 'content',
     schema: z.object({
-        // 演唱会
-        concert: z.string().optional(),
+        // 演唱会标题
+        concertTitle: z.string().optional(),
+        // 巡演
+        concertTour: z.string().optional(),
         // 地点
         location: z.string().optional(),
         // 日期
         date: z.date().optional(),
+        // 引用
+        references: z.array(z.object({
+            title: z.string().optional(),
+            url: z.string().optional(),
+        })).optional(),
     })
 })
 
@@ -138,4 +145,5 @@ export const collections = {
     'song': songCollection,
     'album': albumCollection,
     'concert': concertCollection,
+    'talking': talkingCollection,
 }
