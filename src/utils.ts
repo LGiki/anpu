@@ -3,6 +3,19 @@ import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 import type { AnyEntryMap, CollectionEntry } from 'astro:content'
 import type { ContentGroup, ContentGroupItem } from '@/types'
+import { ui } from './i18n/ui'
+
+export function getCollectionNameFromUrl(url: URL) {
+  // URL 可能为 /album/my-life-will 或 /zh-hant/album/my-life-will
+  const [, segment1, segment2] = url.pathname.split('/');
+  
+  // 如果 urlSegment1 为 i18n locale，说明 urlSegment2 就是 collection name
+  if (segment1 in ui) {
+    return segment2 || 'song';
+  }
+  
+  return segment1 || 'song';
+}
 
 export function slugify(title: string) {
   return limax(title, {
