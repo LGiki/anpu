@@ -35,7 +35,7 @@ export function durationToHms(duration: number): string {
   return `${hours > 0 ? `${hours.toString().padStart(2, '0')}:` : ''}${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
 }
 
-export function generateContentGroupsByFirstLetter<T extends CollectionEntry<keyof AnyEntryMap>>(
+export function generateContentGroupsByFirstLetter<T extends CollectionEntry<"song">>(
   items: T[],
   getSlugSegments: (item: T) => string[],
   defaultLang: string
@@ -78,7 +78,7 @@ export function generateContentGroupsByFirstLetter<T extends CollectionEntry<key
   return groups.sort((a, b) => a.key.localeCompare(b.key));
 }
 
-export function sortBySlug<T extends CollectionEntry<keyof AnyEntryMap>>(list: ContentGroupItem<T>[]): ContentGroupItem<T>[] {
+export function sortBySlug<T extends CollectionEntry<"song">>(list: ContentGroupItem<T>[]): ContentGroupItem<T>[] {
   return [...list].sort((a, b) => {
     const aSlugify = slugify(a.data.title);
     const bSlugify = slugify(b.data.title);
