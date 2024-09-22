@@ -15,7 +15,7 @@ const pageTitle = title
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="zh">
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content="Astro description" />
@@ -28,7 +28,7 @@ const pageTitle = title
     <title>{pageTitle}</title>
   </head>
   <body
-    class="bg-[var(--background)] data-[drawer-visible=true]:overflow-hidden mt-[var(--mobile-header-height)] print:mt-0"
+    class="bg-[var(--background)] data-[drawer-visible=true]:overflow-hidden mt-[var(--mobile-header-height)] print:mt-0 print:bg-white"
   >
     <Header>
       <slot slot="header-right" name="header-right" />
