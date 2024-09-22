@@ -1,0 +1,17 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import { defaultLang } from "@/i18n/ui";
+import ConcertList from "@/components/ConcertList.astro";
+
+const concerts = await getCollection("concert", (concert) => {
+  const [concertLanguage] = concert.id.split("/");
+  return concertLanguage === defaultLang;
+});
+---
+
+<Layout title="Lyric">
+  <div class="max-w-3xl mx-auto px-6 py-8">
+    <ConcertList concerts={concerts} />
+  </div>
+</Layout>

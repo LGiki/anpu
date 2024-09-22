@@ -50,6 +50,28 @@ const songCollection = defineCollection({
     })
 })
 
+const concertCollection = defineCollection({
+    type: 'data',
+    schema: z.object({
+        // 标题
+        title: z.string().optional(),
+        // 巡演
+        tour: z.string().optional(),
+        // 开始时间
+        startTime: z.string().optional(),
+        // 结束时间
+        endTime: z.string().optional(),
+        // 嘉宾
+        guest: z.array(z.string()).or(z.string()).optional(),
+        // 地点
+        location: z.string().optional(),
+        // 日期
+        date: z.date().optional(),
+        // 演唱会曲目列表
+        list: z.array(z.string()),
+    })
+})
+
 const albumCollection = defineCollection({
     type: 'data',
     schema: z.object({
@@ -103,4 +125,5 @@ const albumCollection = defineCollection({
 export const collections = {
     'song': songCollection,
     'album': albumCollection,
+    'concert': concertCollection,
 }
