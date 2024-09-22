@@ -1,0 +1,43 @@
+---
+import { defaultLang, type languages } from "@/i18n/ui";
+import { useTranslatedPath } from "@/i18n/utils";
+import { slugify } from "@/utils";
+import type { CollectionEntry } from "astro:content";
+import dayjs from "dayjs";
+
+interface Props {
+  albums: CollectionEntry<"album">[];
+  language?: keyof typeof languages;
+}
+
+const props: Props = Astro.props;
+
+const albumsSorted = props.albums.sort((a, b) => {
+  return dayjs(b.data.releaseDate).diff(a.data.releaseDate);
+});
+
+const translatePath = useTranslatedPath(props.language || defaultLang);
+---
+
+<div class="flex flex-col">
+  {
+    albumsSorted.map((album) => {
+      const [_, ...slug] = album.id.split("/");
+      const url = translatePath(`/album/${slugify(slug.join())}`);
+      return (
+        <a
+          href={url}
+          class="border-b last:border-b-0 dark:border-b-zinc-700/90 flex gap-5 items-center min-h-12 py-2"
+          title={album.data.title}
+        >
+          <span class="w-26 text-gray-400 flex-shrink-0 font-mono">
+            {dayjs(album.data.releaseDate).format("YYYY-MM-DD")}
+          </span>
+          <span class="text-wrap text-[var(--foreground)]">
+            {album.data.title}
+          </span>
+        </a>
+      );
+    })
+  }
+</div>

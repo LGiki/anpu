@@ -1,0 +1,32 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import { getLangFromUrl } from "@/i18n/utils";
+import { defaultLang, languages } from "@/i18n/ui";
+import AlbumList from "@/components/AlbumList.astro";
+
+const urlLanguage = getLangFromUrl(Astro.url);
+
+const albums = await getCollection("album", (album) => {
+  const [albumLanguage] = album.id.split("/");
+  return albumLanguage === urlLanguage;
+});
+
+export async function getStaticPaths() {
+  return Object.entries(languages)
+    .filter(([locale]) => locale !== defaultLang)
+    .map(([locale]) => {
+      return {
+        params: {
+          lang: locale,
+        },
+      };
+    });
+}
+---
+
+<Layout title="Album">
+  <div class="max-w-3xl mx-auto px-6 py-8">
+    <AlbumList albums={albums} language={urlLanguage} />
+  </div>
+</Layout>

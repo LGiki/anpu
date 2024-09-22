@@ -1,0 +1,17 @@
+---
+import AlbumList from "@/components/AlbumList.astro";
+import { defaultLang } from "@/i18n/ui";
+import Layout from "@/layouts/Layout.astro";
+import { getCollection } from "astro:content";
+
+const albums = await getCollection("album", (album) => {
+  const [albumLanguage] = album.id.split("/");
+  return albumLanguage === defaultLang;
+});
+---
+
+<Layout title="Album">
+  <div class="max-w-3xl mx-auto px-6 py-8">
+    <AlbumList albums={albums} />
+  </div>
+</Layout>

@@ -1,0 +1,33 @@
+---
+import AlbumSongList from "@/components/AlbumSongList.astro";
+import { defaultLang } from "@/i18n/ui";
+import { getLangFromUrl } from "@/i18n/utils";
+import Layout from "@/layouts/Layout.astro";
+import { slugify } from "@/utils";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const albums = await getCollection("album", (album) => {
+    const [albumLanguage] = album.id.split("/");
+    return albumLanguage !== defaultLang;
+  });
+
+  return albums.map((album) => {
+    const [albumLanguage, ...slug] = album.id.split("/");
+    return {
+      params: { slug: slugify(slug.join()), lang: albumLanguage },
+      props: album,
+    };
+  });
+}
+
+const album = Astro.props;
+
+const urlLanguage = getLangFromUrl(Astro.url);
+---
+
+<Layout title={[album.data.title, "Album"]}>
+  <div class="max-w-3xl mx-auto px-6 py-8">
+    <AlbumSongList album={album} language={urlLanguage}/>
+  </div>
+</Layout>

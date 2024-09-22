@@ -1,0 +1,35 @@
+---
+import { defaultLang, type languages } from "@/i18n/ui";
+import { useTranslatedPath } from "@/i18n/utils";
+import { slugify } from "@/utils";
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  album: CollectionEntry<"album">;
+  language?: keyof typeof languages;
+}
+
+const props: Props = Astro.props;
+
+const translatePath = useTranslatedPath(props.language || defaultLang);
+---
+
+<div class="flex flex-col">
+  <h1
+    class="font-medium text-2xl mb-4 text-[var(--foreground)]"
+    title={props.album.data.title}
+  >
+    💿 「{props.album.data.title}」
+  </h1>
+  {
+    props.album.data?.list?.map((songTitle: string, index: number) => {
+      const url = translatePath(`/song/${slugify(songTitle)}`);
+      return (
+        <a class="border-b dark:border-b-zinc-700/90 last:border-b-0 min-h-12 flex items-center" href={url}>
+          <span class="w-12 text-gray-400">{index + 1}</span>
+          <span class="text-[var(--foreground)] text-wrap">{songTitle}</span>
+        </a>
+      );
+    })
+  }
+</div>
