@@ -1,0 +1,17 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import { defaultLang } from "@/i18n/ui";
+import TalkingList from "@/components/TalkingList.astro";
+
+const talkings = await getCollection("talking", (talking) => {
+  const [talkingLanguage] = talking.slug.split("/");
+  return talkingLanguage === defaultLang;
+});
+---
+
+<Layout title="Talking">
+  <div class="max-w-3xl mx-auto px-6 py-8">
+    <TalkingList talkings={talkings} />
+  </div>
+</Layout>

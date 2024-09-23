@@ -1,0 +1,67 @@
+---
+import { defaultLang, type languages } from "@/i18n/ui";
+import { useTranslatedPath } from "@/i18n/utils";
+import { slugify } from "@/utils";
+import { Icon } from "astro-icon/components";
+import type { CollectionEntry } from "astro:content";
+import dayjs from "dayjs";
+
+interface Props {
+  talkings: CollectionEntry<"talking">[];
+  language?: keyof typeof languages;
+}
+
+const props: Props = Astro.props;
+
+// The talking content collection is organized by date
+// for example, the first talking content in 2024-07-13 is in the file `talking/zh-hans/20240713/1.md`
+// so we need to group by date (the date is the folder name, not the frontmatter date)
+const talkingsGroupById = props.talkings.reduce(
+  (acc, talking) => {
+    const [_, talkingId] = talking.slug.split("/");
+    if (!acc[talkingId]) {
+      acc[talkingId] = [];
+    }
+    acc[talkingId].push(talking);
+    return acc;
+  },
+  {} as Record<string, typeof props.talkings>
+);
+
+const translatePath = useTranslatedPath(props.language || defaultLang);
+---
+
+<div class="flex flex-col">
+  {
+    Object.keys(talkingsGroupById).map((talkingId) => {
+      if (talkingsGroupById[talkingId].length === 0) {
+        return undefined;
+      }
+      const talking = talkingsGroupById[talkingId][0];
+      const url = translatePath(`/talking/${slugify(talkingId)}`);
+      return (
+        <a
+          class="border-b dark:border-b-zinc-700/90 last:border-b-0 min-h-12 flex items-center justify-between gap-5 py-2"
+          href={url}
+        >
+          <div class="flex gap-5 items-center">
+            <span class="w-26 text-gray-400 flex-shrink-0 font-mono">
+              {dayjs(talking.data.date).format("YYYY-MM-DD")}
+            </span>
+            <span class="text-[var(--foreground)] text-wrap flex-1">
+              {talking.data.concertTitle}
+            </span>
+          </div>
+          {talking.data.location && (
+            <>
+              <div class="flex items-center gap-1 text-gray-400 flex-shrink-0">
+                <Icon name="ph:map-pin" />
+                <span>{talking.data.location}</span>
+              </div>
+            </>
+          )}
+        </a>
+      );
+    })
+  }
+</div>

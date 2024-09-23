@@ -1,0 +1,114 @@
+---
+import { getCollection } from "astro:content";
+import { slugify } from "@/utils";
+import Layout from "@/layouts/Layout.astro";
+import { defaultLang } from "@/i18n/ui";
+import { Icon } from "astro-icon/components";
+
+export async function getStaticPaths() {
+  const talkings = await getCollection("talking", (talking) => {
+    const [talkingLanguage] = talking.slug.split("/");
+    return talkingLanguage === defaultLang;
+  });
+
+  const talkingsGroupById = talkings.reduce(
+    (acc, talking) => {
+      const [_, talkingId] = talking.slug.split("/");
+      if (!acc[talkingId]) {
+        acc[talkingId] = [];
+      }
+      acc[talkingId].push(talking);
+      return acc;
+    },
+    {} as Record<string, typeof talkings>
+  );
+
+  return Object.entries(talkingsGroupById).map(([talkingId, talkings]) => {
+    return {
+      params: { slug: slugify(talkingId) },
+      props: { talkings: talkings },
+    };
+  });
+}
+
+const { talkings } = Astro.props;
+
+const talkingContents = await Promise.all(
+  talkings.map(async (talking) => {
+    return await talking.render();
+  })
+);
+---
+
+<Layout title={["Talking"]}>
+  <div class="max-w-3xl mx-auto px-6 py-8">
+    <article class="flex flex-col gap-5">
+      <h1
+        class="font-medium text-2xl text-[var(--foreground)]"
+        title={talkings[0].data.concertTitle}
+      >
+        💌 Talkings at {talkings[0].data.concertTitle}
+      </h1>
+      <div class="flex gap-4">
+        <div class="flex items-center justify-center rounded-full border border-gray-500 text-gray-500 dark:border-gray-300 dark:text-gray-300 px-2 py-0.5 text-sm">
+          <div class="flex items-center gap-1">
+            <Icon name="ph:map-pin" class="w-4 h-4" />
+            <span>地点：</span>
+          </div>
+          <span>北京</span>
+        </div>
+        <div class="flex items-center justify-center rounded-full border border-gray-500 text-gray-500 dark:border-gray-300 dark:text-gray-300 px-2 py-0.5 text-sm">
+          <div class="flex items-center gap-1">
+            <Icon name="ph:calendar-dots" class="w-4 h-4" />
+            <span>日期：</span>
+          </div>
+          <span>2024-01-02</span>
+        </div>
+      </div>
+      {
+        talkingContents.map((talkingContent, index: number) => {
+          const talking = talkings[index]
+          return (
+            <div
+              id={`talking-${index + 1}`}
+              class="p-5 border-s-4 rounded-md border-gray-300 bg-gray-100 dark:border-gray-500 dark:bg-gray-800 text-justify"
+            >
+              <h2 class="font-['Cinzel'] text-2xl opacity-50 mb-2 text-[var(--foreground)] dark:opacity-70">
+                Talking #{index + 1}
+              </h2>
+              <div class="leading-7 space-y-6 text-[var(--foreground)]">
+                <talkingContent.Content />
+              </div>
+              {
+                talking.data.references && talking.data.references.length !== 0 && <hr class="my-5" />
+                  <div class="font-['Cinzel'] text-sm opacity-50 mb-1 text-[var(--foreground)] dark:opacity-70">
+                    References
+                  </div>
+                  <ul class="list-disc list-inside text-[var(--foreground)]">
+                    {
+                      talking.data.references.map(reference => {
+                        if (!reference.title && !reference.url) {
+                          return null
+                        }
+                        return <li>
+                          <a href={reference.url} target="_blank">{reference.title || reference.url}</a>
+                          </li>
+                      })
+                    }
+                  </ul>
+              }
+            </div>
+          );
+        })
+      }
+    </article>
+  </div>
+</Layout>
+
+<style>
+  .bg-grid-pattern {
+    background-image: linear-gradient(to right, #3333331c 1px, transparent 1px),
+                      linear-gradient(to bottom, #3333331c 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+</style>
