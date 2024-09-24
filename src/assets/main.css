@@ -25,3 +25,7 @@
 .banlam-tone-switch-button {
     @apply data-[banlam-tone-visible=true]:bg-rose-100 data-[banlam-tone-visible=true]:border-rose-200 data-[banlam-tone-visible=true]:hover:bg-rose-200 data-[banlam-tone-visible=true]:text-rose-400 dark:data-[banlam-tone-visible=true]:bg-rose-950 dark:data-[banlam-tone-visible=true]:border-rose-700 dark:data-[banlam-tone-visible=true]:text-rose-600 dark:hover:data-[banlam-tone-visible=true]:bg-rose-900/70;
 }
+
+.drawer-item {
+    @apply transition-all text-xl duration-75 flex items-center gap-3 flex-shrink-0 px-5 py-1.5 text-gray-500 dark:text-gray-300 hover:text-gray-800 hover:bg-gray-200 cursor-pointer;
+}

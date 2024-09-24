@@ -69,7 +69,7 @@ const translatePath = useTranslatedPath(lang);
 </header>
 <div
   id="drawer-container"
-  class="fixed max-w-[24rem] w-3/4 translate-x-[-100%] duration-[400ms] ease-in-out transition-transform bg-white/80 dark:bg-zinc-900/80 backdrop-blur left-0 top-0 h-svh z-50 justify-center overflow-y-auto flex flex-col py-5 rounded-tr-xl rounded-br-xl"
+  class="fixed max-w-[24rem] w-3/4 translate-x-[-100%] duration-[400ms] ease-in-out transition-transform bg-white/80 dark:bg-zinc-900/80 backdrop-blur left-0 top-0 h-dvh z-50 justify-center overflow-y-auto flex flex-col py-5 rounded-tr-xl rounded-br-xl"
 >
   <div
     class="absolute right-0 top-0"
@@ -83,39 +83,27 @@ const translatePath = useTranslatedPath(lang);
     />
   </div>
   <div class="flex flex-col gap-4 flex-1 h-0 justify-center">
-    <a
-      class="transition-all text-xl duration-50 flex items-center gap-3 group flex-shrink-0 px-5 py-1.5 text-gray-500 dark:text-gray-300 hover:text-gray-800 hover:bg-gray-200 cursor-pointer"
-      href={translatePath("/")}
-    >
+    <a class="drawer-item" href={translatePath("/")}>
       <Icon name="ph:article-ny-times" class="w-6 h-6" />
       <span>{t("header.lyric")}</span>
     </a>
-    <a
-      class="transition-all text-xl duration-50 flex items-center gap-3 group flex-shrink-0 px-5 py-1.5 text-gray-500 dark:text-gray-300 hover:text-gray-800 hover:bg-gray-200 cursor-pointer"
-      href={translatePath("/album")}
-    >
+    <a class="drawer-item" href={translatePath("/album")}>
       <Icon name="ph:vinyl-record" class="w-6 h-6" />
       <span>{t("header.album")}</span>
     </a>
-    <a
-      class="transition-all text-xl duration-50 flex items-center gap-3 group flex-shrink-0 px-5 py-1.5 text-gray-500 dark:text-gray-300 hover:text-gray-800 hover:bg-gray-200 cursor-pointer"
-      href={translatePath("/concert")}
-    >
+    <a class="drawer-item" href={translatePath("/concert")}>
       <Icon name="ph:microphone-stage" class="w-6 h-6" />
       <span>{t("header.concert")}</span>
     </a>
-    <a
-      class="transition-all text-xl duration-50 flex items-center gap-3 group flex-shrink-0 px-5 py-1.5 text-gray-500 dark:text-gray-300 hover:text-gray-800 hover:bg-gray-200 cursor-pointer"
-      href={translatePath("/talking")}
-    >
+    <a class="drawer-item" href={translatePath("/talking")}>
       <Icon name="ph:chat-dots" class="w-6 h-6" />
       <span>{t("header.talking")}</span>
     </a>
-    <a
-      class="transition-all text-xl duration-50 flex items-center gap-3 group flex-shrink-0 px-5 py-1.5 text-gray-500 dark:text-gray-300 hover:text-gray-800 hover:bg-gray-200 cursor-pointer"
-      href="https://ar.anpu.me"
-      target="_blank"
-    >
+    <a class="drawer-item">
+      <Icon name="ph:chart-bar" class="w-6 h-6" />
+      <span>{t("header.statistics")}</span>
+    </a>
+    <a class="drawer-item" href="https://ar.anpu.me" target="_blank">
       <Icon name="ph:cube-focus" class="w-6 h-6" />
       <span>{t("header.xiaoheirenAR")}</span>
     </a>
@@ -126,7 +114,7 @@ const translatePath = useTranslatedPath(lang);
 </div>
 <div
   id="mobile-menu-background"
-  class="bg-gray-600/30 dark:bg-black/80 fixed top-0 left-0 z-20 w-screen h-svh transition-opacity duration-500 translate-x-[-100%] opacity-0"
+  class="bg-gray-600/30 dark:bg-black/80 fixed top-0 left-0 z-20 w-screen h-dvh transition-opacity duration-500 translate-x-[-100%] opacity-0"
 >
 </div>
 
