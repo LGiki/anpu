@@ -1,7 +1,7 @@
 import limax from 'limax'
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
-import type { AnyEntryMap, CollectionEntry } from 'astro:content'
+import type { CollectionEntry } from 'astro:content'
 import type { ContentGroup, ContentGroupItem } from '@/types'
 import { ui } from './i18n/ui'
 
