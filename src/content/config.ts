@@ -81,7 +81,7 @@ const concertCollection = defineCollection({
         // 结束时间
         endTime: z.string().optional(),
         // 嘉宾
-        guest: z.array(z.string()).or(z.string()).optional(),
+        guests: z.array(z.string()).or(z.string()).optional(),
         // 地点
         location: z.string().optional(),
         // 日期

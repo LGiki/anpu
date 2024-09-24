@@ -1,0 +1,96 @@
+---
+import {
+  getLangFromUrl,
+  useTranslatedPath,
+} from "@/i18n/utils";
+import { cn, slugify } from "@/utils";
+import { Icon } from "astro-icon/components";
+import type { CollectionEntry } from "astro:content";
+
+const lang = getLangFromUrl(Astro.url);
+const translatePath = useTranslatedPath(lang);
+
+interface Props {
+  concert: CollectionEntry<"concert">;
+}
+
+interface Song {
+  type: "song" | "talking" | "text";
+  index?: number;
+  text?: string;
+  url?: string;
+  remarks?: string[];
+}
+
+const { concert } = Astro.props;
+
+let songIndex = 0;
+const songLists: Song[] = concert.data.list.map((lineText) => {
+  if (lineText.startsWith("*")) {
+    // Type: text
+    return {
+      type: "text",
+      text: lineText.slice(1),
+    } as Song;
+  } else if (lineText.startsWith("Talking")) {
+    // Type: talking
+    const [_, url] = lineText.split("|");
+    return {
+      type: "talking",
+      text: "Talking",
+      url: url,
+    } as Song;
+  } else {
+    // Type: song
+    let [songTitle, ...remarks] = lineText.split("|");
+    let url: string | null = null;
+    if (!lineText.startsWith("!")) {
+      url = translatePath(`/song/${slugify(songTitle)}`);
+    } else {
+      songTitle = songTitle.slice(1);
+    }
+    return {
+      type: "song",
+      index: ++songIndex,
+      text: songTitle,
+      remarks: remarks,
+      url: url,
+    } as Song;
+  }
+});
+---
+
+<div class="flex flex-col">
+  {
+    songLists.map((song) => {
+      return (
+        <a
+          href={song.url}
+          class="border-b dark:border-b-zinc-700/90 last:border-b-0 min-h-12 flex items-center"
+        >
+          <span class="w-10 text-gray-400">{song.index}</span>
+          <div class="flex gap-2 items-center">
+            <span
+              class={cn(
+                (song.type === "talking" || song.type === "text") &&
+                  "text-gray-400"
+              )}
+            >
+              {song.text}
+            </span>
+            {song.type === "talking" && song.url && (
+              <Icon name="ph:link" class="w-4 h-4 text-gray-400" />
+            )}
+            {song.remarks && (
+              <div class="flex gap-2 text-gray-500 text-sm">
+                {song.remarks.map((remark) => (
+                  <span>{remark}</span>
+                ))}
+              </div>
+            )}
+          </div>
+        </a>
+      );
+    })
+  }
+</div>

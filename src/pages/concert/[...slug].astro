@@ -1,0 +1,51 @@
+---
+import { getCollection } from "astro:content";
+import { slugify } from "@/utils";
+import Layout from "@/layouts/Layout.astro";
+import { defaultLang } from "@/i18n/ui";
+import ConcertSongList from "@/components/ConcertSongList.astro";
+import ConcertMetadata from "@/components/ConcertMetadata.astro";
+
+export async function getStaticPaths() {
+  const concerts = await getCollection("concert", (talking) => {
+    const [concertLanguage] = talking.id.split("/");
+    return concertLanguage === defaultLang;
+  });
+
+  return concerts.map((concert) => {
+    const [_, ...slugs] = concert.id.split("/");
+    return {
+      params: { slug: slugify(slugs.join()) },
+      props: { concert },
+    };
+  });
+}
+
+const { concert } = Astro.props;
+---
+
+<Layout title={["Talking"]}>
+  <div class="max-w-3xl mx-auto px-6 py-8">
+    <div class="flex flex-col gap-4">
+      {
+        concert.data.title && (
+          <h1
+            class="font-medium text-2xl text-[var(--foreground)]"
+            title={concert.data.title}
+          >
+            🎤 {concert.data.title}
+          </h1>
+        )
+      }
+      <ConcertSongList concert={concert} />
+      <ConcertMetadata
+        tour={concert.data.tour}
+        startTime={concert.data.startTime}
+        endTime={concert.data.endTime}
+        guests={concert.data.guests}
+        location={concert.data.location}
+        date={concert.data.date}
+      />
+    </div>
+  </div>
+</Layout>

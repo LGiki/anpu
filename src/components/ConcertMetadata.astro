@@ -1,0 +1,73 @@
+---
+import { getLangFromUrl, useTranslations } from "@/i18n/utils";
+import MetadataStringsItem from "./MetadataStringsItem.astro";
+import dayjs from "dayjs";
+
+interface Props {
+  // 巡演
+  tour?: string;
+  // 开始时间
+  startTime?: string;
+  // 结束时间
+  endTime?: string;
+  // 嘉宾
+  guests?: string | string[];
+  // 地点
+  location?: string;
+  // 日期
+  date?: Date;
+}
+
+const props: Props = Astro.props;
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<div
+  class="leading-7 p-4 my-4 border-s-4 rounded-md border-gray-300 bg-gray-100 dark:border-gray-500 dark:bg-gray-800"
+>
+  {
+    props.tour && (
+      <p class="break-all">
+        {t("concertMetadata.tour")}：{props.tour}
+      </p>
+    )
+  }
+  {
+    props.location && (
+      <p class="break-all">
+        {t("concertMetadata.location")}：{props.location}
+      </p>
+    )
+  }
+  {
+    props.date && (
+      <p class="break-all">
+        {t("concertMetadata.date")}：{dayjs(props.date).format("YYYY-MM-DD")}
+      </p>
+    )
+  }
+  {
+    props.startTime && (
+      <p class="break-all">
+        {t("concertMetadata.startTime")}：{props.startTime}
+      </p>
+    )
+  }
+  {
+    props.endTime && (
+      <p class="break-all">
+        {t("concertMetadata.endTime")}：{props.endTime}
+      </p>
+    )
+  }
+  {
+    props.guests && (
+      <p class="break-all">
+        {t("concertMetadata.guests")}：
+        <MetadataStringsItem value={props.guests} />
+      </p>
+    )
+  }
+</div>

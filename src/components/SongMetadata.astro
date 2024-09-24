@@ -2,7 +2,7 @@
 import { getLangFromUrl, useTranslations } from "@/i18n/utils";
 import { durationToHms } from "@/utils";
 import dayjs from "dayjs";
-import SongMetadataStringsItem from "./SongMetadataStringsItem.astro";
+import MetadataStringsItem from "./MetadataStringsItem.astro";
 
 interface Props {
   // 英文标题
@@ -54,7 +54,7 @@ const t = useTranslations(lang);
 ---
 
 <div
-  class="p-4 my-4 border-s-4 rounded-md border-gray-300 bg-gray-100 dark:border-gray-500 dark:bg-gray-800"
+  class="leading-7 p-4 my-4 border-s-4 rounded-md border-gray-300 bg-gray-100 dark:border-gray-500 dark:bg-gray-800"
 >
   {
     props.englishTitle && (
@@ -88,105 +88,115 @@ const t = useTranslations(lang);
   {
     props.artist && (
       <p class="break-all">
-        {t("songMetadata.artist")}：<SongMetadataStringsItem value={props.artist}></SongMetadataStringsItem>
+        {t("songMetadata.artist")}：<MetadataStringsItem value={props.artist} />
       </p>
     )
   }
   {
     props.lyricist && (
       <p class="break-all">
-        {t("songMetadata.lyricist")}：<SongMetadataStringsItem value={props.lyricist}></SongMetadataStringsItem>
+        {t("songMetadata.lyricist")}：
+        <MetadataStringsItem value={props.lyricist} />
       </p>
     )
   }
   {
     props.arranger && (
       <p class="break-all">
-        {t("songMetadata.arranger")}：<SongMetadataStringsItem value={props.arranger}>
+        {t("songMetadata.arranger")}：
+        <MetadataStringsItem value={props.arranger} />
       </p>
     )
   }
   {
     props.composer && (
       <p class="break-all">
-        {t("songMetadata.composer")}：<SongMetadataStringsItem value={props.composer}>
+        {t("songMetadata.composer")}：
+        <MetadataStringsItem value={props.composer} />
       </p>
     )
   }
   {
     props.producer && (
       <p class="break-all">
-        {t("songMetadata.producer")}：<SongMetadataStringsItem value={props.producer}>
+        {t("songMetadata.producer")}：
+        <MetadataStringsItem value={props.producer} />
       </p>
     )
   }
   {
     props.guitar && (
       <p class="break-all">
-        {t("songMetadata.guitar")}：<SongMetadataStringsItem value={props.guitar}></SongMetadataStringsItem>
+        {t("songMetadata.guitar")}：<MetadataStringsItem value={props.guitar} />
       </p>
     )
   }
   {
     props.electricGuitar && (
       <p class="break-all">
-        {t("songMetadata.electricGuitar")}：<SongMetadataStringsItem value={props.electricGuitar}></SongMetadataStringsItem>
+        {t("songMetadata.electricGuitar")}：
+        <MetadataStringsItem value={props.electricGuitar} />
       </p>
     )
   }
   {
     props.bass && (
       <p class="break-all">
-        {t("songMetadata.bass")}：<SongMetadataStringsItem value={props.bass}></SongMetadataStringsItem>
+        {t("songMetadata.bass")}：<MetadataStringsItem value={props.bass} />
       </p>
     )
   }
   {
     props.drums && (
       <p class="break-all">
-        {t("songMetadata.drums")}：<SongMetadataStringsItem value={props.drums}></SongMetadataStringsItem>
+        {t("songMetadata.drums")}：<MetadataStringsItem value={props.drums} />
       </p>
     )
   }
   {
     props.piano && (
       <p class="break-all">
-        {t("songMetadata.piano")}：<SongMetadataStringsItem value={props.piano}></SongMetadataStringsItem>
+        {t("songMetadata.piano")}：<MetadataStringsItem value={props.piano} />
       </p>
     )
   }
   {
     props.keyboard && (
       <p class="break-all">
-        {t("songMetadata.keyboard")}：<SongMetadataStringsItem value={props.keyboard}></SongMetadataStringsItem>
+        {t("songMetadata.keyboard")}：
+        <MetadataStringsItem value={props.keyboard} />
       </p>
     )
   }
   {
     props.recordingEngineer && (
       <p class="break-all">
-        {t("songMetadata.recordingEngineer")}：<SongMetadataStringsItem value={props.recordingEngineer}></SongMetadataStringsItem>
+        {t("songMetadata.recordingEngineer")}：
+        <MetadataStringsItem value={props.recordingEngineer} />
       </p>
     )
   }
   {
     props.masteringEngineer && (
       <p class="break-all">
-        {t("songMetadata.masteringEngineer")}：<SongMetadataStringsItem value={props.masteringEngineer}></SongMetadataStringsItem>
+        {t("songMetadata.masteringEngineer")}：
+        <MetadataStringsItem value={props.masteringEngineer} />
       </p>
     )
   }
   {
     props.mixingEngineer && (
       <p class="break-all">
-        {t("songMetadata.mixingEngineer")}：<SongMetadataStringsItem value={props.mixingEngineer}></SongMetadataStringsItem>
+        {t("songMetadata.mixingEngineer")}：
+        <MetadataStringsItem value={props.mixingEngineer} />
       </p>
     )
   }
   {
     props.recordingStudio && (
       <p class="break-all">
-        {t("songMetadata.recordingStudio")}：<SongMetadataStringsItem value={props.recordingStudio}></SongMetadataStringsItem>
+        {t("songMetadata.recordingStudio")}：
+        <MetadataStringsItem value={props.recordingStudio} />
       </p>
     )
   }
