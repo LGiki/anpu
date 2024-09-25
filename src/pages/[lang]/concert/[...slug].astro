@@ -7,8 +7,8 @@ import { slugify } from "@/utils";
 import { getCollection } from "astro:content";
 
 export async function getStaticPaths() {
-  const concerts = await getCollection("concert", (talking) => {
-    const [concertLanguage] = talking.id.split("/");
+  const concerts = await getCollection("concert", (concert) => {
+    const [concertLanguage] = concert.id.split("/");
     return concertLanguage !== defaultLang;
   });
 

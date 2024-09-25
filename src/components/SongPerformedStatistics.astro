@@ -1,0 +1,132 @@
+---
+import type { CollectionEntry } from "astro:content";
+import dayjs from "dayjs";
+import ConcertList from "./ConcertList.astro";
+import { getLangFromUrl, useTranslations } from "@/i18n/utils";
+
+interface Props {
+  songTitle: string;
+  songConcerts: CollectionEntry<"concert">[];
+  concertCountByYearMapper: Record<string, number>;
+}
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const { songTitle, songConcerts, concertCountByYearMapper } = Astro.props;
+
+const songConcertsSorted = songConcerts.sort((a, b) => {
+  return dayjs(b.data.date).diff(a.data.date);
+});
+
+const songConcertPerformedCountByYearMapper: Record<string, number> = {};
+
+songConcerts.forEach((concert) => {
+  if (concert.data.date) {
+    const concertYear = dayjs(concert.data.date).year().toString();
+    if (!(concertYear in songConcertPerformedCountByYearMapper)) {
+      songConcertPerformedCountByYearMapper[concertYear] = 0;
+    }
+    songConcertPerformedCountByYearMapper[concertYear]++;
+  }
+});
+
+interface SongPerformedStatisticByYear {
+  year: string;
+  concertCount: number;
+  songPerformedCount: number;
+}
+
+const songPerformedStatisticsByYear: SongPerformedStatisticByYear[] = [];
+Object.entries(concertCountByYearMapper).map(([year, concertCount]) => {
+  songPerformedStatisticsByYear.push({
+    year: year,
+    concertCount: concertCount,
+    songPerformedCount:
+      year in songConcertPerformedCountByYearMapper
+        ? songConcertPerformedCountByYearMapper[year]
+        : 0,
+  });
+});
+---
+
+<div class="flex flex-col">
+  <h1 class="font-medium text-2xl mb-4 text-[var(--foreground)]">
+    📊 {songTitle}
+  </h1>
+  <div class="flex flex-col gap-5">
+    <div class="flex flex-col gap-2">
+      <h2 class="font-medium text-xl text-[var(--foreground)]">
+        {t("statistics.performedStatisticsByYear")}
+      </h2>
+      <canvas
+        class="h-[400px] w-ful"
+        id="chart"
+        data-chart-data={JSON.stringify(songPerformedStatisticsByYear)}
+        data-concert-count-label={t("statistics.concertCount")}
+        data-song-performed-count-label={t("statistics.songPerformedCount")}
+      ></canvas>
+    </div>
+    <div class="flex flex-col gap-2">
+      <div class="flex gap-4 items-center">
+        <h2 class="font-medium text-xl text-[var(--foreground)]">
+          {t("statistics.performedConcertList")}
+        </h2>
+        <span
+          class="bg-gray-200/60 text-gray-800 text-xs font-medium me-2 px-2 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300"
+        >
+          {songConcerts.length}
+        </span>
+      </div>
+      <ConcertList concerts={songConcertsSorted} />
+    </div>
+  </div>
+</div>
+
+<script>
+  import Chart from "chart.js/auto";
+
+  interface SongPerformedStatisticByYear {
+    year: string;
+    concertCount: number;
+    songPerformedCount: number;
+  }
+
+  const chartContainer = document.getElementById("chart");
+
+  if (
+    chartContainer &&
+    chartContainer instanceof HTMLCanvasElement &&
+    chartContainer.dataset.chartData
+  ) {
+    const chartData = JSON.parse(
+      chartContainer.dataset.chartData
+    ) as SongPerformedStatisticByYear[];
+
+    new Chart(chartContainer, {
+      type: "bar",
+      data: {
+        labels: chartData.map((row) => row.year),
+        datasets: [
+          {
+            label: chartContainer.dataset.concertCountLabel || "演出场次数",
+            data: chartData.map((row) => row.concertCount),
+            backgroundColor: "rgba(251, 113, 133, 0.7)",
+            borderColor: "rgba(251, 113, 133, 1)",
+            borderWidth: 1,
+          },
+          {
+            label: chartContainer.dataset.songPerformedCount || "歌曲出现次数",
+            data: chartData.map((row) => row.songPerformedCount),
+            backgroundColor: "rgba(56, 189, 248, 0.7)",
+            borderColor: "rgba(56, 189, 248, 1)",
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+      },
+    });
+  }
+</script>

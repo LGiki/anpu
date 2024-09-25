@@ -1,0 +1,70 @@
+---
+import SongPerformedStatistics from "@/components/SongPerformedStatistics.astro";
+import { defaultLang } from "@/i18n/ui";
+import Layout from "@/layouts/Layout.astro";
+import { slugify } from "@/utils";
+import { getCollection, type CollectionEntry } from "astro:content";
+import dayjs from "dayjs";
+
+export async function getStaticPaths() {
+  const concerts = await getCollection("concert", (concert) => {
+    const [concertLanguage] = concert.id.split("/");
+    return concertLanguage === defaultLang;
+  });
+
+  const songPerformedCountMapper: Record<string, CollectionEntry<"concert">[]> =
+    {};
+
+  const concertCountByYearMapper: Record<string, number> = {};
+
+  concerts.forEach((concert) => {
+    if (concert.data.date) {
+      const concertYear = dayjs(concert.data.date).year().toString();
+      if (!(concertYear in concertCountByYearMapper)) {
+        concertCountByYearMapper[concertYear] = 0;
+      }
+      concertCountByYearMapper[concertYear]++;
+    }
+    concert.data.list.forEach((lineText) => {
+      if (lineText.startsWith("*") || lineText.startsWith("Talking")) {
+        return;
+      }
+      let [songTitle] = lineText.split("|");
+      if (songTitle.startsWith("!")) {
+        songTitle = songTitle.slice(1);
+      }
+      if (!(songTitle in songPerformedCountMapper)) {
+        songPerformedCountMapper[songTitle] = [];
+      }
+      songPerformedCountMapper[songTitle].push(concert);
+    });
+  });
+
+  return Object.entries(songPerformedCountMapper).map(
+    ([songTitle, songConcerts]) => {
+      return {
+        params: {
+          slug: slugify(songTitle),
+        },
+        props: {
+          songTitle,
+          songConcerts,
+          concertCountByYearMapper,
+        },
+      };
+    }
+  );
+}
+
+const { songTitle, songConcerts, concertCountByYearMapper } = Astro.props;
+---
+
+<Layout title="Statistics">
+  <div class="max-w-3xl mx-auto px-6 py-8">
+    <SongPerformedStatistics
+      songTitle={songTitle}
+      songConcerts={songConcerts}
+      concertCountByYearMapper={concertCountByYearMapper}
+    />
+  </div>
+</Layout>

@@ -16,6 +16,7 @@ const collectionNameToHeaderTitle = {
   album: "Album",
   concert: "Concert",
   talking: "Talking",
+  statistics: 'Statistics'
 };
 
 const lang = getLangFromUrl(Astro.url);
@@ -99,7 +100,7 @@ const translatePath = useTranslatedPath(lang);
       <Icon name="ph:chat-dots" class="w-6 h-6" />
       <span>{t("header.talking")}</span>
     </a>
-    <a class="drawer-item">
+    <a class="drawer-item" href={translatePath("/statistics")}>
       <Icon name="ph:chart-bar" class="w-6 h-6" />
       <span>{t("header.statistics")}</span>
     </a>

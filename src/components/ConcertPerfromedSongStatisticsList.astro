@@ -26,22 +26,25 @@ concerts.forEach((concert) => {
     }
     let [songTitle] = lineText.split("|");
     if (songTitle.startsWith("!")) {
-      const realSongTitle = songTitle.slice(1);
-      // 如果存在带歌词的统计数据，将其替换为不带歌词的统计数据
-      if (realSongTitle in songPerformedCountMapper) {
-        songPerformedCountMapper[songTitle] =
-          (songTitle in songPerformedCountMapper
-            ? songPerformedCountMapper[songTitle]
-            : 0) + songPerformedCountMapper[realSongTitle];
-        delete songPerformedCountMapper[realSongTitle];
-      }
-    } else {
-      const noLyricSongTitle = `!${songTitle}`;
-      // 如果存在不带歌词的统计数据，则将当前数据统计到不带歌词的统计数据中
-      if (noLyricSongTitle in songPerformedCountMapper) {
-        songTitle = noLyricSongTitle;
-      }
+      songTitle = songTitle.slice(1);
     }
+    // if (songTitle.startsWith("!")) {
+    //   const realSongTitle = songTitle.slice(1);
+    //   // 如果存在带歌词的统计数据，将其替换为不带歌词的统计数据
+    //   if (realSongTitle in songPerformedCountMapper) {
+    //     songPerformedCountMapper[songTitle] =
+    //       (songTitle in songPerformedCountMapper
+    //         ? songPerformedCountMapper[songTitle]
+    //         : 0) + songPerformedCountMapper[realSongTitle];
+    //     delete songPerformedCountMapper[realSongTitle];
+    //   }
+    // } else {
+    //   const noLyricSongTitle = `!${songTitle}`;
+    //   // 如果存在不带歌词的统计数据，则将当前数据统计到不带歌词的统计数据中
+    //   if (noLyricSongTitle in songPerformedCountMapper) {
+    //     songTitle = noLyricSongTitle;
+    //   }
+    // }
     if (!(songTitle in songPerformedCountMapper)) {
       songPerformedCountMapper[songTitle] = 0;
     }
@@ -58,12 +61,9 @@ interface SongStatistic {
 const songStatistics: SongStatistic[] = [];
 
 Object.entries(songPerformedCountMapper).map(([songTitle, performedCount]) => {
-  const songUrl = songTitle.startsWith("!")
-    ? undefined
-    : translatePath(`/song/${slugify(songTitle)}`);
   songStatistics.push({
     songTitle: songTitle.startsWith("!") ? songTitle.slice(1) : songTitle,
-    songUrl: songUrl,
+    songUrl: translatePath(`/statistics/${slugify(songTitle)}`),
     performedCount: performedCount,
   });
 });
@@ -88,7 +88,7 @@ songStatistics.sort((a, b) => {
       return (
         <a
           href={songStatistic.songUrl}
-          class="flex gap-2 text-sm min-h-12 border-b last:border-b-0 dark:border-b-zinc-700/90 items-center text-[var(--foreground)]"
+          class="flex gap-2 min-h-12 border-b last:border-b-0 dark:border-b-zinc-700/90 items-center text-[var(--foreground)]"
         >
           <span class="flex-1 text-wrap">{songStatistic.songTitle}</span>
           <span class="w-[60px] text-center text-wrap">
