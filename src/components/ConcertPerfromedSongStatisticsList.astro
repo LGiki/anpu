@@ -1,0 +1,101 @@
+---
+import {
+  getLangFromUrl,
+  useTranslatedPath,
+  useTranslations,
+} from "@/i18n/utils";
+import { slugify } from "@/utils";
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  concerts: CollectionEntry<"concert">[];
+}
+
+const { concerts } = Astro.props;
+
+const lang = getLangFromUrl(Astro.url);
+const translatePath = useTranslatedPath(lang);
+const t = useTranslations(lang);
+
+const songPerformedCountMapper: Record<string, number> = {};
+
+concerts.forEach((concert) => {
+  concert.data.list.forEach((lineText) => {
+    if (lineText.startsWith("*") || lineText.startsWith("Talking")) {
+      return;
+    }
+    let [songTitle] = lineText.split("|");
+    if (songTitle.startsWith("!")) {
+      const realSongTitle = songTitle.slice(1);
+      // 如果存在带歌词的统计数据，将其替换为不带歌词的统计数据
+      if (realSongTitle in songPerformedCountMapper) {
+        songPerformedCountMapper[songTitle] =
+          (songTitle in songPerformedCountMapper
+            ? songPerformedCountMapper[songTitle]
+            : 0) + songPerformedCountMapper[realSongTitle];
+        delete songPerformedCountMapper[realSongTitle];
+      }
+    } else {
+      const noLyricSongTitle = `!${songTitle}`;
+      // 如果存在不带歌词的统计数据，则将当前数据统计到不带歌词的统计数据中
+      if (noLyricSongTitle in songPerformedCountMapper) {
+        songTitle = noLyricSongTitle;
+      }
+    }
+    if (!(songTitle in songPerformedCountMapper)) {
+      songPerformedCountMapper[songTitle] = 0;
+    }
+    songPerformedCountMapper[songTitle]++;
+  });
+});
+
+interface SongStatistic {
+  songTitle: string;
+  songUrl?: string;
+  performedCount: number;
+}
+
+const songStatistics: SongStatistic[] = [];
+
+Object.entries(songPerformedCountMapper).map(([songTitle, performedCount]) => {
+  const songUrl = songTitle.startsWith("!")
+    ? undefined
+    : translatePath(`/song/${slugify(songTitle)}`);
+  songStatistics.push({
+    songTitle: songTitle.startsWith("!") ? songTitle.slice(1) : songTitle,
+    songUrl: songUrl,
+    performedCount: performedCount,
+  });
+});
+
+songStatistics.sort((a, b) => {
+  return b.performedCount - a.performedCount;
+});
+---
+
+<div class="flex flex-col">
+  <h1 class="font-medium text-2xl mb-4 text-[var(--foreground)]">
+    📊 {t("header.statistics")}
+  </h1>
+  <div
+    class="flex gap-2 text-sm min-h-12 text-gray-400 dark:text-gray-300 border-b dark:border-b-zinc-700/90 last:border-b-0 items-center font-medium"
+  >
+    <span class="flex-1 text-wrap">{t("statistics.songTitle")}</span>
+    <span class="w-[60px] text-wrap">{t("statistics.performedCount")}</span>
+  </div>
+  {
+    songStatistics.map((songStatistic) => {
+      return (
+        <a
+          href={songStatistic.songUrl}
+          class="flex gap-2 text-sm min-h-12 border-b last:border-b-0 dark:border-b-zinc-700/90 items-center text-[var(--foreground)]"
+        >
+          <span class="flex-1 text-wrap">{songStatistic.songTitle}</span>
+          <span class="w-[60px] text-center text-wrap">
+            {songStatistic.performedCount}
+          </span>
+        </a>
+      );
+    })
+  }
+</div>
