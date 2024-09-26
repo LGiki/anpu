@@ -69,9 +69,10 @@ const songLists: Song[] = concert.data.list.map((lineText) => {
           class="border-b dark:border-b-zinc-700/90 last:border-b-0 min-h-12 flex items-center"
         >
           <span class="w-10 text-gray-400">{song.index}</span>
-          <div class="flex gap-2 items-center">
+          <div class="flex gap-3 items-center">
             <span
               class={cn(
+                "text-[var(--foreground)]",
                 (song.type === "talking" || song.type === "text") &&
                   "text-gray-400"
               )}
@@ -82,9 +83,9 @@ const songLists: Song[] = concert.data.list.map((lineText) => {
               <Icon name="ph:link" class="w-4 h-4 text-gray-400" />
             )}
             {song.remarks && (
-              <div class="flex gap-2 text-gray-500 text-sm">
+              <div class="flex gap-2 text-gray-400 text-sm">
                 {song.remarks.map((remark) => (
-                  <span>{remark}</span>
+                  <span class="border rounded-xl py-0.5 px-2 border-gray-400">{remark}</span>
                 ))}
               </div>
             )}

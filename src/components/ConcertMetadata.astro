@@ -12,6 +12,8 @@ interface Props {
   endTime?: string;
   // 嘉宾
   guests?: string | string[];
+  // 城市
+  city?: string;
   // 地点
   location?: string;
   // 日期
@@ -25,12 +27,19 @@ const t = useTranslations(lang);
 ---
 
 <div
-  class="leading-7 p-4 my-4 border-s-4 rounded-md border-gray-300 bg-gray-100 dark:border-gray-500 dark:bg-gray-800"
+  class="leading-7 p-4 my-4 border-s-4 rounded-md border-gray-300 bg-gray-100 dark:border-gray-500 dark:bg-gray-800 text-[var(--foreground)]"
 >
   {
     props.tour && (
       <p class="break-all">
         {t("concertMetadata.tour")}：{props.tour}
+      </p>
+    )
+  }
+  {
+    props.city && (
+      <p class="break-all">
+        {t("concertMetadata.city")}：{props.city}
       </p>
     )
   }
@@ -51,14 +60,16 @@ const t = useTranslations(lang);
   {
     props.startTime && (
       <p class="break-all">
-        {t("concertMetadata.startTime")}：{props.startTime}
+        {t("concertMetadata.startTime")}：
+        <span class="font-mono">{props.startTime}</span>
       </p>
     )
   }
   {
     props.endTime && (
       <p class="break-all">
-        {t("concertMetadata.endTime")}：{props.endTime}
+        {t("concertMetadata.endTime")}：
+        <span class="font-mono">{props.endTime}</span>
       </p>
     )
   }
