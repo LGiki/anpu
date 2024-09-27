@@ -28,8 +28,8 @@ const song = Astro.props;
 
 <Layout title={song.data.title}>
   <article
-  class="max-w-3xl mx-auto px-6 py-8 text-base leading-7 text-[var(--foreground)]"
-  id="lyric-text"
+    class="max-w-3xl mx-auto px-6 py-8 text-base leading-7 text-[var(--foreground)]"
+    id="lyric-text"
   >
     <h1 class="font-medium text-2xl mb-4" id="song-title">{song.data.title}</h1>
     <LyricRenderer data={song.body} />
@@ -48,10 +48,11 @@ const song = Astro.props;
         song.data.bass ||
         song.data.piano ||
         song.data.drums ||
-        song.data.guitar ||
+        song.data.acousticGuitar ||
         song.data.keyboard ||
         song.data.recordingEngineer ||
         song.data.masteringEngineer ||
+        song.data.pianoRecording ||
         song.data.recordingStudio ||
         song.data.englishTitle) && (
         <>
@@ -72,11 +73,12 @@ const song = Astro.props;
             bass={song.data.bass}
             piano={song.data.piano}
             drums={song.data.drums}
-            guitar={song.data.guitar}
+            acousticGuitar={song.data.acousticGuitar}
             keyboard={song.data.keyboard}
             recordingEngineer={song.data.recordingEngineer}
             masteringEngineer={song.data.masteringEngineer}
             recordingStudio={song.data.recordingStudio}
+            pianoRecording={song.data.pianoRecording}
           />
         </>
       )

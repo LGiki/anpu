@@ -45,10 +45,11 @@ const song = Astro.props;
         song.data.bass ||
         song.data.piano ||
         song.data.drums ||
-        song.data.guitar ||
+        song.data.acousticGuitar ||
         song.data.keyboard ||
         song.data.recordingEngineer ||
         song.data.masteringEngineer ||
+        song.data.pianoRecording ||
         song.data.recordingStudio ||
         song.data.englishTitle) && (
         <>
@@ -69,11 +70,12 @@ const song = Astro.props;
             bass={song.data.bass}
             piano={song.data.piano}
             drums={song.data.drums}
-            guitar={song.data.guitar}
+            acousticGuitar={song.data.acousticGuitar}
             keyboard={song.data.keyboard}
             recordingEngineer={song.data.recordingEngineer}
             masteringEngineer={song.data.masteringEngineer}
             recordingStudio={song.data.recordingStudio}
+            pianoRecording={song.data.pianoRecording}
           />
         </>
       )

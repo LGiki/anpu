@@ -35,12 +35,14 @@ const songCollection = defineCollection({
         drums: z.array(z.string()).or(z.string()).optional(),
         // 键盘
         keyboard: z.array(z.string()).or(z.string()).optional(),
-        // 吉他
-        guitar: z.array(z.string()).or(z.string()).optional(),
+        // 木吉他
+        acousticGuitar: z.array(z.string()).or(z.string()).optional(),
         // 钢琴
         piano: z.array(z.string()).or(z.string()).optional(),
         // 录音工程师
         recordingEngineer: z.array(z.string()).or(z.string()).optional(),
+        // 钢琴录制
+        pianoRecording: z.array(z.string()).or(z.string()).optional(),
         // 母带工程师
         masteringEngineer: z.array(z.string()).or(z.string()).optional(),
         // 录音室

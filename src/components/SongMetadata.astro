@@ -35,10 +35,12 @@ interface Props {
   drums?: string[] | string;
   // 键盘
   keyboard?: string[] | string;
-  // 吉他
-  guitar?: string[] | string;
+  // 木吉他
+  acousticGuitar?: string[] | string;
   // 钢琴
   piano?: string[] | string;
+  // 钢琴录制
+  pianoRecording?: string[] | string;
   // 录音工程师
   recordingEngineer?: string[] | string;
   // 母带工程师
@@ -125,9 +127,9 @@ const t = useTranslations(lang);
     )
   }
   {
-    props.guitar && (
+    props.acousticGuitar && (
       <p class="break-all">
-        {t("songMetadata.guitar")}：<MetadataStringsItem value={props.guitar} />
+        {t("songMetadata.acousticGuitar")}：<MetadataStringsItem value={props.acousticGuitar} />
       </p>
     )
   }
@@ -189,6 +191,14 @@ const t = useTranslations(lang);
       <p class="break-all">
         {t("songMetadata.mixingEngineer")}：
         <MetadataStringsItem value={props.mixingEngineer} />
+      </p>
+    )
+  }
+  {
+    props.pianoRecording && (
+      <p class="break-all">
+        {t("songMetadata.pianoRecording")}：
+        <MetadataStringsItem value={props.pianoRecording} />
       </p>
     )
   }
