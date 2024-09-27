@@ -27,6 +27,8 @@ const songCollection = defineCollection({
         isrc: z.string().optional(),
         // 混音师
         mixingEngineer: z.array(z.string()).or(z.string()).optional(),
+        // 吉他
+        guitar: z.array(z.string()).or(z.string()).optional(),
         // 电吉他
         electricGuitar: z.array(z.string()).or(z.string()).optional(),
         // 贝斯
@@ -39,6 +41,8 @@ const songCollection = defineCollection({
         acousticGuitar: z.array(z.string()).or(z.string()).optional(),
         // 钢琴
         piano: z.array(z.string()).or(z.string()).optional(),
+        // 电子钢琴
+        digitalPiano: z.array(z.string()).or(z.string()).optional(),
         // 录音工程师
         recordingEngineer: z.array(z.string()).or(z.string()).optional(),
         // 钢琴录制

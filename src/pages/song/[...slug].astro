@@ -44,6 +44,8 @@ const song = Astro.props;
         song.data.electricGuitar ||
         song.data.bass ||
         song.data.piano ||
+        song.data.digitalPiano ||
+        song.data.guitar ||
         song.data.drums ||
         song.data.acousticGuitar ||
         song.data.keyboard ||
@@ -69,8 +71,10 @@ const song = Astro.props;
             electricGuitar={song.data.electricGuitar}
             bass={song.data.bass}
             piano={song.data.piano}
+            digitalPiano={song.data.digitalPiano}
             drums={song.data.drums}
             acousticGuitar={song.data.acousticGuitar}
+            guitar={song.data.guitar}
             keyboard={song.data.keyboard}
             recordingEngineer={song.data.recordingEngineer}
             masteringEngineer={song.data.masteringEngineer}
