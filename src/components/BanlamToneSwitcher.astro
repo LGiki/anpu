@@ -27,9 +27,6 @@ const t = useTranslations(lang);
   const banlamToneSwitchButton = document.getElementById(
     "banlam-tone-switch-button"
   );
-  const banlamToneSwitchIcon = document.getElementById(
-    "banlam-tone-switch-icon"
-  );
   const lyricTones = document.querySelectorAll(".lyric-tone");
   const lyricTones2 = document.querySelectorAll(".lyric-tone2");
 
@@ -91,7 +88,6 @@ const t = useTranslations(lang);
         banlamToneSwitchButton.dataset.banlamToneVisible === "false"
       ) {
         banlamToneSwitchButton.dataset.banlamToneVisible = "true";
-        // banlamToneSwitchIcon?.classList.add("text-rose-500");
         if (banlamToneSwitchButton.dataset.hideBanlamToneTitle) {
           banlamToneSwitchButton.title =
             banlamToneSwitchButton.dataset.hideBanlamToneTitle;
@@ -102,7 +98,6 @@ const t = useTranslations(lang);
     } else {
       // 台语注音关闭状态
       banlamToneSwitchButton.dataset.banlamToneVisible = "false";
-      // banlamToneSwitchIcon?.classList.remove("text-rose-500");
       if (banlamToneSwitchButton.dataset.showBanlamToneTitle) {
         banlamToneSwitchButton.title =
           banlamToneSwitchButton.dataset.showBanlamToneTitle;
