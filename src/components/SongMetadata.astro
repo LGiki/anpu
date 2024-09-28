@@ -3,6 +3,7 @@ import { getLangFromUrl, useTranslations } from "@/i18n/utils";
 import { durationToHms } from "@/utils";
 import dayjs from "dayjs";
 import MetadataStringsItem from "./MetadataStringsItem.astro";
+import MetadataContentBlock from "./MetadataContentBlock.astro";
 
 interface Props {
   // 英文标题
@@ -59,9 +60,7 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
 
-<div
-  class="p-4 my-4 border-s-4 rounded-md border-gray-300 bg-gray-100 dark:border-gray-500 dark:bg-gray-800"
->
+<MetadataContentBlock>
   {
     props.englishTitle && (
       <p class="break-all">
@@ -140,7 +139,8 @@ const t = useTranslations(lang);
   {
     props.acousticGuitar && (
       <p class="break-all">
-        {t("songMetadata.acousticGuitar")}：<MetadataStringsItem value={props.acousticGuitar} />
+        {t("songMetadata.acousticGuitar")}：
+        <MetadataStringsItem value={props.acousticGuitar} />
       </p>
     )
   }
@@ -176,7 +176,8 @@ const t = useTranslations(lang);
   {
     props.digitalPiano && (
       <p class="break-all">
-        {t("songMetadata.digitalPiano")}：<MetadataStringsItem value={props.digitalPiano} />
+        {t("songMetadata.digitalPiano")}：
+        <MetadataStringsItem value={props.digitalPiano} />
       </p>
     )
   }
@@ -229,4 +230,4 @@ const t = useTranslations(lang);
     )
   }
   {props.isrc && <p class="break-all">ISRC：{props.isrc}</p>}
-</div>
+</MetadataContentBlock>

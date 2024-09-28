@@ -1,6 +1,6 @@
 ---
 import ConcertMetadata from "@/components/ConcertMetadata.astro";
-import ConcertSongList from "@/components/ConcertSongList.astro";
+import SongList from "@/components/SongList.astro";
 import { defaultLang } from "@/i18n/ui";
 import Layout from "@/layouts/Layout.astro";
 import { slugify } from "@/utils";
@@ -37,16 +37,26 @@ const { concert } = Astro.props;
           </h1>
         )
       }
-      <ConcertSongList concert={concert} />
-      <ConcertMetadata
-        tour={concert.data.tour}
-        startTime={concert.data.startTime}
-        endTime={concert.data.endTime}
-        guests={concert.data.guests}
-        place={concert.data.place}
-        location={concert.data.location}
-        date={concert.data.date}
-      />
+      <SongList songTitles={concert.data.list} />
+      {
+        (concert.data.tour ||
+          concert.data.startTime ||
+          concert.data.endTime ||
+          concert.data.guests ||
+          concert.data.place ||
+          concert.data.location ||
+          concert.data.date) && (
+          <ConcertMetadata
+            tour={concert.data.tour}
+            startTime={concert.data.startTime}
+            endTime={concert.data.endTime}
+            guests={concert.data.guests}
+            place={concert.data.place}
+            location={concert.data.location}
+            date={concert.data.date}
+          />
+        )
+      }
     </div>
   </div>
 </Layout>

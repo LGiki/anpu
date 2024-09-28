@@ -1,0 +1,97 @@
+---
+import { getLangFromUrl, useTranslations } from "@/i18n/utils";
+import MetadataContentBlock from "./MetadataContentBlock.astro";
+import MetadataStringsItem from "./MetadataStringsItem.astro";
+
+interface Props {
+  // 英文标题
+  englishTitle?: string;
+  // 总监制
+  chiefExecutiveProducer?: string;
+  // 音乐总监
+  musicDirector?: string;
+  // 制作人
+  producer?: string[] | string;
+  // 专辑格式
+  albumFormat?: "CD" | "Vinyl" | "Digital" | "Cassette" | "Streaming";
+  // 专辑类型
+  albumType?:
+    | "EP"
+    | "LP"
+    | "Mixtape"
+    | "Single"
+    | "Compilation"
+    | "LiveAlbum"
+    | "RemixAlbum";
+  // 备注
+  notes?: string[] | string;
+}
+
+const props = Astro.props;
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<MetadataContentBlock class="leading-7">
+  {
+    props.englishTitle && (
+      <p class="break-all">
+        {t("albumMetadata.englishTitle")}：{props.englishTitle}
+      </p>
+    )
+  }
+  {
+    props.chiefExecutiveProducer && (
+      <p class="break-all">
+        {t("albumMetadata.chiefExecutiveProducer")}：
+        {props.chiefExecutiveProducer}
+      </p>
+    )
+  }
+  {
+    props.musicDirector && (
+      <p class="break-all">
+        {t("albumMetadata.musicDirector")}：{props.musicDirector}
+      </p>
+    )
+  }
+  {
+    props.producer && (
+      <p class="break-all">
+        {t("albumMetadata.producer")}：
+        <MetadataStringsItem value={props.producer} />
+      </p>
+    )
+  }
+  {
+    props.albumFormat && (
+      <p class="break-all">
+        {t("albumMetadata.albumFormat")}：{props.albumFormat}
+      </p>
+    )
+  }
+  {
+    props.albumType && (
+      <p class="break-all">
+        {t("albumMetadata.albumType")}：{props.albumType}
+      </p>
+    )
+  }
+  {
+    props.notes && (
+      <p class="break-all">
+        {t("albumMetadata.notes")}：
+        {Array.isArray(props.notes) ? (
+          <ul class="list-disc list-inside">
+            {props.notes.map((note) => (
+              <li>{note}</li>
+            ))}
+          </ul>
+        ) : (
+          props.notes
+        )}
+      </p>
+    )
+  }
+</MetadataContentBlock>

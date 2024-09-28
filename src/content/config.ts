@@ -109,13 +109,13 @@ const albumCollection = defineCollection({
         // 发布日期
         releaseDate: z.date().optional(),
         // 总监制
-        executiveProducer: z.string().optional(),
+        chiefExecutiveProducer: z.string().optional(),
         // 音乐总监
         musicDirector: z.string().optional(),
         // 制作人
         producer: z.array(z.string()).or(z.string()).optional(),
-        // 格式
-        format: z.union([
+        // 专辑格式
+        albumFormat: z.union([
             // 光盘
             z.literal('CD'),
             // 黑胶
@@ -145,7 +145,9 @@ const albumCollection = defineCollection({
             z.literal('RemixAlbum'),
         ]).optional(),
         // 歌曲列表
-        list: z.array(z.string()).optional(),
+        list: z.array(z.string()),
+        // 备注
+        notes: z.array(z.string()).or(z.string()).optional(),
     })
 })
 

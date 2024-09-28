@@ -1,7 +1,7 @@
 ---
-import AlbumSongList from "@/components/AlbumSongList.astro";
+import AlbumMetadata from "@/components/AlbumMetadata.astro";
+import SongList from "@/components/SongList.astro";
 import { defaultLang } from "@/i18n/ui";
-import { getLangFromUrl } from "@/i18n/utils";
 import Layout from "@/layouts/Layout.astro";
 import { slugify } from "@/utils";
 import { getCollection } from "astro:content";
@@ -22,12 +22,39 @@ export async function getStaticPaths() {
 }
 
 const album = Astro.props;
-
-const urlLanguage = getLangFromUrl(Astro.url);
 ---
 
 <Layout title={[album.data.title, "Album"]}>
-  <div class="max-w-3xl mx-auto px-6 py-8">
-    <AlbumSongList album={album} language={urlLanguage}/>
+  <div class="max-w-3xl mx-auto px-6 py-8 flex flex-col gap-4">
+    {
+      album.data.title && (
+        <h1
+          class="font-medium text-2xl text-[var(--foreground)]"
+          title={album.data.title}
+        >
+          💿 {album.data.title}
+        </h1>
+      )
+    }
+    <SongList songTitles={album.data.list} />
+    {
+      (album.data.englishTitle ||
+        album.data.chiefExecutiveProducer ||
+        album.data.musicDirector ||
+        album.data.producer ||
+        album.data.albumFormat ||
+        album.data.notes ||
+        album.data.albumType) && (
+        <AlbumMetadata
+          englishTitle={album.data.englishTitle}
+          chiefExecutiveProducer={album.data.chiefExecutiveProducer}
+          musicDirector={album.data.musicDirector}
+          producer={album.data.producer}
+          albumFormat={album.data.albumFormat}
+          albumType={album.data.albumType}
+          notes={album.data.notes}
+        />
+      )
+    }
   </div>
 </Layout>

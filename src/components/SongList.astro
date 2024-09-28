@@ -1,18 +1,18 @@
 ---
-import {
-  getLangFromUrl,
-  useTranslatedPath,
-} from "@/i18n/utils";
+import { getLangFromUrl, useTranslatedPath } from "@/i18n/utils";
 import { cn, slugify } from "@/utils";
 import { Icon } from "astro-icon/components";
-import type { CollectionEntry } from "astro:content";
+
+// This component is designed for concert setlists and album tracklists
 
 const lang = getLangFromUrl(Astro.url);
 const translatePath = useTranslatedPath(lang);
 
 interface Props {
-  concert: CollectionEntry<"concert">;
+  songTitles: string[];
 }
+
+const props: Props = Astro.props;
 
 interface Song {
   type: "song" | "talking" | "text";
@@ -22,10 +22,8 @@ interface Song {
   remarks?: string[];
 }
 
-const { concert } = Astro.props;
-
 let songIndex = 0;
-const songLists: Song[] = concert.data.list.map((lineText) => {
+const songLists: Song[] = props.songTitles.map((lineText) => {
   if (lineText.startsWith("*")) {
     // Type: text
     return {
@@ -85,7 +83,9 @@ const songLists: Song[] = concert.data.list.map((lineText) => {
             {song.remarks && (
               <div class="flex gap-2 text-gray-400 text-sm">
                 {song.remarks.map((remark) => (
-                  <span class="border rounded-xl px-2 border-gray-400">{remark}</span>
+                  <span class="border rounded-xl px-2 border-gray-400">
+                    {remark}
+                  </span>
                 ))}
               </div>
             )}

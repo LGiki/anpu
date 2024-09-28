@@ -3,8 +3,8 @@ import { getCollection } from "astro:content";
 import { slugify } from "@/utils";
 import Layout from "@/layouts/Layout.astro";
 import { defaultLang } from "@/i18n/ui";
-import ConcertSongList from "@/components/ConcertSongList.astro";
 import ConcertMetadata from "@/components/ConcertMetadata.astro";
+import SongList from "@/components/SongList.astro";
 
 export async function getStaticPaths() {
   const concerts = await getCollection("concert", (concert) => {
@@ -37,16 +37,26 @@ const { concert } = Astro.props;
           </h1>
         )
       }
-      <ConcertSongList concert={concert} />
-      <ConcertMetadata
-        tour={concert.data.tour}
-        startTime={concert.data.startTime}
-        endTime={concert.data.endTime}
-        guests={concert.data.guests}
-        place={concert.data.place}
-        location={concert.data.location}
-        date={concert.data.date}
-      />
+      <SongList songTitles={concert.data.list} />
+      {
+        (concert.data.tour ||
+          concert.data.startTime ||
+          concert.data.endTime ||
+          concert.data.guests ||
+          concert.data.place ||
+          concert.data.location ||
+          concert.data.date) && (
+          <ConcertMetadata
+            tour={concert.data.tour}
+            startTime={concert.data.startTime}
+            endTime={concert.data.endTime}
+            guests={concert.data.guests}
+            place={concert.data.place}
+            location={concert.data.location}
+            date={concert.data.date}
+          />
+        )
+      }
     </div>
   </div>
 </Layout>
