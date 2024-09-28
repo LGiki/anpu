@@ -11,18 +11,40 @@ import {
 } from "@/i18n/utils";
 import { getCollectionNameFromUrl } from "@/utils";
 
-const collectionNameToHeaderTitle = {
-  song: "Lyric",
-  album: "Album",
-  concert: "Concert",
-  talking: "Talking",
-  statistics: 'Statistics'
+const collectionNameToHeader = {
+  song: {
+    url: "/",
+    title: "Lyric",
+  },
+  album: {
+    url: "/album",
+    title: "Album",
+  },
+  concert: {
+    url: "/concert",
+    title: "Concert",
+  },
+  talking: {
+    url: "/talking",
+    title: "Talking",
+  },
+  statistics: {
+    url: "/statistics",
+    title: "Statistics",
+  },
 };
 
 const lang = getLangFromUrl(Astro.url);
 const collectionName = getCollectionNameFromUrl(Astro.url);
 const t = useTranslations(lang);
 const translatePath = useTranslatedPath(lang);
+
+const titleUrl =
+  collectionName in collectionNameToHeader
+    ? collectionNameToHeader[
+        collectionName as keyof typeof collectionNameToHeader
+      ].url
+    : "/";
 ---
 
 <header
@@ -31,20 +53,20 @@ const translatePath = useTranslatedPath(lang);
   <div
     class="max-w-3xl w-full flex items-center justify-between mx-auto sm:px-6"
   >
-    <a href={translatePath("/")}>
+    <a href={translatePath(titleUrl)}>
       <div
         class="text-[var(--foreground)] flex gap-1 items-center font-['Cinzel'] sm:text-xl text-sm"
       >
         <div>{DEFAULT_TITLE}</div>
         {
-          collectionName in collectionNameToHeaderTitle && (
+          collectionName in collectionNameToHeader && (
             <>
               <div>·</div>
               <div>
                 {
-                  collectionNameToHeaderTitle[
-                    collectionName as keyof typeof collectionNameToHeaderTitle
-                  ]
+                  collectionNameToHeader[
+                    collectionName as keyof typeof collectionNameToHeader
+                  ].title
                 }
               </div>
             </>
