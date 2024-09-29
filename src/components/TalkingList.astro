@@ -52,11 +52,11 @@ const translatePath = useTranslatedPath(props.language || defaultLang);
               {talking.data.concertTitle}
             </span>
           </div>
-          {talking.data.location && (
+          {talking.data.place && (
             <>
               <div class="flex items-center gap-1 text-gray-400 flex-shrink-0">
                 <Icon name="ph:map-pin" />
-                <span>{talking.data.location}</span>
+                <span>{talking.data.place}</span>
               </div>
             </>
           )}

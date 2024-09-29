@@ -64,6 +64,8 @@ const talkingCollection = defineCollection({
         // 巡演
         concertTour: z.string().optional(),
         // 地点
+        place: z.string().optional(),
+        // 地点
         location: z.string().optional(),
         // 日期
         date: z.date().optional(),

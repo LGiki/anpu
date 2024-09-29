@@ -57,23 +57,23 @@ const t = useTranslations(urlLanguage);
         💌 Talkings at {talkings[0].data.concertTitle}
       </h1>
       {
-        (talkings[0].data.location || talkings[0].data.date) && <div class="flex gap-4">
+        (talkings[0].data.place || talkings[0].data.location ||talkings[0].data.date) && <div class="flex gap-4 items-center flex-wrap">
           {
-            talkings[0].data.location && <div class="flex items-center justify-center rounded-full border border-gray-500 text-gray-500 dark:border-gray-300 dark:text-gray-300 px-2 py-0.5 text-sm">
-              <div class="flex items-center gap-1">
-                <Icon name="ph:map-pin" class="w-4 h-4" />
-                <span>{t('talking.location')}：</span>
-              </div>
-              <span>{talkings[0].data.location}</span>
+            talkings[0].data.place && <div class="flex gap-1 items-center justify-center rounded-full border border-gray-500 text-gray-500 dark:border-gray-300 dark:text-gray-300 px-2 py-0.5 text-sm">
+              <Icon name="ph:map-pin" class="w-4 h-4 flex-shrink-0" />
+              <span>{t('talking.place')}：{talkings[0].data.place}</span>
             </div>
           }
           {
-            talkings[0].data.date && <div class="flex items-center justify-center rounded-full border border-gray-500 text-gray-500 dark:border-gray-300 dark:text-gray-300 px-2 py-0.5 text-sm">
-              <div class="flex items-center gap-1">
-                <Icon name="ph:calendar-dots" class="w-4 h-4" />
-                <span>{t('talking.date')}：</span>
-              </div>
-              <span>{dayjs(talkings[0].data.date).format('YYYY-MM-DD')}</span>
+            talkings[0].data.date && <div class="flex gap-1 items-center justify-center rounded-full border border-gray-500 text-gray-500 dark:border-gray-300 dark:text-gray-300 px-2 py-0.5 text-sm">
+              <Icon name="ph:calendar-dots" class="w-4 h-4 flex-shrink-0" />
+              <span>{t('talking.date')}：{dayjs(talkings[0].data.date).format('YYYY-MM-DD')}</span>
+            </div>
+          }
+          {
+            talkings[0].data.location && <div class="flex gap-1 items-center justify-center rounded-full border border-gray-500 text-gray-500 dark:border-gray-300 dark:text-gray-300 px-2 py-0.5 text-sm">
+              <Icon name="ph:navigation-arrow" class="w-4 h-4 flex-shrink-0" />
+              <span>{t('talking.location')}：{talkings[0].data.location}</span>
             </div>
           }
         </div>

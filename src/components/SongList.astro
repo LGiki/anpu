@@ -64,9 +64,9 @@ const songLists: Song[] = props.songTitles.map((lineText) => {
       return (
         <a
           href={song.url}
-          class="border-b dark:border-b-zinc-700/90 last:border-b-0 min-h-12 flex items-center"
+          class="border-b dark:border-b-zinc-700/90 last:border-b-0 min-h-12 flex items-center py-2"
         >
-          <span class="w-10 text-gray-400">{song.index}</span>
+          <span class="w-10 text-gray-400 flex-shrink-0">{song.index}</span>
           <div class="flex gap-3 items-center">
             <span
               class={cn(
