@@ -11,6 +11,11 @@ import {
 } from "@/i18n/utils";
 import { getCollectionNameFromUrl } from "@/utils";
 
+const lang = getLangFromUrl(Astro.url);
+const collectionName = getCollectionNameFromUrl(Astro.url);
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
+
 const collectionNameToHeader = {
   song: {
     url: "/",
@@ -34,10 +39,46 @@ const collectionNameToHeader = {
   },
 };
 
-const lang = getLangFromUrl(Astro.url);
-const collectionName = getCollectionNameFromUrl(Astro.url);
-const t = useTranslations(lang);
-const translatePath = useTranslatedPath(lang);
+interface NavigationLink {
+  iconName: string;
+  url: string;
+  title: string;
+  target?: "_self" | "_blank" | "_parent" | "_top";
+}
+
+const NAVIGATION_LINKS: NavigationLink[] = [
+  {
+    iconName: "ph:article-ny-times",
+    url: translatePath("/"),
+    title: t("header.lyric"),
+  },
+  {
+    iconName: "ph:vinyl-record",
+    url: translatePath("/album"),
+    title: t("header.album"),
+  },
+  {
+    iconName: "ph:microphone-stage",
+    url: translatePath("/concert"),
+    title: t("header.concert"),
+  },
+  {
+    iconName: "ph:chat-dots",
+    url: translatePath("/talking"),
+    title: t("header.talking"),
+  },
+  {
+    iconName: "ph:chart-bar",
+    url: translatePath("/statistics"),
+    title: t("header.statistics"),
+  },
+  {
+    iconName: "ph:cube-focus",
+    url: "https://ar.anpu.me",
+    title: t("header.xiaoheirenAR"),
+    target: "_blank",
+  },
+];
 
 const titleUrl =
   collectionName in collectionNameToHeader
@@ -92,49 +133,41 @@ const titleUrl =
 </header>
 <div
   id="drawer-container"
-  class="fixed max-w-[24rem] w-3/4 translate-x-[-100%] duration-[400ms] ease-in-out transition-transform bg-white/80 dark:bg-zinc-900/80 backdrop-blur left-0 top-0 h-dvh z-50 justify-center overflow-y-auto flex flex-col py-5 rounded-tr-xl rounded-br-xl"
+  class="fixed max-w-[24rem] w-3/4 translate-x-[-100%] duration-[400ms] ease-in-out transition-transform bg-white/80 dark:bg-zinc-900/80 backdrop-blur left-0 top-0 h-dvh z-50 flex flex-col py-5 gap-2 rounded-tr-xl rounded-br-xl"
 >
   <div
-    class="absolute right-0 top-0"
     title={t("header.closeMobileMenu")}
     aria-label={t("header.closeMobileMenu")}
+    class="flex justify-end items-center flex-shrink-0"
   >
     <Icon
       name="ph:x-bold"
-      class="mt-3 mr-3 h-6 w-6 cursor-pointer"
+      class="mr-3 h-6 w-6 cursor-pointer"
       id="close-drawer"
     />
   </div>
-  <div class="flex flex-col gap-4 flex-1 h-0 justify-center overflow-y-auto">
-    <a class="drawer-item" href={translatePath("/")}>
-      <Icon name="ph:article-ny-times" class="w-6 h-6" />
-      <span>{t("header.lyric")}</span>
-    </a>
-    <a class="drawer-item" href={translatePath("/album")}>
-      <Icon name="ph:vinyl-record" class="w-6 h-6" />
-      <span>{t("header.album")}</span>
-    </a>
-    <a class="drawer-item" href={translatePath("/concert")}>
-      <Icon name="ph:microphone-stage" class="w-6 h-6" />
-      <span>{t("header.concert")}</span>
-    </a>
-    <a class="drawer-item" href={translatePath("/talking")}>
-      <Icon name="ph:chat-dots" class="w-6 h-6" />
-      <span>{t("header.talking")}</span>
-    </a>
-    <a class="drawer-item" href={translatePath("/statistics")}>
-      <Icon name="ph:chart-bar" class="w-6 h-6" />
-      <span>{t("header.statistics")}</span>
-    </a>
-    <a class="drawer-item" href="https://ar.anpu.me" target="_blank">
-      <Icon name="ph:cube-focus" class="w-6 h-6" />
-      <span>{t("header.xiaoheirenAR")}</span>
-    </a>
+  <div class="flex-1 h-0"></div>
+  <div class="space-y-4 overflow-y-auto">
+    {
+      NAVIGATION_LINKS.map((navigationLink) => (
+        <a
+          class="drawer-item"
+          href={navigationLink.url}
+          title={navigationLink.title}
+          target={navigationLink.target}
+        >
+          <Icon name={navigationLink.iconName} class="w-6 h-6" />
+          <span>{navigationLink.title}</span>
+        </a>
+      ))
+    }
   </div>
+  <div class="flex-1 h-0"></div>
   <div class="flex-shrink-0 mx-5">
     <LanguageSwitcher selectClass="w-full" labelClass="h-[32px]" />
   </div>
 </div>
+
 <div
   id="mobile-menu-background"
   class="bg-gray-600/30 dark:bg-black/80 fixed top-0 left-0 z-20 w-screen h-dvh transition-opacity duration-500 translate-x-[-100%] opacity-0"
