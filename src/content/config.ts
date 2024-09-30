@@ -53,6 +53,8 @@ const songCollection = defineCollection({
         recordingStudio: z.array(z.string()).or(z.string()).optional(),
         // 是否有台语
         hasBanlamTone: z.boolean().optional().default(false),
+        // 备注
+        notes: z.array(z.string()).or(z.string()).optional(),
     })
 })
 

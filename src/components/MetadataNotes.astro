@@ -1,0 +1,29 @@
+---
+import { getLangFromUrl, useTranslations } from "@/i18n/utils";
+
+interface Props {
+  notes?: string[] | string;
+}
+
+const props: Props = Astro.props;
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+{
+  props.notes && (
+    <p class="break-all">
+      {t("metadata.notes")}：
+      {Array.isArray(props.notes) ? (
+        <ul class="list-disc list-inside">
+          {props.notes.map((note) => (
+            <li>{note}</li>
+          ))}
+        </ul>
+      ) : (
+        props.notes
+      )}
+    </p>
+  )
+}

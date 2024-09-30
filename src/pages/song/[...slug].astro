@@ -53,6 +53,7 @@ const song = Astro.props;
         song.data.masteringEngineer ||
         song.data.pianoRecording ||
         song.data.recordingStudio ||
+        song.data.notes ||
         song.data.englishTitle) && (
         <>
           <hr class="my-5 dark:bg-zinc-700/90 dark:color-zinc-700/90 dark:border-zinc-700/90" />
@@ -80,6 +81,7 @@ const song = Astro.props;
             masteringEngineer={song.data.masteringEngineer}
             recordingStudio={song.data.recordingStudio}
             pianoRecording={song.data.pianoRecording}
+            notes={song.data.notes}
           />
         </>
       )

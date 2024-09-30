@@ -2,6 +2,7 @@
 import { getLangFromUrl, useTranslations } from "@/i18n/utils";
 import MetadataContentBlock from "./MetadataContentBlock.astro";
 import MetadataStringsItem from "./MetadataStringsItem.astro";
+import MetadataNotes from "./MetadataNotes.astro";
 
 interface Props {
   // 英文标题
@@ -78,20 +79,5 @@ const t = useTranslations(lang);
       </p>
     )
   }
-  {
-    props.notes && (
-      <p class="break-all">
-        {t("albumMetadata.notes")}：
-        {Array.isArray(props.notes) ? (
-          <ul class="list-disc list-inside">
-            {props.notes.map((note) => (
-              <li>{note}</li>
-            ))}
-          </ul>
-        ) : (
-          props.notes
-        )}
-      </p>
-    )
-  }
+  {props.notes && <MetadataNotes notes={props.notes} />}
 </MetadataContentBlock>

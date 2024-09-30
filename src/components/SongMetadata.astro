@@ -4,6 +4,7 @@ import { durationToHms } from "@/utils";
 import dayjs from "dayjs";
 import MetadataStringsItem from "./MetadataStringsItem.astro";
 import MetadataContentBlock from "./MetadataContentBlock.astro";
+import MetadataNotes from "./MetadataNotes.astro";
 
 interface Props {
   // 英文标题
@@ -52,6 +53,8 @@ interface Props {
   masteringEngineer?: string[] | string;
   // 录音室
   recordingStudio?: string[] | string;
+  // 备注
+  notes?: string[] | string;
 }
 
 const props = Astro.props;
@@ -230,4 +233,5 @@ const t = useTranslations(lang);
     )
   }
   {props.isrc && <p class="break-all">ISRC：{props.isrc}</p>}
+  {props.notes && <MetadataNotes notes={props.notes} />}
 </MetadataContentBlock>
