@@ -62,7 +62,7 @@ export async function getStaticPaths() {
 const { songTitle, songConcerts, concertCountByYearMapper } = Astro.props;
 ---
 
-<Layout title="Statistics">
+<Layout title={[songTitle, "Statistics"]}>
   <div class="max-w-3xl mx-auto px-6 py-8">
     <SongPerformedStatistics
       songTitle={songTitle}
