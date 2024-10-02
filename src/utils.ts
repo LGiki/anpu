@@ -18,8 +18,9 @@ export function getCollectionNameFromUrl(url: URL) {
 }
 
 export function slugify(title: string) {
-  return limax(title, {
+  return limax(title.replaceAll(' ', '-'), {
     tone: false,
+    custom: ['-']
   })
 }
 
