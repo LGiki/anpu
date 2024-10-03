@@ -5,6 +5,11 @@ album: "9522"
 artist: 焦安溥
 releaseDate: 2022-10-14
 duration: 393
+synthesizer: 黄小桢
+piano: 黄小桢
+extra: [{title: "人声录音工程师", value: "黄小桢"}]
+mixingEngineer: 吕海棻
+recordingStudio: 声物学声音工作室
 notes:
   - 数位版发行日期：2022 年 10 月 14 日
   - 实体版发行日期：2022 年 12 月 19 日

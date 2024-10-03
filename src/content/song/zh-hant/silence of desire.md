@@ -2,6 +2,13 @@
 title: silence of desire
 album: "9522"
 artist: 焦安溥
+lyricist: [焦安溥, 何欣穗, 黃小楨]
+arranger: 沈軒豪
+backingVocalArranger: 謝凌君
+backingVocal: [謝凌君, 焦安溥]
+guitar: 保卜·巴督路
+mixingEngineer: 呂海棻
+recordingStudio: 聲物學聲音工作室
 releaseDate: 2022-10-14
 duration: 203
 notes:

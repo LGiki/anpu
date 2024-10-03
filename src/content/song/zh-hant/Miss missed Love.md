@@ -4,6 +4,16 @@ album: "9522"
 artist: 焦安溥
 releaseDate: 2022-10-14
 duration: 186
+arranger: 黃欽聖
+backingVocalArranger: 何欣穗
+backingVocal: [Alessandro Grasso, 焦安溥]
+guitar: 黃欽聖
+extra: [
+  {title: "中音吉他", value: "黃欽聖"},
+  {title: "恰朗哥琴", value: "黃欽聖"}
+]
+mixingEngineer: 呂海棻
+recordingStudio: 聲物學聲音工作室
 notes:
   - 數位版發行日期：2022 年 10 月 14 日
   - 實體版發行日期：2022 年 12 月 19 日

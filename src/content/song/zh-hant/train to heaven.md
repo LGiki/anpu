@@ -4,6 +4,14 @@ album: "9522"
 artist: 焦安溥
 releaseDate: 2022-10-14
 duration: 158
+drums: 林前源
+bass: 傅家煌
+guitar: 劉哲麟
+backingVocalArranger: 謝凌君
+backingVocal: 走下坡
+mixingEngineer: 黃小楨
+recordingStudio: 小寫人
+extra: [{title: "樂隊總監", value: "石博元"}]
 notes:
   - 歌詞暫不完整且可能有誤，需要你的幫助
   - 數位版發行日期：2022 年 10 月 14 日

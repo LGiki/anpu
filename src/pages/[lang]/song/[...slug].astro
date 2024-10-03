@@ -63,6 +63,12 @@ const song = Astro.props;
         song.data.cello ||
         song.data.nylonGuitar ||
         song.data.notes ||
+        song.data.backingVocalArranger ||
+        song.data.backingVocal ||
+        song.data.celloArranger ||
+        song.data.synthesizer ||
+        song.data.harmonica ||
+        song.data.trumpet ||
         song.data.englishTitle) && (
         <>
           <hr class="my-5 dark:bg-zinc-700/90 dark:color-zinc-700/90 dark:border-zinc-700/90" />
@@ -97,6 +103,12 @@ const song = Astro.props;
             coordinator={song.data.coordinator}
             cello={song.data.cello}
             nylonGuitar={song.data.nylonGuitar}
+            backingVocalArranger={song.data.backingVocalArranger}
+            backingVocal={song.data.backingVocal}
+            celloArranger={song.data.celloArranger}
+            synthesizer={song.data.synthesizer}
+            harmonica={song.data.harmonica}
+            trumpet={song.data.trumpet}
           />
         </>
       )

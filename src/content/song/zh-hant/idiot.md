@@ -2,6 +2,11 @@
 title: idiot
 album: "9522"
 artist: 焦安溥
+arranger: 保卜·巴督路
+acousticGuitar: 保卜·巴督路
+recordingEngineer: 黃小楨
+mixingEngineer: 呂海棻
+recordingStudio: 聲物學聲音工作室
 releaseDate: 2022-10-14
 duration: 278
 notes:

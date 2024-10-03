@@ -61,6 +61,18 @@ const songCollection = defineCollection({
         nylonGuitar: z.array(z.string()).or(z.string()).optional(),
         // 低音提琴
         doubleBass: z.array(z.string()).or(z.string()).optional(),
+        // 和声编写
+        backingVocalArranger: z.array(z.string()).or(z.string()).optional(),
+        // 和声
+        backingVocal: z.array(z.string()).or(z.string()).optional(),
+        // 大提琴编曲
+        celloArranger: z.array(z.string()).or(z.string()).optional(),
+        // 合成器
+        synthesizer: z.array(z.string()).or(z.string()).optional(),
+        // 口琴
+        harmonica: z.array(z.string()).or(z.string()).optional(),
+        // 小号
+        trumpet: z.array(z.string()).or(z.string()).optional(),
         // 其他
         extra: z.array(z.object({
             title: z.string(),

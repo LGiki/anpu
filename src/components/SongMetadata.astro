@@ -63,8 +63,20 @@ interface Props {
   coordinator?: string[] | string;
   // 大提琴
   cello?: string[] | string;
+  // 大提琴编曲
+  celloArranger?: string[] | string;
   // 尼龙吉他
   nylonGuitar?: string[] | string;
+  // 和声编写
+  backingVocalArranger?: string[] | string;
+  // 和声
+  backingVocal?: string[] | string;
+  // 合成器
+  synthesizer?: string[] | string;
+  // 口琴
+  harmonica?: string[] | string;
+  // 小号
+  trumpet?: string[] | string;
   // 其他
   extra?: {
     title: string;
@@ -132,6 +144,22 @@ const t = useTranslations(lang);
     )
   }
   {
+    props.backingVocalArranger && (
+      <p class="break-all">
+        {t("songMetadata.backingVocalArranger")}：
+        <MetadataStringsItem value={props.backingVocalArranger} />
+      </p>
+    )
+  }
+  {
+    props.celloArranger && (
+      <p class="break-all">
+        {t("songMetadata.celloArranger")}：
+        <MetadataStringsItem value={props.celloArranger} />
+      </p>
+    )
+  }
+  {
     props.composer && (
       <p class="break-all">
         {t("songMetadata.composer")}：
@@ -160,6 +188,14 @@ const t = useTranslations(lang);
       <p class="break-all">
         {t("songMetadata.coordinator")}：
         <MetadataStringsItem value={props.coordinator} />
+      </p>
+    )
+  }
+  {
+    props.backingVocal && (
+      <p class="break-all">
+        {t("songMetadata.backingVocal")}：
+        <MetadataStringsItem value={props.backingVocal} />
       </p>
     )
   }
@@ -236,6 +272,30 @@ const t = useTranslations(lang);
       <p class="break-all">
         {t("songMetadata.keyboard")}：
         <MetadataStringsItem value={props.keyboard} />
+      </p>
+    )
+  }
+  {
+    props.synthesizer && (
+      <p class="break-all">
+        {t("songMetadata.synthesizer")}：
+        <MetadataStringsItem value={props.synthesizer} />
+      </p>
+    )
+  }
+  {
+    props.harmonica && (
+      <p class="break-all">
+        {t("songMetadata.harmonica")}：
+        <MetadataStringsItem value={props.harmonica} />
+      </p>
+    )
+  }
+  {
+    props.trumpet && (
+      <p class="break-all">
+        {t("songMetadata.trumpet")}：
+        <MetadataStringsItem value={props.trumpet} />
       </p>
     )
   }

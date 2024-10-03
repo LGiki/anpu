@@ -4,6 +4,17 @@ album: "9522"
 artist: 焦安溥
 releaseDate: 2022-10-14
 duration: 244
+lyricist: Moliputra
+arranger: [蔡坤奇, 黄小桢]
+electricGuitar: 蔡坤奇@给气人音乐社
+extra: [
+    {title: "extra 程序设计", value: "蔡坤奇@给气人音乐社"},
+    {title: "混音助理", value: "沈冠霖"}
+  ]
+acousticGuitar: [黄小桢, 焦安溥]
+backingVocalArranger: 黄小桢
+backingVocal: 焦安溥
+mixingEngineer: 黄文萱
 notes:
   - 数位版发行日期：2022 年 10 月 14 日
   - 实体版发行日期：2022 年 12 月 19 日
