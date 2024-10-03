@@ -1,1 +1,2 @@
 export const DEFAULT_TITLE = import.meta.env.PUBLIC_DEFAULT_TITLE || 'Anpu'
+export const DEFAULT_DESCRIPTION = import.meta.env.PUBLIC_DEFAULT_DESCRIPTION || 'Anpu lyrics, albums, concerts and talkings'

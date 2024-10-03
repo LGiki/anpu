@@ -1,7 +1,8 @@
 ---
 import Header from "@/components/Header.astro";
-import { DEFAULT_TITLE } from "@/constants";
 import "@/assets/main.css";
+import { DEFAULT_TITLE } from "@/constants";
+import Head from "@/components/Head.astro";
 
 interface Props {
   title: string | string[];
@@ -17,15 +18,7 @@ const pageTitle = title
 <!doctype html>
 <html lang="zh">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="description" content="Astro description" />
-    <meta
-      name="viewport"
-      content="width=device-width,initial-scale=1.0,maximum-scale=1.0,viewport-fit=cover,user-scalable=no"
-    />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="generator" content={Astro.generator} />
-    <title>{pageTitle}</title>
+    <Head pageTitle={pageTitle} />
   </head>
   <body
     class="bg-[var(--background)] data-[drawer-visible=true]:overflow-hidden mt-[var(--mobile-header-height)] print:mt-0 print:bg-white"
