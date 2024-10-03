@@ -2,10 +2,18 @@
 title: triste
 album: 神的游戏
 artist: 焦安溥
+arranger: 秦旭章
+acousticGuitar: 焦安溥
+electricGuitar: 秦旭章
+extra: [{ title: "曲", value: "陈建骐" }, { title: "音效", value: "陈虹伯" }]
+drums: John Ashley Thomas
+recordingEngineer: 钱炜安
+mixingEngineer: 钱炜安
 recordingStudio: 112F Recording Studio
 producer: [李寿全, 焦安溥]
 releaseDate: 2012-08-10
-duration: 268
+duration: 272
+isrc: TWA471204007
 ---
 你是我的灵魂
 但不是我的眼神
