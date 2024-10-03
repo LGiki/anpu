@@ -5,7 +5,18 @@ producer: [张悬, 李寿全]
 artist: 张悬
 releaseDate: 2007-07-20
 duration: 291
+acousticGuitar: [张悬, 卢家宏]
+electricGuitar: 张悬
+bass: 罗伟纶(水獭)
+drums: 任柏璋
+isrc: TWA470711005
+extra:
+  [
+    { title: "Background Vocal", value: "张悬" },
+    { title: "Drum Beats & Percussions", value: "Julion Beeston" },
+  ]
 ---
+
 I'm not there
 And I'd rather than at everywhere in another room
 You were not there

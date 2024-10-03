@@ -51,6 +51,21 @@ const songCollection = defineCollection({
         masteringEngineer: z.array(z.string()).or(z.string()).optional(),
         // 录音室
         recordingStudio: z.array(z.string()).or(z.string()).optional(),
+        // 联合制作人
+        coProducer: z.array(z.string()).or(z.string()).optional(),
+        // 统筹
+        coordinator: z.array(z.string()).or(z.string()).optional(),
+        // 大提琴
+        cello: z.array(z.string()).or(z.string()).optional(),
+        // 尼龙吉他
+        nylonGuitar: z.array(z.string()).or(z.string()).optional(),
+        // 低音提琴
+        doubleBass: z.array(z.string()).or(z.string()).optional(),
+        // 其他
+        extra: z.array(z.object({
+            title: z.string(),
+            value: z.array(z.string()).or(z.string())
+        })).optional(),
         // 是否有台语
         hasBanlamTone: z.boolean().optional().default(false),
         // 备注
@@ -152,6 +167,12 @@ const albumCollection = defineCollection({
         list: z.array(z.string()),
         // 备注
         notes: z.array(z.string()).or(z.string()).optional(),
+        // 联合制作人
+        coProducer: z.array(z.string()).or(z.string()).optional(),
+        // 统筹
+        coordinator: z.array(z.string()).or(z.string()).optional(),
+        // Slug
+        slug: z.string().optional(),
     })
 })
 

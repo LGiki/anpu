@@ -14,8 +14,12 @@ export async function getStaticPaths() {
 
   return albums.map((album) => {
     const [albumLanguage, ...slug] = album.id.split("/");
+    let url = slugify(slug.join());
+    if (album.data.slug) {
+      url = album.data.slug;
+    }
     return {
-      params: { slug: slugify(slug.join()), lang: albumLanguage },
+      params: { slug: url, lang: albumLanguage },
       props: album,
     };
   });
@@ -42,6 +46,8 @@ const album = Astro.props;
         album.data.chiefExecutiveProducer ||
         album.data.musicDirector ||
         album.data.producer ||
+        album.data.coProducer ||
+        album.data.coordinator ||
         album.data.albumFormat ||
         album.data.notes ||
         album.data.albumType) && (
@@ -53,6 +59,8 @@ const album = Astro.props;
           albumFormat={album.data.albumFormat}
           albumType={album.data.albumType}
           notes={album.data.notes}
+          coProducer={album.data.coProducer}
+          coordinator={album.data.notes}
         />
       )
     }

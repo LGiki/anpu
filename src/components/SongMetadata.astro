@@ -55,6 +55,21 @@ interface Props {
   recordingStudio?: string[] | string;
   // 备注
   notes?: string[] | string;
+  // 低音提琴
+  doubleBass?: string[] | string;
+  // 联合制作人
+  coProducer?: string[] | string;
+  // 统筹
+  coordinator?: string[] | string;
+  // 大提琴
+  cello?: string[] | string;
+  // 尼龙吉他
+  nylonGuitar?: string[] | string;
+  // 其他
+  extra?: {
+    title: string;
+    value: string[] | string;
+  }[];
 }
 
 const props = Astro.props;
@@ -133,6 +148,22 @@ const t = useTranslations(lang);
     )
   }
   {
+    props.coProducer && (
+      <p class="break-all">
+        {t("songMetadata.coProducer")}：
+        <MetadataStringsItem value={props.coProducer} />
+      </p>
+    )
+  }
+  {
+    props.coordinator && (
+      <p class="break-all">
+        {t("songMetadata.coordinator")}：
+        <MetadataStringsItem value={props.coordinator} />
+      </p>
+    )
+  }
+  {
     props.guitar && (
       <p class="break-all">
         {t("songMetadata.guitar")}：<MetadataStringsItem value={props.guitar} />
@@ -156,9 +187,25 @@ const t = useTranslations(lang);
     )
   }
   {
+    props.nylonGuitar && (
+      <p class="break-all">
+        {t("songMetadata.nylonGuitar")}：
+        <MetadataStringsItem value={props.nylonGuitar} />
+      </p>
+    )
+  }
+  {
     props.bass && (
       <p class="break-all">
         {t("songMetadata.bass")}：<MetadataStringsItem value={props.bass} />
+      </p>
+    )
+  }
+  {
+    props.doubleBass && (
+      <p class="break-all">
+        {t("songMetadata.doubleBass")}：
+        <MetadataStringsItem value={props.doubleBass} />
       </p>
     )
   }
@@ -193,6 +240,14 @@ const t = useTranslations(lang);
     )
   }
   {
+    props.cello && (
+      <p class="break-all">
+        {t("songMetadata.cello")}：
+        <MetadataStringsItem value={props.cello} />
+      </p>
+    )
+  }
+  {
     props.recordingEngineer && (
       <p class="break-all">
         {t("songMetadata.recordingEngineer")}：
@@ -223,6 +278,15 @@ const t = useTranslations(lang);
         <MetadataStringsItem value={props.pianoRecording} />
       </p>
     )
+  }
+  {
+    props.extra &&
+      props.extra.map((item) => (
+        <p class="break-all">
+          {item.title}：
+          <MetadataStringsItem value={item.value} />
+        </p>
+      ))
   }
   {
     props.recordingStudio && (

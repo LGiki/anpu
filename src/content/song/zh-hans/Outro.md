@@ -1,10 +1,14 @@
 ---
-title: Outer
+title: Outro
 album: 亲爱的...我还不知道
 producer: [张悬, 李寿全]
 artist: 张悬
 releaseDate: 2007-07-20
 duration: 187
+acousticGuitar: 张悬
+bass: 罗伟纶(水獭)
+drums: 任柏璋
+isrc: TWA470711010
 ---
 因为我喜欢开车 所以我希望 车子可以越来越环保
 

@@ -23,7 +23,9 @@ const translatePath = useTranslatedPath(props.language || defaultLang);
   {
     albumsSorted.map((album) => {
       const [_, ...slug] = album.id.split("/");
-      const url = translatePath(`/album/${slugify(slug.join())}`);
+      const url = translatePath(
+        `/album/${album.data.slug || slugify(slug.join())}`
+      );
       return (
         <a
           href={url}

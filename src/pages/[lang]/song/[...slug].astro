@@ -56,6 +56,12 @@ const song = Astro.props;
         song.data.masteringEngineer ||
         song.data.pianoRecording ||
         song.data.recordingStudio ||
+        song.data.doubleBass ||
+        song.data.extra ||
+        song.data.coProducer ||
+        song.data.coordinator ||
+        song.data.cello ||
+        song.data.nylonGuitar ||
         song.data.notes ||
         song.data.englishTitle) && (
         <>
@@ -74,7 +80,8 @@ const song = Astro.props;
             mixingEngineer={song.data.mixingEngineer}
             electricGuitar={song.data.electricGuitar}
             bass={song.data.bass}
-            piano={song.data.digitalPiano}
+            piano={song.data.piano}
+            digitalPiano={song.data.digitalPiano}
             drums={song.data.drums}
             acousticGuitar={song.data.acousticGuitar}
             guitar={song.data.guitar}
@@ -84,6 +91,12 @@ const song = Astro.props;
             recordingStudio={song.data.recordingStudio}
             pianoRecording={song.data.pianoRecording}
             notes={song.data.notes}
+            doubleBass={song.data.doubleBass}
+            extra={song.data.extra}
+            coProducer={song.data.coProducer}
+            coordinator={song.data.coordinator}
+            cello={song.data.cello}
+            nylonGuitar={song.data.nylonGuitar}
           />
         </>
       )

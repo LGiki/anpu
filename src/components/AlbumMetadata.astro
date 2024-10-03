@@ -13,6 +13,10 @@ interface Props {
   musicDirector?: string;
   // 制作人
   producer?: string[] | string;
+  // 联合制作人
+  coProducer?: string[] | string;
+  // 统筹
+  coordinator?: string[] | string;
   // 专辑格式
   albumFormat?: "CD" | "Vinyl" | "Digital" | "Cassette" | "Streaming";
   // 专辑类型
@@ -62,6 +66,22 @@ const t = useTranslations(lang);
       <p class="break-all">
         {t("albumMetadata.producer")}：
         <MetadataStringsItem value={props.producer} />
+      </p>
+    )
+  }
+  {
+    props.coProducer && (
+      <p class="break-all">
+        {t("albumMetadata.coProducer")}：
+        <MetadataStringsItem value={props.coProducer} />
+      </p>
+    )
+  }
+  {
+    props.coordinator && (
+      <p class="break-all">
+        {t("albumMetadata.coordinator")}：
+        <MetadataStringsItem value={props.coordinator} />
       </p>
     )
   }

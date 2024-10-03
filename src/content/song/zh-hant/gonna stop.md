@@ -5,6 +5,16 @@ producer: [張懸, 李壽全]
 artist: 張懸
 releaseDate: 2007-07-20
 duration: 291
+acousticGuitar: [張懸, 盧家宏]
+electricGuitar: 張懸
+bass: 羅偉綸(水獺)
+drums: 任柏璋
+isrc: TWA470711005
+extra:
+  [
+    { title: "Background Vocal", value: "張懸" },
+    { title: "Drum Beats & Percussions", value: "Julion Beeston" },
+  ]
 ---
 I'm not there
 And I'd rather than at everywhere in another room

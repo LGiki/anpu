@@ -22,7 +22,7 @@ export function slugify(title: string) {
     tone: false,
     custom: {
       '-': '-',
-      ',': ''
+      ',': '',
     }
   })
 }

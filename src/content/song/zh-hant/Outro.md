@@ -1,10 +1,14 @@
 ---
-title: Outer
+title: Outro
 album: 親愛的...我還不知道
 producer: [張懸, 李壽全]
 artist: 張懸
 releaseDate: 2007-07-20
 duration: 187
+acousticGuitar: 張懸
+bass: 羅偉綸(水獺)
+drums: 任柏璋
+isrc: TWA470711010
 ---
 因為我喜歡開車 所以我希望 車子可以越來越環保
 

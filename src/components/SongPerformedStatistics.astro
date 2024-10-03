@@ -60,7 +60,7 @@ Object.entries(concertCountByYearMapper).map(([year, concertCount]) => {
         {t("statistics.performedStatisticsByYear")}
       </h2>
       <canvas
-        class="h-[400px] w-ful"
+        class="w-full"
         id="chart"
         data-chart-data={JSON.stringify(songPerformedStatisticsByYear)}
         data-concert-count-label={t("statistics.concertCount")}
