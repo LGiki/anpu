@@ -27,7 +27,7 @@ export default defineConfig({
         display: "standalone",
         description: 'Anpu lyrics, albums, concerts and talkings',
         theme_color: '#ffffff',
-        "icons": [
+        icons: [
           {
             "src": "/icon-192x192.png",
             "sizes": "192x192",
@@ -57,6 +57,10 @@ export default defineConfig({
           }
         ]
       },
+      workbox: {
+        globIgnores: ['/404'],
+        globPatterns: ['**/*.{css,html,js,woff2}', 'index.html'],
+      }
     })
   ],
   devToolbar: {

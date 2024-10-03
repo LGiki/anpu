@@ -1,7 +1,7 @@
 ---
 import { languages } from "@/i18n/ui";
 import { Icon } from "astro-icon/components";
-import { localizedUrl } from "@/i18n/utils";
+import { getLangFromUrl, localizedUrl } from "@/i18n/utils";
 import { cn } from "@/utils";
 
 interface Props {
@@ -10,10 +10,10 @@ interface Props {
 }
 
 function localizedPathname(locale: string): string {
-  return localizedUrl(Astro.url, locale).pathname;
+  return localizedUrl(Astro.url, locale).pathname.replace(/\/+$/, "");
 }
 
-const currentPathname = Astro.url.pathname;
+const currentLang = getLangFromUrl(Astro.url);
 
 const props: Props = Astro.props;
 ---
@@ -39,7 +39,7 @@ const props: Props = Astro.props;
       Object.entries(languages).map(([locale, language]) => (
         <option
           value={localizedPathname(locale)}
-          selected={localizedPathname(locale) === currentPathname}
+          selected={locale === currentLang}
         >
           {language}
         </option>
