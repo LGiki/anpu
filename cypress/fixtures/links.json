@@ -1,0 +1,24 @@
+{
+  "pathnames": [
+    {
+      "pathname": ""
+    },
+    {
+      "pathname": "/album",
+      "traverseSubPathnames": true
+    },
+    {
+      "pathname": "/concert"
+    },
+    {
+      "pathname": "/talking"
+    },
+    {
+      "pathname": "/statistics"
+    }
+  ],
+  "locales": [
+    "",
+    "/zh-hant"
+  ]
+}
