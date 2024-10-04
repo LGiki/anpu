@@ -58,8 +58,9 @@ export default defineConfig({
         ]
       },
       workbox: {
-        globIgnores: ['/404'],
         globPatterns: ['**/*.{css,html,js,woff2}', 'index.html'],
+        globIgnores: ['404.html'],
+        navigateFallbackDenylist: [/^\/404\/?$/],
       }
     })
   ],
