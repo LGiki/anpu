@@ -1,9 +1,12 @@
 ---
+import Button from "@/components/Button.astro";
 import ConcertMetadata from "@/components/ConcertMetadata.astro";
 import SongList from "@/components/SongList.astro";
 import { defaultLang } from "@/i18n/ui";
+import { getLangFromUrl, useTranslations, useTranslatedPath } from "@/i18n/utils";
 import Layout from "@/layouts/Layout.astro";
 import { slugify } from "@/utils";
+import { Icon } from "astro-icon/components";
 import { getCollection } from "astro:content";
 
 export async function getStaticPaths() {
@@ -22,6 +25,10 @@ export async function getStaticPaths() {
 }
 
 const { concert } = Astro.props;
+
+const urlLanguage = getLangFromUrl(Astro.url);
+const t = useTranslations(urlLanguage);
+const translatePath = useTranslatedPath(urlLanguage);
 ---
 
 <Layout
@@ -61,4 +68,14 @@ const { concert } = Astro.props;
       }
     </div>
   </div>
+  {
+    concert.data.talkingPageSlug && <slot slot="header-right">
+      <a href={translatePath(`/talking/${concert.data.talkingPageSlug}`)}>
+        <Button>
+          <Icon name="ph:chat-dots" class="w-4 h-4 mr-2"/>
+          {t('concert.goToTalkingPage')}
+        </Button>
+      </a>
+    </slot>
+  }
 </Layout>

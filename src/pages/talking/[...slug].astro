@@ -4,8 +4,9 @@ import { slugify } from "@/utils";
 import Layout from "@/layouts/Layout.astro";
 import { defaultLang } from "@/i18n/ui";
 import { Icon } from "astro-icon/components";
-import { useTranslations } from "@/i18n/utils";
+import { useTranslatedPath, useTranslations } from "@/i18n/utils";
 import dayjs from "dayjs";
+import Button from "@/components/Button.astro";
 
 export async function getStaticPaths() {
   const talkings = await getCollection("talking", (talking) => {
@@ -42,9 +43,10 @@ const talkingContents = await Promise.all(
 );
 
 const t = useTranslations(defaultLang);
+const translatePath = useTranslatedPath(defaultLang);
 ---
 
-<Layout title={["Talking"]}>
+<Layout title={talkings[0].data.concertTitle ? [talkings[0].data.concertTitle, "Talking"] : 'Talkinkg'}>
   <div class="max-w-3xl mx-auto px-6 py-8">
     <article class="flex flex-col gap-5">
       <h1
@@ -81,12 +83,12 @@ const t = useTranslations(defaultLang);
           return (
             <div
               id={`talking-${index + 1}`}
-              class="p-5 border-s-4 rounded-md border-gray-300 bg-gray-100 dark:border-gray-500 dark:bg-gray-800 text-justify"
+              class="scroll-mt-[calc(var(--mobile-header-height)+1rem)] sm:scroll-mt-[calc(var(--header-height)+1rem)] p-5 border-s-4 rounded-md border-gray-300 bg-gray-100 dark:border-gray-500 dark:bg-gray-800 text-justify"
             >
               <h2 class="font-['Cinzel'] text-2xl opacity-50 mb-2 text-[var(--foreground)] dark:opacity-70">
                 Talking #{index + 1}
               </h2>
-              <div class="leading-7 space-y-6 text-[var(--foreground)]">
+              <div class="leading-7 space-y-6 text-[var(--foreground)] hyphens-auto">
                 <talkingContent.Content />
               </div>
               {
@@ -113,4 +115,14 @@ const t = useTranslations(defaultLang);
       }
     </article>
   </div>
+  {
+    talkings[0].data.concertPageSlug && <slot slot="header-right">
+      <a href={translatePath(`/concert/${talkings[0].data.concertPageSlug}`)}>
+        <Button>
+          <Icon name="ph:microphone-stage" class="w-4 h-4 mr-2"/>
+          {t('talking.goToConcertPage')}
+        </Button>
+      </a>
+    </slot>
+  }
 </Layout>

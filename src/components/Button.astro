@@ -19,8 +19,8 @@ const { id, disabled, square, title, buttonClass, ...rest } =
   disabled={disabled}
   title={title}
   class={cn(
-    "inline-flex bg-[var(--background)] text-[var(--foreground)] dark:border-zinc-700/90 dark:hover:bg-zinc-700/60 items-center justify-center whitespace-nowrap rounded-md text-sm font-medium border disabled:opacity-50 hover:bg-gray-100 transition-colors px-2 py-1 duration-200 disabled:cursor-not-allowed",
-    square && "h-7 w-7 p-1",
+    "h-7 inline-flex bg-[var(--background)] text-[var(--foreground)] dark:border-zinc-700/90 dark:hover:bg-zinc-700/60 items-center justify-center whitespace-nowrap rounded-md text-xs sm:text-sm border disabled:opacity-50 hover:bg-gray-100 transition-colors px-2 py-1 duration-200 disabled:cursor-not-allowed",
+    square && "w-7 p-1",
     buttonClass,
   )}
   {...rest}

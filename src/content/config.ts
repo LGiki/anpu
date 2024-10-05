@@ -98,6 +98,8 @@ const talkingCollection = defineCollection({
         location: z.string().optional(),
         // 日期
         date: z.date().optional(),
+        // 演出歌单页面的 slug
+        concertPageSlug: z.string().optional(),
         // 引用
         references: z.array(z.object({
             title: z.string().optional(),
@@ -125,6 +127,8 @@ const concertCollection = defineCollection({
         location: z.string().optional(),
         // 日期
         date: z.date().optional(),
+        // Talking 页面的 Slug
+        talkingPageSlug: z.string().optional(),
         // 演唱会曲目列表
         list: z.array(z.string()),
     })

@@ -9,18 +9,40 @@ const t = useTranslations(lang);
 ---
 
 <EmptyLayout title="404 Not Found">
-  <div class="w-screen h-svh flex items-center justify-center flex-col gap-7 sm:gap-8 text-[var(--foreground)]">
+  <div
+    class="w-screen h-svh flex items-center justify-center flex-col gap-7 sm:gap-8 text-[var(--foreground)]"
+  >
     <span class="text-7xl sm:text-8xl" title={t("404.easterEgg")}>404</span>
-    <span class="text-4xl sm:text-5xl text-center" title={t("404.easterEgg")}>Page Not Found</span>
-    <a href="/">
+    <span class="text-4xl sm:text-5xl text-center" title={t("404.easterEgg")}
+      >Page Not Found</span
+    >
+    <div class="flex gap-5">
       <Button
         buttonClass="flex gap-2 h-10 px-4 sm:h-12 sm:px-5 text-lg"
-        title={t("404.backToHome")}
-        aria-label={t("404.backToHome")}
+        title={t("404.goBack")}
+        aria-label={t("404.goBack")}
+        id="go-back"
       >
         <Icon name="ph:arrow-left-bold" />
-        <span>{t("404.backToHome")}</span>
+        <span>{t("404.goBack")}</span>
       </Button>
-    </a>
+      <a href="/">
+        <Button
+          buttonClass="flex gap-2 h-10 px-4 sm:h-12 sm:px-5 text-lg"
+          title={t("404.backToHome")}
+          aria-label={t("404.backToHome")}
+        >
+          <Icon name="ph:house-line" />
+          <span>{t("404.backToHome")}</span>
+        </Button>
+      </a>
+    </div>
   </div>
 </EmptyLayout>
+
+<script>
+  const goBackButton = document.getElementById("go-back");
+  goBackButton?.addEventListener("click", () => {
+    history.back();
+  });
+</script>

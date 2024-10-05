@@ -1,4 +1,5 @@
 :root {
+    --header-height: 3rem;
     --mobile-header-height: 2.5rem;
     --background: #fafafa;
     /* gray-900 */

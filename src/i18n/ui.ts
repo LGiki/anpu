@@ -81,7 +81,10 @@ export const ui = {
         'banlamToneSwitcher.showBanlamTone': '显示台语注音',
         'banlamToneSwitcher.hideBanlamTone': '隐藏台语注音',
         '404.backToHome': '返回主页',
+        '404.goBack': '返回上一页',
         '404.easterEgg': '如果你在前方回头，而我亦回头，我们就错过。',
+        'talking.goToConcertPage': '本场演出歌单',
+        'concert.goToTalkingPage': '本场演出 Talking',
     },
     'zh-hant': {
         'lyricFontSizeSwitcher.enlarge': '放大字體',
@@ -156,6 +159,9 @@ export const ui = {
         'banlamToneSwitcher.showBanlamTone': '顯示台語註音',
         'banlamToneSwitcher.hideBanlamTone': '隱藏台語註音',
         '404.backToHome': '返回主頁',
-        '404.easterEgg': '如果你在前方回頭，而我亦回頭，我們就錯過。'
+        '404.goBack': '返回上一頁',
+        '404.easterEgg': '如果你在前方回頭，而我亦回頭，我們就錯過。',
+        'talking.goToConcertPage': '本場演出歌單',
+        'concert.goToTalkingPage': '本場演出 Talking',
     }
 }
