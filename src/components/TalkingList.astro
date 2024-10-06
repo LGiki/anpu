@@ -29,34 +29,52 @@ const talkingsGroupById = props.talkings.reduce(
 );
 
 const translatePath = useTranslatedPath(props.language || defaultLang);
+
+interface Talking {
+  talking: CollectionEntry<"talking">;
+  url: string;
+}
+
+const talkings: Talking[] = [];
+
+Object.keys(talkingsGroupById).forEach((talkingId) => {
+  if (talkingsGroupById[talkingId].length === 0) {
+    return;
+  }
+  const talking = talkingsGroupById[talkingId][0];
+  const url = translatePath(`/talking/${slugify(talkingId)}`);
+  talkings.push({
+    talking,
+    url,
+  });
+});
+
+talkings.sort((a, b) => {
+  return dayjs(b.talking.data.date).diff(a.talking.data.date);
+});
 ---
 
 <div class="flex flex-col">
   {
-    Object.keys(talkingsGroupById).map((talkingId) => {
-      if (talkingsGroupById[talkingId].length === 0) {
-        return undefined;
-      }
-      const talking = talkingsGroupById[talkingId][0];
-      const url = translatePath(`/talking/${slugify(talkingId)}`);
+    talkings.map((talking) => {
       return (
         <a
           class="border-b dark:border-b-zinc-700/90 last:border-b-0 min-h-12 flex items-center justify-between gap-5 py-2 text-sm sm:text-base"
-          href={url}
+          href={talking.url}
         >
           <div class="flex gap-5 items-center">
             <span class="w-26 text-gray-400 flex-shrink-0 font-mono">
-              {dayjs(talking.data.date).format("YYYY-MM-DD")}
+              {dayjs(talking.talking.data.date).format("YYYY-MM-DD")}
             </span>
             <span class="text-[var(--foreground)] text-wrap flex-1">
-              {talking.data.concertTitle}
+              {talking.talking.data.concertTitle}
             </span>
           </div>
-          {talking.data.place && (
+          {talking.talking.data.place && (
             <>
               <div class="flex items-center gap-1 text-gray-400 flex-shrink-0">
                 <Icon name="ph:map-pin" />
-                <span>{talking.data.place}</span>
+                <span>{talking.talking.data.place}</span>
               </div>
             </>
           )}
