@@ -59,8 +59,21 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{css,html,js,woff2}', 'index.html'],
-        globIgnores: ['404.html'],
-        navigateFallbackDenylist: [/^\/404\/?$/],
+        globIgnores: [
+          '404.html',
+          'concert/**',
+          'statistics/**',
+          'talking/**',
+          'zh-hant/concert/**',
+          'zh-hant/statistics/**',
+          'zh-hant/talking/**',
+        ],
+        navigateFallbackDenylist: [
+          /^\/404\/?$/,
+          /^\/(zh-hant\/)?concert\/?$/,
+          /^\/(zh-hant\/)?statistics\/?$/,
+          /^\/(zh-hant\/)?talking\/?$/,
+        ],
       }
     })
   ],
