@@ -8,7 +8,8 @@
       "traverseSubPathnames": true
     },
     {
-      "pathname": "/concert"
+      "pathname": "/concert",
+      "traverseSubPathnames": true
     },
     {
       "pathname": "/talking"

@@ -28,7 +28,7 @@ describe('Broken Link', () => {
           const url = $a.prop('href');
           checkBrokenLink(url);
 
-          if (traverseSubPathnames && url.startsWith(targetPathname)) {
+          if (traverseSubPathnames) {
             cy.visit(url);
             cy.get('main').first().find('a').each(($subA) => {
               checkBrokenLink($subA.prop('href'));
