@@ -23,7 +23,7 @@ const t = useTranslations(lang);
         aria-label={t("404.goBack")}
         id="go-back"
       >
-        <Icon name="ph:arrow-left-bold" />
+        <Icon name="ph:arrow-left-bold" class="w-4 h-4" />
         <span>{t("404.goBack")}</span>
       </Button>
       <a href="/">
@@ -32,7 +32,7 @@ const t = useTranslations(lang);
           title={t("404.backToHome")}
           aria-label={t("404.backToHome")}
         >
-          <Icon name="ph:house-line" />
+          <Icon name="ph:house-line" class="w-4 h-4" />
           <span>{t("404.backToHome")}</span>
         </Button>
       </a>
@@ -42,6 +42,11 @@ const t = useTranslations(lang);
 
 <script>
   const goBackButton = document.getElementById("go-back");
+
+  if (goBackButton && history.length <= 1) {
+    goBackButton.style.display = "none";
+  }
+
   goBackButton?.addEventListener("click", () => {
     history.back();
   });
