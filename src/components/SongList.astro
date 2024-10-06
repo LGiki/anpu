@@ -36,7 +36,7 @@ const songLists: Song[] = props.songTitles.map((lineText) => {
     return {
       type: "talking",
       text: "Talking",
-      url: url,
+      url: url ? translatePath(url) : undefined,
     } as Song;
   } else {
     // Type: song
@@ -81,9 +81,9 @@ const songLists: Song[] = props.songTitles.map((lineText) => {
               <Icon name="ph:link" class="w-4 h-4 text-gray-400" />
             )}
             {song.remarks && (
-              <div class="flex gap-2 text-gray-400 text-sm">
+              <div class="flex gap-2 text-gray-400 text-xs sm:text-sm flex-wrap">
                 {song.remarks.map((remark) => (
-                  <span class="border rounded-xl px-2 border-gray-400">
+                  <span class="border rounded-xl px-2 border-gray-400 text-center">
                     {remark}
                   </span>
                 ))}

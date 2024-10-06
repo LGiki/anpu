@@ -22,11 +22,12 @@ const pageTitle = title
   </head>
   <body
     class="bg-[var(--background)] data-[drawer-visible=true]:overflow-hidden mt-[var(--mobile-header-height)] print:mt-0 print:bg-white"
+    data-drawer-visible="false"
   >
     <Header>
       <slot slot="header-right" name="header-right" />
     </Header>
-    <main>
+    <main class="min-h-dvh">
       <slot />
     </main>
   </body>

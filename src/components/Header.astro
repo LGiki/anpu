@@ -132,8 +132,9 @@ const titleUrl =
   </div>
 </header>
 <div
+  style="transform: translateX(-100%)"
   id="drawer-container"
-  class="fixed max-w-[24rem] w-3/4 translate-x-[-100%] duration-[400ms] ease-in-out transition-transform bg-white/80 dark:bg-zinc-900/80 backdrop-blur left-0 top-0 h-dvh z-50 flex flex-col py-5 gap-2 rounded-tr-xl rounded-br-xl"
+  class="fixed max-w-[24rem] w-3/4 duration-[400ms] ease-in-out transition-transform bg-white/80 dark:bg-zinc-900/80 backdrop-blur left-0 top-0 h-dvh z-50 flex flex-col py-5 gap-2 rounded-tr-xl rounded-br-xl"
 >
   <div
     title={t("header.closeMobileMenu")}
@@ -186,11 +187,13 @@ const titleUrl =
   const toggleMobileMenu = () => {
     if (bodies.length > 0) {
       const body = bodies[0];
-      if (drawerContainer?.classList.contains("translate-x-[-100%]")) {
+      if (body.dataset.drawerVisible === "false") {
         // Drawer is invisible, turn it on
         body.dataset.drawerVisible = "true";
-        drawerContainer?.classList.remove("translate-x-[-100%]");
-        drawerContainer?.classList.add("shadow-2xl");
+        if (drawerContainer) {
+          drawerContainer.style.transform = "";
+          drawerContainer.classList.add("shadow-2xl");
+        }
         mobileMenuBackground?.classList.remove("translate-x-[-100%]");
         mobileMenuBackground?.classList.remove("opacity-0");
         mobileMenuBackground?.classList.add("opacity-100");
@@ -200,8 +203,10 @@ const titleUrl =
         mobileMenuBackground?.classList.remove("opacity-100");
         mobileMenuBackground?.classList.add("opacity-0");
         mobileMenuBackground?.classList.add("translate-x-[-100%]");
-        drawerContainer?.classList.remove("shadow-2xl");
-        drawerContainer?.classList.add("translate-x-[-100%]");
+        if (drawerContainer) {
+          drawerContainer.style.transform = "translateX(-100%)";
+          drawerContainer.classList.remove("shadow-2xl");
+        }
       }
     }
   };

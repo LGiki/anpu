@@ -59,24 +59,21 @@ const t = useTranslations(lang);
   {
     props.startTime && (
       <p class="break-all">
-        {t("concertMetadata.startTime")}：
-        <span>{props.startTime}</span>
+        {t("concertMetadata.startTime")}：<span>{props.startTime}</span>
       </p>
     )
   }
   {
     props.endTime && (
       <p class="break-all">
-        {t("concertMetadata.endTime")}：
-        <span>{props.endTime}</span>
+        {t("concertMetadata.endTime")}：<span>{props.endTime}</span>
       </p>
     )
   }
   {
     props.guests && (
       <p class="break-all">
-        {t("concertMetadata.guests")}：
-        <MetadataStringsItem value={props.guests} />
+        {t("concertMetadata.guests")}：<MetadataStringsItem value={props.guests} />
       </p>
     )
   }
