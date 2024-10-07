@@ -32,10 +32,10 @@ const songLists: Song[] = props.songTitles.map((lineText) => {
     } as Song;
   } else if (lineText.startsWith("Talking")) {
     // Type: talking
-    const [_, url] = lineText.split("|");
+    const [talkingText, url] = lineText.split("|");
     return {
       type: "talking",
-      text: "Talking",
+      text: talkingText,
       url: url ? translatePath(url) : undefined,
     } as Song;
   } else {

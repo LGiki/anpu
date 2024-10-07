@@ -26,10 +26,15 @@ export async function getStaticPaths() {
     {} as Record<string, typeof talkings>
   );
 
-  return Object.entries(talkingsGroupById).map(([talkingId, talkings]) => {
+  return Object.entries(talkingsGroupById).map(([talkingId, talkingList]) => {
+    const talkings = talkingList.sort((a, b) => {
+      const [,, aFilename] = a.slug.split('/')
+      const [,, bFilename] = b.slug.split('/')
+      return parseInt(aFilename) - parseInt(bFilename)
+    })
     return {
       params: { slug: slugify(talkingId) },
-      props: { talkings: talkings },
+      props: { talkings },
     };
   });
 }
