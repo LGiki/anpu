@@ -70,9 +70,9 @@ export default defineConfig({
         ],
         navigateFallbackDenylist: [
           /^\/404\/?$/,
-          /^\/(zh-hant\/)?concert\/?$/,
-          /^\/(zh-hant\/)?statistics\/?$/,
-          /^\/(zh-hant\/)?talking\/?$/,
+          /^\/(zh-hant\/)?concert\/?/,
+          /^\/(zh-hant\/)?statistics\/?/,
+          /^\/(zh-hant\/)?talking\/?/,
         ],
       }
     })
