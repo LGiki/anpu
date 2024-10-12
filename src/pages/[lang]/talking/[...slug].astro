@@ -55,74 +55,72 @@ const translatePath = useTranslatedPath(urlLanguage);
 ---
 
 <Layout title={talkings[0].data.concertTitle ? [talkings[0].data.concertTitle, "Talking"] : 'Talkinkg'}>
-  <div class="max-w-3xl mx-auto px-6 py-8">
-    <article class="flex flex-col gap-5">
-      <h1
-        class="font-medium text-2xl text-[var(--foreground)]"
-        title={talkings[0].data.concertTitle}
-      >
-        💌 Talkings at {talkings[0].data.concertTitle}
-      </h1>
-      {
-        (talkings[0].data.place || talkings[0].data.location ||talkings[0].data.date) && <div class="flex gap-4 items-center flex-wrap">
-          {
-            talkings[0].data.place && <div class="flex gap-1 items-center justify-center rounded-full border border-gray-500 text-gray-500 dark:border-gray-300 dark:text-gray-300 px-2 py-0.5 text-sm">
-              <Icon name="ph:map-pin" class="w-4 h-4 flex-shrink-0" />
-              <span>{t('talking.place')}：{talkings[0].data.place}</span>
+  <article class="flex flex-col gap-5">
+    <h1
+      class="font-medium text-2xl text-[var(--foreground)]"
+      title={talkings[0].data.concertTitle}
+    >
+      💌 Talkings at {talkings[0].data.concertTitle}
+    </h1>
+    {
+      (talkings[0].data.place || talkings[0].data.location ||talkings[0].data.date) && <div class="flex gap-4 items-center flex-wrap">
+        {
+          talkings[0].data.place && <div class="flex gap-1 items-center justify-center rounded-full border border-gray-500 text-gray-500 dark:border-gray-300 dark:text-gray-300 px-2 py-0.5 text-sm">
+            <Icon name="ph:map-pin" class="w-4 h-4 flex-shrink-0" />
+            <span>{t('talking.place')}：{talkings[0].data.place}</span>
+          </div>
+        }
+        {
+          talkings[0].data.date && <div class="flex gap-1 items-center justify-center rounded-full border border-gray-500 text-gray-500 dark:border-gray-300 dark:text-gray-300 px-2 py-0.5 text-sm">
+            <Icon name="ph:calendar-dots" class="w-4 h-4 flex-shrink-0" />
+            <span>{t('talking.date')}：{dayjs(talkings[0].data.date).format('YYYY-MM-DD')}</span>
+          </div>
+        }
+        {
+          talkings[0].data.location && <div class="flex gap-1 items-center justify-center rounded-full border border-gray-500 text-gray-500 dark:border-gray-300 dark:text-gray-300 px-2 py-0.5 text-sm">
+            <Icon name="ph:navigation-arrow" class="w-4 h-4 flex-shrink-0" />
+            <span>{t('talking.location')}：{talkings[0].data.location}</span>
+          </div>
+        }
+      </div>
+    }
+    {
+      talkingContents.map((talkingContent, index: number) => {
+        const talking = talkings[index]
+        return (
+          <div
+            id={`talking-${index + 1}`}
+            class="scroll-mt-[calc(var(--mobile-header-height)+1rem)] sm:scroll-mt-[calc(var(--header-height)+1rem)] p-5 border-s-4 rounded-md border-gray-300 bg-gray-100 dark:border-gray-500 dark:bg-gray-800 text-justify"
+          >
+            <h2 class="font-['Cinzel'] text-2xl opacity-50 mb-2 text-[var(--foreground)] dark:opacity-70">
+              Talking #{index + 1}
+            </h2>
+            <div class="leading-7 space-y-6 text-[var(--foreground)] hyphens-auto">
+              <talkingContent.Content />
             </div>
-          }
-          {
-            talkings[0].data.date && <div class="flex gap-1 items-center justify-center rounded-full border border-gray-500 text-gray-500 dark:border-gray-300 dark:text-gray-300 px-2 py-0.5 text-sm">
-              <Icon name="ph:calendar-dots" class="w-4 h-4 flex-shrink-0" />
-              <span>{t('talking.date')}：{dayjs(talkings[0].data.date).format('YYYY-MM-DD')}</span>
-            </div>
-          }
-          {
-            talkings[0].data.location && <div class="flex gap-1 items-center justify-center rounded-full border border-gray-500 text-gray-500 dark:border-gray-300 dark:text-gray-300 px-2 py-0.5 text-sm">
-              <Icon name="ph:navigation-arrow" class="w-4 h-4 flex-shrink-0" />
-              <span>{t('talking.location')}：{talkings[0].data.location}</span>
-            </div>
-          }
-        </div>
-      }
-      {
-        talkingContents.map((talkingContent, index: number) => {
-          const talking = talkings[index]
-          return (
-            <div
-              id={`talking-${index + 1}`}
-              class="scroll-mt-[calc(var(--mobile-header-height)+1rem)] sm:scroll-mt-[calc(var(--header-height)+1rem)] p-5 border-s-4 rounded-md border-gray-300 bg-gray-100 dark:border-gray-500 dark:bg-gray-800 text-justify"
-            >
-              <h2 class="font-['Cinzel'] text-2xl opacity-50 mb-2 text-[var(--foreground)] dark:opacity-70">
-                Talking #{index + 1}
-              </h2>
-              <div class="leading-7 space-y-6 text-[var(--foreground)] hyphens-auto">
-                <talkingContent.Content />
-              </div>
-              {
-                talking.data.references && talking.data.references.length !== 0 && <hr class="my-5" />
-                  <div class="font-['Cinzel'] text-sm opacity-50 mb-1 text-[var(--foreground)] dark:opacity-70">
-                    References
-                  </div>
-                  <ul class="list-disc list-inside text-[var(--foreground)]">
-                    {
-                      talking.data.references.map(reference => {
-                        if (!reference.title && !reference.url) {
-                          return null
-                        }
-                        return <li>
-                          <a href={reference.url} target="_blank">{reference.title || reference.url}</a>
-                          </li>
-                      })
-                    }
-                  </ul>
-              }
-            </div>
-          );
-        })
-      }
-    </article>
-  </div>
+            {
+              talking.data.references && talking.data.references.length !== 0 && <hr class="my-5" />
+                <div class="font-['Cinzel'] text-sm opacity-50 mb-1 text-[var(--foreground)] dark:opacity-70">
+                  References
+                </div>
+                <ul class="list-disc list-inside text-[var(--foreground)]">
+                  {
+                    talking.data.references.map(reference => {
+                      if (!reference.title && !reference.url) {
+                        return null
+                      }
+                      return <li>
+                        <a href={reference.url} target="_blank">{reference.title || reference.url}</a>
+                        </li>
+                    })
+                  }
+                </ul>
+            }
+          </div>
+        );
+      })
+    }
+  </article>
   {
     talkings[0].data.concertPageSlug && <slot slot="header-right">
       <a href={translatePath(`/concert/${talkings[0].data.concertPageSlug}`)}>

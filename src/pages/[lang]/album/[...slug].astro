@@ -29,7 +29,7 @@ const album = Astro.props;
 ---
 
 <Layout title={[album.data.title, "Album"]}>
-  <div class="max-w-3xl mx-auto px-6 py-8 flex flex-col gap-4">
+  <div class="flex flex-col gap-4">
     {
       album.data.title && (
         <h1

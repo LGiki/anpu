@@ -3,7 +3,11 @@ import Button from "@/components/Button.astro";
 import ConcertMetadata from "@/components/ConcertMetadata.astro";
 import SongList from "@/components/SongList.astro";
 import { defaultLang } from "@/i18n/ui";
-import { getLangFromUrl, useTranslations, useTranslatedPath } from "@/i18n/utils";
+import {
+  getLangFromUrl,
+  useTranslations,
+  useTranslatedPath,
+} from "@/i18n/utils";
 import Layout from "@/layouts/Layout.astro";
 import { slugify } from "@/utils";
 import { Icon } from "astro-icon/components";
@@ -34,48 +38,48 @@ const translatePath = useTranslatedPath(urlLanguage);
 <Layout
   title={concert.data.title ? [concert.data.title, "Concert"] : "Concert"}
 >
-  <div class="max-w-3xl mx-auto px-6 py-8">
-    <div class="flex flex-col gap-4">
-      {
-        concert.data.title && (
-          <h1
-            class="font-medium text-2xl text-[var(--foreground)]"
-            title={concert.data.title}
-          >
-            🎤 {concert.data.title}
-          </h1>
-        )
-      }
-      <SongList songTitles={concert.data.list} />
-      {
-        (concert.data.tour ||
-          concert.data.startTime ||
-          concert.data.endTime ||
-          concert.data.guests ||
-          concert.data.place ||
-          concert.data.location ||
-          concert.data.date) && (
-          <ConcertMetadata
-            tour={concert.data.tour}
-            startTime={concert.data.startTime}
-            endTime={concert.data.endTime}
-            guests={concert.data.guests}
-            place={concert.data.place}
-            location={concert.data.location}
-            date={concert.data.date}
-          />
-        )
-      }
-    </div>
+  <div class="flex flex-col gap-4">
+    {
+      concert.data.title && (
+        <h1
+          class="font-medium text-2xl text-[var(--foreground)]"
+          title={concert.data.title}
+        >
+          🎤 {concert.data.title}
+        </h1>
+      )
+    }
+    <SongList songTitles={concert.data.list} />
+    {
+      (concert.data.tour ||
+        concert.data.startTime ||
+        concert.data.endTime ||
+        concert.data.guests ||
+        concert.data.place ||
+        concert.data.location ||
+        concert.data.date) && (
+        <ConcertMetadata
+          tour={concert.data.tour}
+          startTime={concert.data.startTime}
+          endTime={concert.data.endTime}
+          guests={concert.data.guests}
+          place={concert.data.place}
+          location={concert.data.location}
+          date={concert.data.date}
+        />
+      )
+    }
   </div>
   {
-    concert.data.talkingPageSlug && <slot slot="header-right">
-      <a href={translatePath(`/talking/${concert.data.talkingPageSlug}`)}>
-        <Button>
-          <Icon name="ph:chat-dots" class="w-4 h-4 mr-2"/>
-          {t('concert.goToTalkingPage')}
-        </Button>
-      </a>
-    </slot>
+    concert.data.talkingPageSlug && (
+      <slot slot="header-right">
+        <a href={translatePath(`/talking/${concert.data.talkingPageSlug}`)}>
+          <Button>
+            <Icon name="ph:chat-dots" class="w-4 h-4 mr-2" />
+            {t("concert.goToTalkingPage")}
+          </Button>
+        </a>
+      </slot>
+    )
   }
 </Layout>

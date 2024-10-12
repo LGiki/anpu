@@ -60,11 +60,9 @@ const { songTitle, songConcerts, concertCountByYearMapper } = Astro.props;
 ---
 
 <Layout title={[songTitle, "Statistics"]}>
-  <div class="max-w-3xl mx-auto px-6 py-8">
-    <SongPerformedStatistics
-      songTitle={songTitle}
-      songConcerts={songConcerts}
-      concertCountByYearMapper={concertCountByYearMapper}
-    />
-  </div>
+  <SongPerformedStatistics
+    songTitle={songTitle}
+    songConcerts={songConcerts}
+    concertCountByYearMapper={concertCountByYearMapper}
+  />
 </Layout>

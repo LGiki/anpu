@@ -26,7 +26,5 @@ export async function getStaticPaths() {
 ---
 
 <Layout title="Album">
-  <div class="max-w-3xl mx-auto px-6 py-8">
-    <AlbumList albums={albums} language={urlLanguage} />
-  </div>
+  <AlbumList albums={albums} language={urlLanguage} />
 </Layout>

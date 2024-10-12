@@ -11,7 +11,5 @@ const talkings = await getCollection("talking", (talking) => {
 ---
 
 <Layout title="Talking">
-  <div class="max-w-3xl mx-auto px-6 py-8">
-    <TalkingList talkings={talkings} />
-  </div>
+  <TalkingList talkings={talkings} />
 </Layout>

@@ -28,7 +28,7 @@ const song = Astro.props;
 
 <Layout title={[song.data.title, 'Lyric']}>
   <article
-    class="max-w-3xl mx-auto px-6 py-8 text-base leading-7 text-[var(--foreground)]"
+    class="text-base leading-7 text-[var(--foreground)]"
     id="lyric-text"
   >
     <h1 class="font-medium text-2xl mb-4" id="song-title">{song.data.title}</h1>

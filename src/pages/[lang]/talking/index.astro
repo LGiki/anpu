@@ -26,7 +26,5 @@ export async function getStaticPaths() {
 ---
 
 <Layout title="Talking">
-  <div class="max-w-3xl mx-auto px-6 py-8">
-    <TalkingList talkings={talkings} language={urlLanguage} />
-  </div>
+  <TalkingList talkings={talkings} language={urlLanguage} />
 </Layout>
