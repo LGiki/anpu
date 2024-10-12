@@ -192,9 +192,12 @@ const albumCollection = defineCollection({
     })
 })
 
+const aboutCollection = defineCollection({})
+
 export const collections = {
     'song': songCollection,
     'album': albumCollection,
     'concert': concertCollection,
     'talking': talkingCollection,
+    'about': aboutCollection,
 }

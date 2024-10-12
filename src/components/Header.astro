@@ -16,7 +16,15 @@ const collectionName = getCollectionNameFromUrl(Astro.url);
 const t = useTranslations(lang);
 const translatePath = useTranslatedPath(lang);
 
-const collectionNameToHeader = {
+interface HeaderTitle {
+  url: string;
+  title: string;
+  hideDefaultTitle?: boolean;
+}
+
+const collectionNameToHeader: {
+  [key: string]: HeaderTitle;
+} = {
   song: {
     url: "/",
     title: "Lyric",
@@ -36,6 +44,11 @@ const collectionNameToHeader = {
   statistics: {
     url: "/statistics",
     title: "Statistics",
+  },
+  about: {
+    url: "/about",
+    title: "About",
+    hideDefaultTitle: true,
   },
 };
 
@@ -73,6 +86,11 @@ const NAVIGATION_LINKS: NavigationLink[] = [
     title: t("header.statistics"),
   },
   {
+    iconName: "ph:info",
+    url: translatePath("/about"),
+    title: t("header.about"),
+  },
+  {
     iconName: "ph:cube-focus",
     url: "https://ar.anpu.me",
     title: t("header.xiaoheirenAR"),
@@ -98,11 +116,17 @@ const titleUrl =
       <div
         class="text-[var(--foreground)] flex gap-1 items-center font-['Cinzel'] sm:text-xl text-sm"
       >
-        <div>{DEFAULT_TITLE}</div>
         {
-          collectionName in collectionNameToHeader && (
+          collectionName in collectionNameToHeader ? (
             <>
-              <div>·</div>
+              {!collectionNameToHeader[
+                collectionName as keyof typeof collectionNameToHeader
+              ].hideDefaultTitle && (
+                <>
+                  <div>{DEFAULT_TITLE}</div>
+                  <div>·</div>
+                </>
+              )}
               <div>
                 {
                   collectionNameToHeader[
@@ -111,6 +135,8 @@ const titleUrl =
                 }
               </div>
             </>
+          ) : (
+            <div>{DEFAULT_TITLE}</div>
           )
         }
       </div>

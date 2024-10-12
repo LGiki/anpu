@@ -64,15 +64,18 @@ export default defineConfig({
           'concert/**',
           'statistics/**',
           'talking/**',
+          'about/**',
           'zh-hant/concert/**',
           'zh-hant/statistics/**',
           'zh-hant/talking/**',
+          'zh-hant/about/**',
         ],
         navigateFallbackDenylist: [
           /^\/404\/?$/,
           /^\/(zh-hant\/)?concert\/?/,
           /^\/(zh-hant\/)?statistics\/?/,
           /^\/(zh-hant\/)?talking\/?/,
+          /^\/(zh-hant\/)?about\/?/,
         ],
       }
     })

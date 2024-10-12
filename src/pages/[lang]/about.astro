@@ -1,0 +1,38 @@
+---
+import { defaultLang } from "@/i18n/ui";
+import Layout from "@/layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import "@/assets/markdown.css";
+import AboutContainer from "@/components/AboutContainer.astro";
+
+export async function getStaticPaths() {
+  const abouts = await getCollection("about", (about) => {
+    const [aboutLanguage] = about.slug.split("/");
+    return aboutLanguage !== defaultLang;
+  });
+
+  if (abouts.length > 0) {
+    const about = abouts[0];
+    const [aboutLanguage] = about.slug.split("/");
+    return [
+      {
+        params: {
+          lang: aboutLanguage,
+        },
+        props: { about },
+      },
+    ];
+  } else {
+    return [];
+  }
+}
+
+const { about } = Astro.props;
+const aboutRenderResult = await about.render();
+---
+
+<Layout title="About" hideDefaultTitle={true}>
+  <div class="max-w-3xl mx-auto px-6 py-8">
+    <AboutContainer renderResult={aboutRenderResult} />
+  </div>
+</Layout>

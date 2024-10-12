@@ -1,0 +1,24 @@
+---
+import type { RenderResult } from "astro:content";
+
+interface Props {
+  renderResult?: RenderResult;
+}
+
+const props: Props = Astro.props;
+---
+
+<article class="markdown">
+  {props.renderResult && <props.renderResult.Content />}
+</article>
+
+<script>
+  import { EMAIL } from "@/constants";
+
+  const email = atob(EMAIL);
+  const emailContainer = document.getElementById("email");
+  const emailLink = document.createElement("a");
+  emailLink.href = `mailto:${email}`;
+  emailLink.innerText = email;
+  emailContainer?.appendChild(emailLink);
+</script>

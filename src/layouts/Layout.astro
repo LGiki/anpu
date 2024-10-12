@@ -6,13 +6,16 @@ import Head from "@/components/Head.astro";
 
 interface Props {
   title: string | string[];
+  hideDefaultTitle?: boolean;
 }
 
-const { title } = Astro.props;
+const { title, hideDefaultTitle } = Astro.props;
 
-const pageTitle = title
-  ? `${Array.isArray(title) ? title.join(" | ") : title} | ${DEFAULT_TITLE}`
-  : DEFAULT_TITLE;
+const pageTitle = hideDefaultTitle
+  ? title || DEFAULT_TITLE
+  : title
+    ? `${Array.isArray(title) ? title.join(" | ") : title} | ${DEFAULT_TITLE}`
+    : DEFAULT_TITLE;
 ---
 
 <!doctype html>
@@ -27,7 +30,9 @@ const pageTitle = title
     <Header>
       <slot slot="header-right" name="header-right" />
     </Header>
-    <main class="min-h-dvh">
+    <main
+      class="min-h-[calc(100dvh-var(--mobile-header-height))] sm:min-h-[calc(100dvh-var(--header-height))]"
+    >
       <slot />
     </main>
   </body>

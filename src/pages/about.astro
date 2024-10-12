@@ -1,0 +1,22 @@
+---
+import { defaultLang } from "@/i18n/ui";
+import Layout from "@/layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import "@/assets/markdown.css";
+import AboutContainer from "@/components/AboutContainer.astro";
+
+const abouts = await getCollection("about", (song) => {
+  const [aboutLanguage] = song.slug.split("/");
+  return aboutLanguage === defaultLang;
+});
+
+const aboutRenderResult =
+  abouts.length > 0 ? await abouts[0].render() : undefined;
+---
+
+<Layout title="About" hideDefaultTitle={true}>
+  <div class="max-w-3xl mx-auto px-6 py-8">
+    <AboutContainer renderResult={aboutRenderResult} />
+  </div>
+</Layout>
+
