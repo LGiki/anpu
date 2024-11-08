@@ -126,7 +126,7 @@ const concertCollection = defineCollection({
         // 地址
         location: z.string().optional(),
         // 日期
-        date: z.date().optional(),
+        date: z.date(),
         // Talking 页面的 Slug
         talkingPageSlug: z.string().optional(),
         // 演唱会曲目列表

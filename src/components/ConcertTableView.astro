@@ -1,0 +1,136 @@
+---
+import type { CollectionEntry } from "astro:content";
+import dayjs from "dayjs";
+import { getLangFromUrl, useTranslatedPath } from "@/i18n/utils";
+import { cn, slugify } from "@/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const translatePath = useTranslatedPath(lang);
+
+interface Props {
+  concerts: CollectionEntry<"concert">[];
+}
+
+const props: Props = Astro.props;
+
+const concertsSortedByDate = props.concerts.sort((a, b) => {
+  return dayjs(b.data.date).diff(a.data.date);
+});
+
+const concertsTableHead = concertsSortedByDate.map((concert) => {
+  const [_, ...slug] = concert.id.split("/");
+  const url = translatePath(`/concert/${slug.join()}`);
+
+  return {
+    title: concert.data.title,
+    date: dayjs(concert.data.date).format("YYYY-MM-DD"),
+    url: url,
+  };
+});
+
+const maxSetlistLength = concertsSortedByDate.reduce((max, concert) => {
+  const songs = concert.data.list.filter(
+    (lineText) => !lineText.startsWith("Talking") && !lineText.startsWith("*")
+  );
+  return Math.max(max, songs.length);
+}, 0);
+
+interface Song {
+  text?: string;
+  url?: string;
+  remarks?: string[];
+}
+
+const concertTableBody: (Song | null)[][] = Array.from(
+  { length: maxSetlistLength },
+  () => Array(concertsSortedByDate.length).fill(null)
+);
+
+concertsSortedByDate.forEach((concert, concertIndex) => {
+  const songs: (string | null)[] = concert.data.list.filter(
+    // (lineText) => !lineText.startsWith("Talking") && !lineText.startsWith("*")
+    (lineText) =>
+      !lineText.startsWith("Talking") &&
+      (lineText === "*Encore" || !lineText.startsWith("*"))
+  );
+  let isEncore = false;
+  let songIndex = 0;
+  songs.forEach((lineText) => {
+    if (!lineText) {
+      return;
+    }
+    if (lineText === "*Encore") {
+      isEncore = true;
+      return;
+    }
+    let [songTitle, ...remarks] = lineText.split("|");
+    let url: string | undefined;
+    if (!lineText.startsWith("!")) {
+      url = translatePath(`/song/${slugify(songTitle)}`);
+    } else {
+      songTitle = songTitle.slice(1);
+    }
+    if (isEncore) {
+      remarks.push("Encore");
+    }
+    concertTableBody[songIndex][concertIndex] = {
+      text: songTitle,
+      remarks: remarks,
+      url: url,
+    };
+    songIndex++;
+  });
+});
+---
+
+<table class="table-fixed w-full">
+  <thead
+    class="z-10 sticky top-[var(--mobile-header-height)] sm:top-[var(--header-height)] text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 shadow"
+  >
+    <tr>
+      <th class="w-[50px]"></th>
+      {
+        concertsTableHead.map((concertInfo) => (
+          <th class="w-[220px] px-6 py-1.5 border-l border-r">
+            <a
+              class="flex flex-col gap-1 items-center text-center"
+              href={concertInfo.url}
+            >
+              <span>{concertInfo.date}</span>
+              <span>{concertInfo.title}</span>
+            </a>
+          </th>
+        ))
+      }
+    </tr>
+  </thead>
+  <tbody>
+    {
+      concertTableBody.map((songs, songIndex) => (
+        <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+          <td class="sticky left-0 text-center bg-gray-50/80 border-l border-r backdrop-blur">
+            {songIndex + 1}
+          </td>
+          {songs.map((song) => (
+            <td class="px-6 py-1.5 border-l border-r text-center">
+              <div class="flex flex-col gap-1.5 items-center">
+                <a class={cn("text-[var(--foreground)]")} href={song?.url}>
+                  {song?.text}
+                </a>
+                {song?.remarks && (
+                  <>
+                    {song.remarks.map((remark) => (
+                      <span class="text-gray-400 border rounded-xl px-1.5 border-gray-400 text-center w-max">
+                        {remark}
+                      </span>
+                    ))}
+                  </>
+                )}
+              </div>
+            </td>
+          ))}
+        </tr>
+      ))
+    }
+  </tbody>
+</table>

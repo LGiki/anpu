@@ -1,8 +1,8 @@
 ---
-import Layout from "@/layouts/Layout.astro";
-import { getCollection } from "astro:content";
+import ConcertTableView from "@/components/ConcertTableView.astro";
 import { defaultLang } from "@/i18n/ui";
-import ConcertList from "@/components/ConcertList.astro";
+import ConcertTableLayout from "@/layouts/ConcertTableLayout.astro";
+import { getCollection } from "astro:content";
 import {
   getLangFromUrl,
   useTranslations,
@@ -21,13 +21,13 @@ const t = useTranslations(urlLanguage);
 const translatePath = useTranslatedPath(urlLanguage);
 ---
 
-<Layout title="Concert">
-  <ConcertList concerts={concerts} />
+<ConcertTableLayout title="Concert">
+  <ConcertTableView concerts={concerts} />
   <slot slot="header-right">
-    <a href={translatePath(`/concert/table`)}>
+    <a href={translatePath(`/concert`)}>
       <Button>
-        <Icon name="ph:table" class="w-4 h-4 mr-2" />
-        {t("concert.tableView")}
+        <Icon name="ph:list-dashes" class="w-4 h-4 mr-2" />
+        {t("concert.listView")}
       </Button>
     </a>
   </slot>

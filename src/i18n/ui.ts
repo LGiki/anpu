@@ -86,6 +86,8 @@ export const ui = {
         '404.easterEgg': '如果你在前方回头，而我亦回头，我们就错过。',
         'talking.goToConcertPage': '本场演出歌单',
         'concert.goToTalkingPage': '本场演出 Talking',
+        'concert.tableView': '表格视图',
+        'concert.listView': '列表视图',
     },
     'zh-hant': {
         'lyricFontSizeSwitcher.enlarge': '放大字體',
@@ -165,5 +167,7 @@ export const ui = {
         '404.easterEgg': '如果你在前方回頭，而我亦回頭，我們就錯過。',
         'talking.goToConcertPage': '本場演出歌單',
         'concert.goToTalkingPage': '本場演出 Talking',
+        'concert.tableView': '表格視圖',
+        'concert.listView': '列表視圖',
     }
 }
