@@ -1,0 +1,45 @@
+---
+import ConcertTableView from "@/components/ConcertTableView.astro";
+import { defaultLang, languages } from "@/i18n/ui";
+import ConcertTableLayout from "@/layouts/ConcertTableLayout.astro";
+import { getCollection } from "astro:content";
+import {
+  getLangFromUrl,
+  useTranslations,
+  useTranslatedPath,
+} from "@/i18n/utils";
+import Button from "@/components/Button.astro";
+import { Icon } from "astro-icon/components";
+
+const concerts = await getCollection("concert", (concert) => {
+  const [concertLanguage] = concert.id.split("/");
+  return concertLanguage !== defaultLang;
+});
+
+export async function getStaticPaths() {
+  return Object.entries(languages)
+    .filter(([locale]) => locale !== defaultLang)
+    .map(([locale]) => {
+      return {
+        params: {
+          lang: locale,
+        },
+      };
+    });
+}
+const urlLanguage = getLangFromUrl(Astro.url);
+const t = useTranslations(urlLanguage);
+const translatePath = useTranslatedPath(urlLanguage);
+---
+
+<ConcertTableLayout title="Concert">
+  <ConcertTableView concerts={concerts} />
+  <slot slot="header-right">
+    <a href={translatePath(`/concert`)}>
+      <Button>
+        <Icon name="ph:list-dashes" class="w-4 h-4 mr-2" />
+        {t("concert.listView")}
+      </Button>
+    </a>
+  </slot>
+</ConcertTableLayout>
