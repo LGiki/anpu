@@ -7,6 +7,7 @@ import { Icon } from "astro-icon/components";
 import { useTranslatedPath, useTranslations } from "@/i18n/utils";
 import dayjs from "dayjs";
 import Button from "@/components/Button.astro";
+import TalkingPrevAndNextSongSwitcher from "@/components/TalkingPrevAndNextSongSwitcher.astro";
 
 export async function getStaticPaths() {
   const talkings = await getCollection("talking", (talking) => {
@@ -28,10 +29,10 @@ export async function getStaticPaths() {
 
   return Object.entries(talkingsGroupById).map(([talkingId, talkingList]) => {
     const talkings = talkingList.sort((a, b) => {
-      const [,, aFilename] = a.slug.split('/')
-      const [,, bFilename] = b.slug.split('/')
-      return parseInt(aFilename) - parseInt(bFilename)
-    })
+      const [, , aFilename] = a.slug.split("/");
+      const [, , bFilename] = b.slug.split("/");
+      return parseInt(aFilename) - parseInt(bFilename);
+    });
     return {
       params: { slug: slugify(talkingId) },
       props: { talkings },
@@ -49,9 +50,17 @@ const talkingContents = await Promise.all(
 
 const t = useTranslations(defaultLang);
 const translatePath = useTranslatedPath(defaultLang);
+
+const isPrevAndNextSongExists = talkings.some(
+  (talking) => talking.data.previousSong || talking.data.nextSong
+);
 ---
 
-<Layout title={talkings[0].data.concertTitle ? [talkings[0].data.concertTitle, "Talking"] : 'Talkinkg'}>
+<Layout
+  title={talkings[0].data.concertTitle
+    ? [talkings[0].data.concertTitle, "Talking"]
+    : "Talkinkg"}
+>
   <article class="flex flex-col gap-5">
     <h1
       class="font-medium text-2xl text-[var(--foreground)]"
@@ -60,30 +69,41 @@ const translatePath = useTranslatedPath(defaultLang);
       💌 Talkings at {talkings[0].data.concertTitle}
     </h1>
     {
-      (talkings[0].data.place || talkings[0].data.location ||talkings[0].data.date) && <div class="flex gap-4 items-center flex-wrap">
-        {
-          talkings[0].data.place && <div class="flex gap-1 items-center justify-center rounded-full border border-gray-500 text-gray-500 dark:border-gray-300 dark:text-gray-300 px-2 py-0.5 text-sm">
-            <Icon name="ph:map-pin" class="w-4 h-4 flex-shrink-0" />
-            <span>{t('talking.place')}：{talkings[0].data.place}</span>
-          </div>
-        }
-        {
-          talkings[0].data.date && <div class="flex gap-1 items-center justify-center rounded-full border border-gray-500 text-gray-500 dark:border-gray-300 dark:text-gray-300 px-2 py-0.5 text-sm">
-            <Icon name="ph:calendar-dots" class="w-4 h-4 flex-shrink-0" />
-            <span>{t('talking.date')}：{dayjs(talkings[0].data.date).format('YYYY-MM-DD')}</span>
-          </div>
-        }
-        {
-          talkings[0].data.location && <div class="flex gap-1 items-center justify-center rounded-full border border-gray-500 text-gray-500 dark:border-gray-300 dark:text-gray-300 px-2 py-0.5 text-sm">
-            <Icon name="ph:navigation-arrow" class="w-4 h-4 flex-shrink-0" />
-            <span>{t('talking.location')}：{talkings[0].data.location}</span>
-          </div>
-        }
-      </div>
+      (talkings[0].data.place ||
+        talkings[0].data.location ||
+        talkings[0].data.date) && (
+        <div class="flex gap-4 items-center flex-wrap">
+          {talkings[0].data.place && (
+            <div class="flex gap-1 items-center justify-center rounded-full border border-gray-500 text-gray-500 dark:border-gray-300 dark:text-gray-300 px-2 py-0.5 text-sm">
+              <Icon name="ph:map-pin" class="w-4 h-4 flex-shrink-0" />
+              <span>
+                {t("talking.place")}：{talkings[0].data.place}
+              </span>
+            </div>
+          )}
+          {talkings[0].data.date && (
+            <div class="flex gap-1 items-center justify-center rounded-full border border-gray-500 text-gray-500 dark:border-gray-300 dark:text-gray-300 px-2 py-0.5 text-sm">
+              <Icon name="ph:calendar-dots" class="w-4 h-4 flex-shrink-0" />
+              <span>
+                {t("talking.date")}：
+                {dayjs(talkings[0].data.date).format("YYYY-MM-DD")}
+              </span>
+            </div>
+          )}
+          {talkings[0].data.location && (
+            <div class="flex gap-1 items-center justify-center rounded-full border border-gray-500 text-gray-500 dark:border-gray-300 dark:text-gray-300 px-2 py-0.5 text-sm">
+              <Icon name="ph:navigation-arrow" class="w-4 h-4 flex-shrink-0" />
+              <span>
+                {t("talking.location")}：{talkings[0].data.location}
+              </span>
+            </div>
+          )}
+        </div>
+      )
     }
     {
       talkingContents.map((talkingContent, index: number) => {
-        const talking = talkings[index]
+        const talking = talkings[index];
         return (
           <div
             id={`talking-${index + 1}`}
@@ -95,37 +115,114 @@ const translatePath = useTranslatedPath(defaultLang);
             <div class="leading-7 space-y-6 text-[var(--foreground)] hyphens-auto">
               <talkingContent.Content />
             </div>
-            {
-              talking.data.references && talking.data.references.length !== 0 && <hr class="my-5" />
-                <div class="font-['Cinzel'] text-sm opacity-50 mb-1 text-[var(--foreground)] dark:opacity-70">
-                  References
+            {(talking.data.previousSong || talking.data.nextSong) && (
+              <>
+                <hr class="my-5 talking-prev-and-next-song-hr" />
+                <div class="talking-prev-and-next-song-container grid grid-cols-2 gap-x-10 gap-y-1">
+                  {talking.data.previousSong ? (
+                    <div class="font-['Cinzel'] text-[var(--foreground)] opacity-50 dark:opacity-70">
+                      Before Talking
+                    </div>
+                  ) : (
+                    <div />
+                  )}
+                  {talking.data.nextSong ? (
+                    <div class="font-['Cinzel'] text-[var(--foreground)] opacity-50 dark:opacity-70 text-end">
+                      After Talking
+                    </div>
+                  ) : (
+                    <div />
+                  )}
+                  {talking.data.previousSong ? (
+                    <div class="text-[var(--foreground)] opacity-80 dark:opacity-70 flex gap-2 items-center">
+                      <Icon
+                        name="ph:caret-left"
+                        class="w-4 h-4 flex-shrink-0"
+                      />
+                      <a
+                        class="text-wrap"
+                        href={
+                          !talking.data.previousSong.startsWith("!")
+                            ? translatePath(
+                                `/song/${slugify(talking.data.previousSong)}`
+                              )
+                            : undefined
+                        }
+                      >
+                        {talking.data.previousSong.startsWith("!")
+                          ? talking.data.previousSong.substring(1)
+                          : talking.data.previousSong}
+                      </a>
+                    </div>
+                  ) : (
+                    <div />
+                  )}
+                  {talking.data.nextSong ? (
+                    <div class="text-[var(--foreground)] opacity-80 dark:opacity-70 flex gap-2 items-center justify-end">
+                      <a
+                        class="text-wrap"
+                        href={
+                          !talking.data.nextSong.startsWith("!")
+                            ? translatePath(
+                                `/song/${slugify(talking.data.nextSong)}`
+                              )
+                            : undefined
+                        }
+                      >
+                        {talking.data.nextSong.startsWith("!")
+                          ? talking.data.nextSong.substring(1)
+                          : talking.data.nextSong}
+                      </a>
+                      <Icon
+                        name="ph:caret-right"
+                        class="w-4 h-4 flex-shrink-0"
+                      />
+                    </div>
+                  ) : (
+                    <div />
+                  )}
                 </div>
-                <ul class="list-disc list-inside text-[var(--foreground)]">
-                  {
-                    talking.data.references.map(reference => {
+              </>
+            )}
+            {talking.data.references &&
+              talking.data.references.length !== 0 && (
+                <>
+                  <hr class="my-5" />
+                  <div class="font-['Cinzel'] text-sm opacity-50 mb-1 text-[var(--foreground)] dark:opacity-70">
+                    References
+                  </div>
+                  <ul class="list-disc list-inside text-[var(--foreground)]">
+                    {talking.data.references.map((reference) => {
                       if (!reference.title && !reference.url) {
-                        return null
+                        return null;
                       }
-                      return <li>
-                        <a href={reference.url} target="_blank">{reference.title || reference.url}</a>
+                      return (
+                        <li>
+                          <a href={reference.url} target="_blank">
+                            {reference.title || reference.url}
+                          </a>
                         </li>
-                    })
-                  }
-                </ul>
-            }
+                      );
+                    })}
+                  </ul>
+                </>
+              )}
           </div>
         );
       })
     }
   </article>
   {
-    talkings[0].data.concertPageSlug && <slot slot="header-right">
-      <a href={translatePath(`/concert/${talkings[0].data.concertPageSlug}`)}>
-        <Button>
-          <Icon name="ph:microphone-stage" class="w-4 h-4 mr-2"/>
-          {t('talking.goToConcertPage')}
-        </Button>
-      </a>
-    </slot>
+    talkings[0].data.concertPageSlug && (
+      <slot slot="header-right">
+        {isPrevAndNextSongExists && <TalkingPrevAndNextSongSwitcher />}
+        <a href={translatePath(`/concert/${talkings[0].data.concertPageSlug}`)}>
+          <Button>
+            <Icon name="ph:microphone-stage" class="w-4 h-4 mr-2" />
+            {t("talking.goToConcertPage")}
+          </Button>
+        </a>
+      </slot>
+    )
   }
 </Layout>

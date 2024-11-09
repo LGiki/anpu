@@ -100,6 +100,10 @@ const talkingCollection = defineCollection({
         date: z.date().optional(),
         // 演出歌单页面的 slug
         concertPageSlug: z.string().optional(),
+        // Talking 的前一首歌
+        previousSong: z.string().optional(),
+        // Talking 的后一首歌
+        nextSong: z.string().optional(),
         // 引用
         references: z.array(z.object({
             title: z.string().optional(),

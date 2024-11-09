@@ -14,7 +14,7 @@ const t = useTranslations(lang);
   aria-label={t("banlamToneSwitcher.showBanlamTone")}
   data-show-banlam-tone-title={t("banlamToneSwitcher.showBanlamTone")}
   data-hide-banlam-tone-title={t("banlamToneSwitcher.hideBanlamTone")}
-  buttonClass="banlam-tone-switch-button"
+  buttonClass="activable-button"
 >
   <Icon
     name="ph:book-bookmark"
@@ -83,11 +83,11 @@ const t = useTranslations(lang);
     if (banlamToneDisplayIndex > 0) {
       // 台语注音激活状态
       if (
-        typeof banlamToneSwitchButton.dataset.banlamToneVisible ===
+        typeof banlamToneSwitchButton.dataset.active ===
           "undefined" ||
-        banlamToneSwitchButton.dataset.banlamToneVisible === "false"
+        banlamToneSwitchButton.dataset.active === "false"
       ) {
-        banlamToneSwitchButton.dataset.banlamToneVisible = "true";
+        banlamToneSwitchButton.dataset.active = "true";
         if (banlamToneSwitchButton.dataset.hideBanlamToneTitle) {
           banlamToneSwitchButton.title =
             banlamToneSwitchButton.dataset.hideBanlamToneTitle;
@@ -97,7 +97,7 @@ const t = useTranslations(lang);
       }
     } else {
       // 台语注音关闭状态
-      banlamToneSwitchButton.dataset.banlamToneVisible = "false";
+      banlamToneSwitchButton.dataset.active = "false";
       if (banlamToneSwitchButton.dataset.showBanlamToneTitle) {
         banlamToneSwitchButton.title =
           banlamToneSwitchButton.dataset.showBanlamToneTitle;

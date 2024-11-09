@@ -1,0 +1,66 @@
+---
+import Button from "@/components/Button.astro";
+import { getLangFromUrl, useTranslations } from "@/i18n/utils";
+import { Icon } from "astro-icon/components";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<Button id="talking-prev-and-next-song-switch" buttonClass="activable-button">
+  <Icon name="ph:arrows-left-right" class="w-4 h-4 mr-2" />
+  {t("talking.showPreviousAndNextSong")}
+</Button>
+
+<script>
+  const SHOW_TALKING_PREV_AND_NEXT_SONG_KEY = "showTalkingPrevAndNextSong";
+  const talkingPrevAndNextSongSwitchButton = document.getElementById(
+    "talking-prev-and-next-song-switch"
+  );
+  const talkingPrevAndNextSongHrs = document.querySelectorAll(
+    ".talking-prev-and-next-song-hr"
+  );
+  const talkingPrevAndNextSongContainers = document.querySelectorAll(
+    ".talking-prev-and-next-song-container"
+  );
+
+  let showTalkingPrevAndNextSong =
+    localStorage.getItem(SHOW_TALKING_PREV_AND_NEXT_SONG_KEY) === "true";
+
+  const toggleTalkingPrevAndNextSong = (visible: boolean) => {
+    if (visible) {
+      // Turn on
+      talkingPrevAndNextSongContainers.forEach(
+        (element) => ((element as HTMLDivElement).style.display = "")
+      );
+      talkingPrevAndNextSongHrs.forEach(
+        (element) => ((element as HTMLHRElement).style.display = "")
+      );
+      if (talkingPrevAndNextSongSwitchButton) {
+        talkingPrevAndNextSongSwitchButton.dataset.active = "true";
+      }
+    } else {
+      // Turn off
+      talkingPrevAndNextSongContainers.forEach(
+        (element) => ((element as HTMLDivElement).style.display = "none")
+      );
+      talkingPrevAndNextSongHrs.forEach(
+        (element) => ((element as HTMLHRElement).style.display = "none")
+      );
+      if (talkingPrevAndNextSongSwitchButton) {
+        talkingPrevAndNextSongSwitchButton.dataset.active = "false";
+      }
+    }
+  };
+
+  talkingPrevAndNextSongSwitchButton?.addEventListener("click", () => {
+    toggleTalkingPrevAndNextSong(!showTalkingPrevAndNextSong);
+    showTalkingPrevAndNextSong = !showTalkingPrevAndNextSong;
+    localStorage.setItem(
+      SHOW_TALKING_PREV_AND_NEXT_SONG_KEY,
+      `${showTalkingPrevAndNextSong}`
+    );
+  });
+
+  toggleTalkingPrevAndNextSong(showTalkingPrevAndNextSong);
+</script>
