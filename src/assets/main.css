@@ -30,3 +30,7 @@
 .drawer-item {
     @apply transition-all text-xl duration-75 flex items-center gap-3 flex-shrink-0 px-5 py-1.5 text-gray-500 dark:text-gray-300 hover:text-gray-800 hover:bg-gray-200 cursor-pointer;
 }
+
+.spoiler {
+    @apply text-black bg-black hover:text-white;
+}
