@@ -23,7 +23,8 @@ export function slugify(title: string) {
       .replaceAll(' ', '-')
       .replace('關於', 'guan-yu')
       .replace('模樣', 'mu-yang')
-      .replace('怎麼', 'zen-me'),
+      .replace('怎麼', 'zen-me')
+      .replace('妳', 'ni'),
     {
       tone: false,
       custom: {
