@@ -8,7 +8,7 @@ import { getLangFromUrl } from "@/i18n/utils";
 const urlLanguage = getLangFromUrl(Astro.url);
 
 const talkings = await getCollection("talking", (talking) => {
-  const [talkingLanguage] = talking.slug.split("/");
+  const [talkingLanguage] = talking.id.split("/");
   return talkingLanguage !== defaultLang;
 });
 

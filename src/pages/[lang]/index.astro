@@ -8,7 +8,7 @@ import SongGroupList from "@/components/SongGroupList.astro";
 const urlLanguage = getLangFromUrl(Astro.url);
 
 const songs = await getCollection("song", (song) => {
-  const [lyricLanguage] = song.slug.split("/");
+  const [lyricLanguage] = song.id.split("/");
   return lyricLanguage === urlLanguage;
 });
 

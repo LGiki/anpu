@@ -5,7 +5,7 @@ import { defaultLang } from "@/i18n/ui";
 import TalkingList from "@/components/TalkingList.astro";
 
 const talkings = await getCollection("talking", (talking) => {
-  const [talkingLanguage] = talking.slug.split("/");
+  const [talkingLanguage] = talking.id.split("/");
   return talkingLanguage === defaultLang;
 });
 ---

@@ -1,7 +1,9 @@
-import { defineCollection, z } from "astro:content";
+import { defineCollection, z } from 'astro:content';
+
+import { glob } from 'astro/loaders';
 
 const songCollection = defineCollection({
-    type: 'content',
+    loader: glob({ pattern: "**/*.md", base: "./src/content/song" }),
     schema: z.object({
         // 标题
         title: z.string(),
@@ -86,7 +88,7 @@ const songCollection = defineCollection({
 })
 
 const talkingCollection = defineCollection({
-    type: 'content',
+    loader: glob({ pattern: "**/*.md", base: "./src/content/talking" }),
     schema: z.object({
         // 演唱会标题
         concertTitle: z.string().optional(),
@@ -113,7 +115,7 @@ const talkingCollection = defineCollection({
 })
 
 const concertCollection = defineCollection({
-    type: 'data',
+    loader: glob({ pattern: "**/*.yml", base: "./src/content/concert" }),
     schema: z.object({
         // 标题
         title: z.string().optional(),
@@ -139,7 +141,7 @@ const concertCollection = defineCollection({
 })
 
 const albumCollection = defineCollection({
-    type: 'data',
+    loader: glob({ pattern: "**/*.yml", base: "./src/content/album" }),
     schema: z.object({
         // 标题
         title: z.string(),
@@ -196,7 +198,9 @@ const albumCollection = defineCollection({
     })
 })
 
-const aboutCollection = defineCollection({})
+const aboutCollection = defineCollection({
+    loader: glob({ pattern: "**/*.md", base: "./src/content/about" }),
+})
 
 export const collections = {
     'song': songCollection,
@@ -204,4 +208,4 @@ export const collections = {
     'concert': concertCollection,
     'talking': talkingCollection,
     'about': aboutCollection,
-}
+};

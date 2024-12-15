@@ -12,7 +12,7 @@ const props: Props = Astro.props;
 
 const songGroups = generateContentGroupsByFirstLetter(
   props.songs,
-  (song) => song.slug.split("/"),
+  (song) => song.id.replace(/(\.md)+$/, "").split("/"),
   defaultLang
 );
 ---
@@ -26,11 +26,7 @@ const songGroups = generateContentGroupsByFirstLetter(
         </div>
         <div class="flex flex-col flex-1">
           {songGroup.list.map((song) => (
-            <a
-              href={song.url}
-              title={song.data.title}
-              class="song-group-link"
-            >
+            <a href={song.url} title={song.data.title} class="song-group-link">
               <span class="text-wrap">{song.data.title}</span>
               {song.data.hasBanlamTone && <Badge>台</Badge>}
             </a>

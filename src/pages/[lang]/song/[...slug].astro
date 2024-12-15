@@ -10,12 +10,12 @@ import { defaultLang } from "@/i18n/ui";
 
 export async function getStaticPaths() {
   const songs = await getCollection("song", (song) => {
-    const [lyricLanguage] = song.slug.split("/");
+    const [lyricLanguage] = song.id.split("/");
     return lyricLanguage !== defaultLang;
   });
 
   return songs.map((song) => {
-    const [lyricLanguage, ...slug] = song.slug.split("/");
+    const [lyricLanguage, ...slug] = song.id.replace(/(\.md)+$/, "").split("/");
     return {
       params: { lang: lyricLanguage, slug: slugify(slug.join()) },
       props: song,
@@ -26,13 +26,10 @@ export async function getStaticPaths() {
 const song = Astro.props;
 ---
 
-<Layout title={[song.data.title, 'Lyric']}>
-  <article
-    class="text-base leading-7 text-[var(--foreground)]"
-    id="lyric-text"
-  >
+<Layout title={[song.data.title, "Lyric"]}>
+  <article class="text-base leading-7 text-[var(--foreground)]" id="lyric-text">
     <h1 class="font-medium text-2xl mb-4" id="song-title">{song.data.title}</h1>
-    <LyricRenderer data={song.body} />
+    {song.body && <LyricRenderer data={song.body} />}
     {
       (song.data.album ||
         song.data.duration ||

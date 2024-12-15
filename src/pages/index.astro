@@ -6,7 +6,7 @@ import { defaultLang } from "@/i18n/ui";
 import SongGroupList from "@/components/SongGroupList.astro";
 
 const songs = await getCollection("song", (song) => {
-  const [lyricLanguage] = song.slug.split("/");
+  const [lyricLanguage] = song.id.split("/");
   return lyricLanguage === defaultLang;
 });
 ---

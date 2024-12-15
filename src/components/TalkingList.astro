@@ -18,7 +18,7 @@ const props: Props = Astro.props;
 // so we need to group by date (the date is the folder name, not the frontmatter date)
 const talkingsGroupById = props.talkings.reduce(
   (acc, talking) => {
-    const [_, talkingId] = talking.slug.split("/");
+    const [_, talkingId] = talking.id.replace(/(\.md)+$/, "").split("/");
     if (!acc[talkingId]) {
       acc[talkingId] = [];
     }

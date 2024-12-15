@@ -1,5 +1,5 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, render } from "astro:content";
 import { slugify } from "@/utils";
 import Layout from "@/layouts/Layout.astro";
 import { defaultLang } from "@/i18n/ui";
@@ -11,13 +11,13 @@ import TalkingPrevAndNextSongSwitcher from "@/components/TalkingPrevAndNextSongS
 
 export async function getStaticPaths() {
   const talkings = await getCollection("talking", (talking) => {
-    const [talkingLanguage] = talking.slug.split("/");
+    const [talkingLanguage] = talking.id.split("/");
     return talkingLanguage === defaultLang;
   });
 
   const talkingsGroupById = talkings.reduce(
     (acc, talking) => {
-      const [_, talkingId] = talking.slug.split("/");
+      const [_, talkingId] = talking.id.replace(/(\.md)+$/, "").split("/");
       if (!acc[talkingId]) {
         acc[talkingId] = [];
       }
@@ -29,8 +29,8 @@ export async function getStaticPaths() {
 
   return Object.entries(talkingsGroupById).map(([talkingId, talkingList]) => {
     const talkings = talkingList.sort((a, b) => {
-      const [, , aFilename] = a.slug.split("/");
-      const [, , bFilename] = b.slug.split("/");
+      const [, , aFilename] = a.id.replace(/(\.md)+$/, "").split("/");
+      const [, , bFilename] = b.id.replace(/(\.md)+$/, "").split("/");
       return parseInt(aFilename) - parseInt(bFilename);
     });
     return {
@@ -44,7 +44,7 @@ const { talkings } = Astro.props;
 
 const talkingContents = await Promise.all(
   talkings.map(async (talking) => {
-    return await talking.render();
+    return await render(talking);
   })
 );
 
