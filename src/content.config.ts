@@ -193,8 +193,8 @@ const albumCollection = defineCollection({
         coProducer: z.array(z.string()).or(z.string()).optional(),
         // 统筹
         coordinator: z.array(z.string()).or(z.string()).optional(),
-        // Slug
-        slug: z.string().optional(),
+        // 自定义 Slug
+        customSlug: z.string().optional(),
     })
 })
 

@@ -15,8 +15,8 @@ export async function getStaticPaths() {
   return albums.map((album) => {
     const [_, ...slug] = album.id.split("/");
     let url = slugify(slug.join());
-    if (album.data.slug) {
-      url = album.data.slug;
+    if (album.data.customSlug) {
+      url = album.data.customSlug;
     }
     return {
       params: { slug: url },
