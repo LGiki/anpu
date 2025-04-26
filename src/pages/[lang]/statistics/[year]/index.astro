@@ -1,0 +1,60 @@
+---
+import type { GetStaticPaths, InferGetStaticPropsType } from "astro";
+import ConcertPerfromedSongStatisticsList from "@/components/ConcertPerfromedSongStatisticsList.astro";
+import { defaultLang, languages } from "@/i18n/ui";
+import Layout from "@/layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import StatisticsYearSelect from "@/components/StatisticsYearSelect.astro";
+
+export const getStaticPaths = (async () => {
+  return (
+    await Promise.all(
+      Object.entries(languages)
+        .filter(([locale]) => locale !== defaultLang)
+        .map(async ([locale]) => {
+          const concerts = await getCollection("concert", (concert) => {
+            const [concertLanguage] = concert.id.split("/");
+            return concertLanguage === locale;
+          });
+
+          const uniqueYears = concerts
+            .reduce<number[]>((years, concert) => {
+              const year = concert.data.date.getFullYear();
+              return years.includes(year) ? years : [...years, year];
+            }, [])
+            .sort((a, b) => b - a);
+
+          const concertsByYear: Record<number, typeof concerts> = {};
+
+          concerts.forEach((concert) => {
+            const year = concert.data.date.getFullYear();
+            if (!concertsByYear[year]) {
+              concertsByYear[year] = [];
+            }
+            concertsByYear[year].push(concert);
+          });
+
+          return Object.keys(concertsByYear).map((year) => ({
+            params: { year, lang: locale },
+            props: {
+              concerts: concertsByYear[parseInt(year)],
+              year: parseInt(year),
+              uniqueYears: uniqueYears,
+            },
+          }));
+        })
+    )
+  ).flat();
+}) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { concerts, year, uniqueYears } = Astro.props as Props;
+---
+
+<Layout title="Statistics">
+  <ConcertPerfromedSongStatisticsList concerts={concerts} year={year} />
+  <slot slot="header-right">
+    <StatisticsYearSelect years={uniqueYears} />
+  </slot>
+</Layout>

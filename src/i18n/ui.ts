@@ -24,6 +24,7 @@ export const ui = {
         'header.xiaoheirenAR': '小黑人 AR',
         'header.talking': 'Talking',
         'header.about': '关于',
+        'statistics.allYears': '全部年份',
         'statistics.songTitle': '歌曲',
         'statistics.performedCount': '演出次数',
         'statistics.performedStatisticsByYear': '每年演出统计',
@@ -89,6 +90,7 @@ export const ui = {
         'concert.goToTalkingPage': 'Talking',
         'concert.tableView': '表格视图',
         'concert.listView': '列表视图',
+        'year': '年',
     },
     'zh-hant': {
         'lyricFontSizeSwitcher.enlarge': '放大字體',
@@ -106,6 +108,7 @@ export const ui = {
         'header.xiaoheirenAR': '小黑人 AR',
         'header.talking': 'Talking',
         'header.about': '關於',
+        'statistics.allYears': '全部年份',
         'statistics.songTitle': '歌曲',
         'statistics.performedCount': '演出次數',
         'statistics.performedStatisticsByYear': '每年演出統計',
@@ -171,5 +174,6 @@ export const ui = {
         'concert.goToTalkingPage': 'Talking',
         'concert.tableView': '表格視圖',
         'concert.listView': '列表視圖',
+        'year': '年',
     }
 }

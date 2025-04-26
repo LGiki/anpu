@@ -1,0 +1,61 @@
+---
+import {
+  getLangFromUrl,
+  useTranslations,
+  useTranslatedPath,
+} from "@/i18n/utils";
+import { cn } from "@/utils";
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  labelClass?: string;
+  selectClass?: string;
+  years: number[];
+}
+
+const { year } = Astro.params;
+const props: Props = Astro.props;
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
+---
+
+<label
+  class={cn(
+    "flex items-center dark:border-zinc-700/90 text-[var(--foreground)] bg-[var(--background)] gap-1 relative rounded-md border cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-700/60 transition-colors duration-200 h-7",
+    props.labelClass
+  )}
+>
+  <Icon
+    name="ph:calendar-blank"
+    class="cursor-pointer absolute left-1 pointer-events-none"
+  />
+  <select
+    class={cn(
+      "cursor-pointer w-[6.6rem] h-full pl-6 rounded-md bg-transparent appearance-none text-sm",
+      props.selectClass
+    )}
+    onchange="(function(target){window.location.pathname = target.value})(this)"
+  >
+    <option
+      selected={typeof year === "undefined"}
+      value={translatePath(`/statistics`)}>{t("statistics.allYears")}</option
+    >
+    <hr />
+    {
+      props.years.map((yearValue) => (
+        <option
+          value={translatePath(`/statistics/${yearValue}`)}
+          selected={year === `${yearValue}`}
+        >
+          {yearValue} {t("year")}
+        </option>
+      ))
+    }
+  </select>
+  <Icon
+    name="ph:caret-down-bold"
+    class="cursor-pointer absolute right-1 pointer-events-none"
+  />
+</label>

@@ -1,5 +1,6 @@
 ---
 import ConcertPerfromedSongStatisticsList from "@/components/ConcertPerfromedSongStatisticsList.astro";
+import StatisticsYearSelect from "@/components/StatisticsYearSelect.astro";
 import { defaultLang } from "@/i18n/ui";
 import Layout from "@/layouts/Layout.astro";
 import { getCollection } from "astro:content";
@@ -8,8 +9,18 @@ const concerts = await getCollection("concert", (concert) => {
   const [concertLanguage] = concert.id.split("/");
   return concertLanguage === defaultLang;
 });
+
+const uniqueYears = concerts
+  .reduce<number[]>((years, concert) => {
+    const year = concert.data.date.getFullYear();
+    return years.includes(year) ? years : [...years, year];
+  }, [])
+  .sort((a, b) => b - a);
 ---
 
 <Layout title="Statistics">
   <ConcertPerfromedSongStatisticsList concerts={concerts} />
+  <slot slot="header-right">
+    <StatisticsYearSelect years={uniqueYears} />
+  </slot>
 </Layout>
