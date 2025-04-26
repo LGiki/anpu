@@ -2,6 +2,7 @@
 import ConcertPerfromedSongStatisticsList from "@/components/ConcertPerfromedSongStatisticsList.astro";
 import StatisticsYearSelect from "@/components/StatisticsYearSelect.astro";
 import { defaultLang, languages } from "@/i18n/ui";
+import { getLangFromUrl, useTranslations } from "@/i18n/utils";
 import Layout from "@/layouts/Layout.astro";
 import { getCollection } from "astro:content";
 
@@ -28,9 +29,12 @@ export async function getStaticPaths() {
       };
     });
 }
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
-<Layout title="Statistics">
+<Layout title={[t("statistics.allYears"), "Statistics"]}>
   <ConcertPerfromedSongStatisticsList concerts={concerts} />
   <slot slot="header-right">
     <StatisticsYearSelect years={uniqueYears} />

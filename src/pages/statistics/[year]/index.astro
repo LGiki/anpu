@@ -5,6 +5,7 @@ import { defaultLang } from "@/i18n/ui";
 import Layout from "@/layouts/Layout.astro";
 import { getCollection } from "astro:content";
 import StatisticsYearSelect from "@/components/StatisticsYearSelect.astro";
+import { getLangFromUrl, useTranslations } from "@/i18n/utils";
 
 export const getStaticPaths = (async () => {
   const concerts = await getCollection("concert", (concert) => {
@@ -42,9 +43,12 @@ export const getStaticPaths = (async () => {
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
 const { concerts, year, uniqueYears } = Astro.props as Props;
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
-<Layout title="Statistics">
+<Layout title={[`${year} ${t("year")}`, "Statistics"]}>
   <ConcertPerfromedSongStatisticsList concerts={concerts} year={year} />
   <slot slot="header-right">
     <StatisticsYearSelect years={uniqueYears} />
