@@ -2,12 +2,15 @@ import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
 import icon from "astro-icon";
 import AstroPWA from '@vite-pwa/astro';
+import sitemap from "@astrojs/sitemap";
 
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://anpu.vercel.app',
   integrations: [
     tailwind(),
     icon(),
+    sitemap(),
     AstroPWA({
       base: '/',
       scope: '/',
@@ -78,7 +81,7 @@ export default defineConfig({
           /^\/(zh-hant\/)?about\/?/,
         ],
       }
-    })
+    }),
   ],
   devToolbar: {
     enabled: false
