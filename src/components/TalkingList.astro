@@ -1,6 +1,6 @@
 ---
 import { defaultLang, type languages } from "@/i18n/ui";
-import { useTranslatedPath } from "@/i18n/utils";
+import { useTranslatedPath, useTranslations } from "@/i18n/utils";
 import { slugify } from "@/utils";
 import { Icon } from "astro-icon/components";
 import type { CollectionEntry } from "astro:content";
@@ -29,6 +29,7 @@ const talkingsGroupById = props.talkings.reduce(
 );
 
 const translatePath = useTranslatedPath(props.language || defaultLang);
+const t = useTranslations(props.language || defaultLang);
 
 interface Talking {
   talking: CollectionEntry<"talking">;
@@ -49,36 +50,82 @@ Object.keys(talkingsGroupById).forEach((talkingId) => {
   });
 });
 
-talkings.sort((a, b) => {
-  return dayjs(b.talking.data.date).diff(a.talking.data.date);
-});
+const sortedTalkingsGroupByYear = talkings
+  .sort((a, b) => {
+    return dayjs(b.talking.data.date).diff(a.talking.data.date);
+  })
+  .reduce(
+    (acc, talking) => {
+      const talkingYear = talking.talking.data.date
+        ? dayjs(talking.talking.data.date).year().toString()
+        : "unknown";
+      if (!acc[talkingYear]) {
+        acc[talkingYear] = [];
+      }
+      acc[talkingYear].push(talking);
+      return acc;
+    },
+    {} as Record<string, Talking[]>
+  );
+
+const sortedTalkingYears = Object.keys(sortedTalkingsGroupByYear).sort(
+  (a, b) => {
+    if (a === "unknown") {
+      return 1;
+    }
+    if (b === "unknown") {
+      return -1;
+    }
+    return Number(b) - Number(a);
+  }
+);
+
+const sortedTalkingsList = sortedTalkingYears.flatMap((year) => ({
+  year: year,
+  talkings: sortedTalkingsGroupByYear[year],
+}));
 ---
 
-<div class="flex flex-col">
+<div class="flex flex-col gap-9">
   {
-    talkings.map((talking) => {
+    sortedTalkingsList.map((sortedTalking) => {
+      const talkingYear =
+        sortedTalking.year === "unknown" ? t("unknown") : sortedTalking.year;
       return (
-        <a
-          class="border-b dark:border-b-zinc-700/90 last:border-b-0 min-h-12 flex items-center justify-between gap-5 py-2 text-sm sm:text-base"
-          href={talking.url}
-        >
-          <div class="flex gap-5 items-center">
-            <span class="w-26 text-gray-400 flex-shrink-0 font-mono">
-              {dayjs(talking.talking.data.date).format("YYYY-MM-DD")}
-            </span>
-            <span class="text-[var(--foreground)] text-wrap flex-1">
-              {talking.talking.data.concertTitle}
-            </span>
-          </div>
-          {talking.talking.data.place && (
-            <>
-              <div class="flex items-center gap-1 text-gray-400 flex-shrink-0">
-                <Icon name="ph:map-pin" />
-                <span>{talking.talking.data.place}</span>
-              </div>
-            </>
-          )}
-        </a>
+        <div class="flex flex-col">
+          <h2
+            class="text-2xl font-['Cinzel']"
+            title={talkingYear}
+            aria-label={talkingYear}
+          >
+            {talkingYear}
+          </h2>
+          {sortedTalking.talkings.map((talking) => {
+            return (
+              <a
+                class="border-b dark:border-b-zinc-700/90 last:border-b-0 min-h-12 flex items-center justify-between gap-5 py-2 text-sm sm:text-base"
+                href={talking.url}
+              >
+                <div class="flex gap-5 items-center">
+                  <span class="w-26 text-gray-400 flex-shrink-0 font-mono">
+                    {dayjs(talking.talking.data.date).format("YYYY-MM-DD")}
+                  </span>
+                  <span class="text-[var(--foreground)] text-wrap flex-1">
+                    {talking.talking.data.concertTitle}
+                  </span>
+                </div>
+                {talking.talking.data.place && (
+                  <>
+                    <div class="flex items-center gap-1 text-gray-400 flex-shrink-0">
+                      <Icon name="ph:map-pin" />
+                      <span>{talking.talking.data.place}</span>
+                    </div>
+                  </>
+                )}
+              </a>
+            );
+          })}
+        </div>
       );
     })
   }
