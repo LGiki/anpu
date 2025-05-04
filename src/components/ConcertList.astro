@@ -12,40 +12,76 @@ interface Props {
 
 const props: Props = Astro.props;
 
-const concertsSorted = props.concerts.sort((a, b) => {
-  return dayjs(b.data.date).diff(a.data.date);
-});
+const sortedConcertsGroupByYear = props.concerts
+  .sort((a, b) => {
+    return dayjs(b.data.date).diff(a.data.date);
+  })
+  .reduce(
+    (acc, concert) => {
+      const concertYear = dayjs(concert.data.date).year().toString();
+      if (!acc[concertYear]) {
+        acc[concertYear] = [];
+      }
+      acc[concertYear].push(concert);
+      return acc;
+    },
+    {} as Record<string, typeof props.concerts>
+  );
+
+const sortedConcertYears = Object.keys(sortedConcertsGroupByYear).sort(
+  (a, b) => Number(b) - Number(a)
+);
+
+const sortedConcertsList = sortedConcertYears.flatMap((year) => ({
+  year: year,
+  concerts: sortedConcertsGroupByYear[year],
+}));
 
 const translatePath = useTranslatedPath(props.language || defaultLang);
 ---
 
-<div class="flex flex-col">
+<div class="flex flex-col gap-8">
   {
-    concertsSorted.map((concert) => {
-      const [_, ...slug] = concert.id.split("/");
-      const url = translatePath(`/concert/${slug.join()}`);
+    sortedConcertsList.map((sortedConcert) => {
       return (
-        <a
-          href={url}
-          class="border-b dark:border-b-zinc-700/90 last:border-b-0 min-h-12 flex items-center justify-between gap-3 sm:gap-5 py-2"
-        >
-          <div class="flex gap-3 sm:gap-5 items-center text-sm sm:text-base">
-            <span class="w-26 text-gray-400 flex-shrink-0 font-mono">
-              {dayjs(concert.data.date).format("YYYY-MM-DD")}
-            </span>
-            <span class="text-[var(--foreground)] text-wrap flex-1">
-              {concert.data.tour}
-            </span>
-          </div>
-          {concert.data.location && (
-            <>
-              <div class="flex items-center gap-1 text-gray-400 flex-shrink-0 text-sm sm:text-base">
-                <Icon name="ph:map-pin" />
-                <span>{concert.data.place}</span>
-              </div>
-            </>
-          )}
-        </a>
+        <div class="flex flex-col">
+          <h2
+            class="text-2xl font-['Cinzel']"
+            title={sortedConcert.year}
+            aria-label={sortedConcert.year}
+          >
+            {sortedConcert.year}
+          </h2>
+          {sortedConcert.concerts.map((concert) => {
+            const [_, ...slug] = concert.id.split("/");
+            const url = translatePath(`/concert/${slug.join()}`);
+            return (
+              <a
+                href={url}
+                class="border-b dark:border-b-zinc-700/90 last:border-b-0 min-h-12 flex items-center justify-between gap-3 sm:gap-5 py-2"
+                title={`${dayjs(concert.data.date).format("YYYY-MM-DD")} | ${concert.data.title}`}
+                aria-label={`${dayjs(concert.data.date).format("YYYY-MM-DD")}, ${concert.data.title}`}
+              >
+                <div class="flex gap-3 sm:gap-5 items-center text-sm sm:text-base">
+                  <span class="w-26 text-gray-400 flex-shrink-0 font-mono">
+                    {dayjs(concert.data.date).format("YYYY-MM-DD")}
+                  </span>
+                  <span class="text-[var(--foreground)] text-wrap flex-1">
+                    {concert.data.tour}
+                  </span>
+                </div>
+                {concert.data.place && (
+                  <>
+                    <div class="flex items-center gap-1 text-gray-400 flex-shrink-0 text-sm sm:text-base">
+                      <Icon name="ph:map-pin" />
+                      <span>{concert.data.place}</span>
+                    </div>
+                  </>
+                )}
+              </a>
+            );
+          })}
+        </div>
       );
     })
   }
