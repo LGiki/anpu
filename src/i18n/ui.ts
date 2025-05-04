@@ -92,6 +92,7 @@ export const ui = {
         'concert.listView': '列表视图',
         'year': '年',
         'unknown': '未知',
+        'languageSelect': '更改语言',
     },
     'zh-hant': {
         'lyricFontSizeSwitcher.enlarge': '放大字體',
@@ -177,5 +178,6 @@ export const ui = {
         'concert.listView': '列表視圖',
         'year': '年',
         'unknown': '未知',
+        'languageSelect': '更改語言',
     }
 }

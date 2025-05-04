@@ -162,16 +162,18 @@ const titleUrl =
   id="drawer-container"
   class="fixed max-w-[24rem] w-3/4 duration-[400ms] ease-in-out transition-transform bg-white/80 dark:bg-zinc-900/80 backdrop-blur left-0 top-0 h-dvh z-50 flex flex-col py-5 gap-2 rounded-tr-xl rounded-br-xl"
 >
-  <div
-    title={t("header.closeMobileMenu")}
-    aria-label={t("header.closeMobileMenu")}
-    class="flex justify-end items-center flex-shrink-0 dark:text-[var(--foreground)]"
-  >
-    <Icon
-      name="ph:x-bold"
-      class="mr-3 h-6 w-6 cursor-pointer"
-      id="close-drawer"
-    />
+  <div class="flex justify-end items-center flex-shrink-0">
+    <button
+      title={t("header.closeMobileMenu")}
+      aria-label={t("header.closeMobileMenu")}
+      class="dark:text-[var(--foreground)] mr-3 cursor-pointer"
+    >
+      <Icon
+        name="ph:x-bold"
+        class="h-6 w-6"
+        id="close-drawer"
+      />
+    </button>
   </div>
   <div class="flex-1 h-0"></div>
   <div class="space-y-4 overflow-y-auto">
