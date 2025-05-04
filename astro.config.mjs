@@ -72,8 +72,10 @@ export default defineConfig({
           'zh-hant/statistics/**',
           'zh-hant/talking/**',
           'zh-hant/about/**',
-          'sitemap-index.xml',
-          'apple-touch-icon-180x180.png'
+          '*.xml',
+          '*.png',
+          '*.svg',
+          '*.webmanifest',
         ],
         navigateFallbackDenylist: [
           /^\/404\/?$/,
@@ -81,8 +83,10 @@ export default defineConfig({
           /^\/(zh-hant\/)?statistics\/?/,
           /^\/(zh-hant\/)?talking\/?/,
           /^\/(zh-hant\/)?about\/?/,
-          /sitemap-index\.xml/,
-          /apple-touch-icon-180x180\.png/,
+          /\.xml\/?$/,
+          /\.png\/?$/,
+          /\.svg\/?$/,
+          /\.webmanifest\/?$/,
         ],
       }
     }),
