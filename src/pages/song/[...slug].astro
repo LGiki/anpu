@@ -35,6 +35,8 @@ const song = Astro.props;
         song.data.arranger ||
         song.data.composer ||
         song.data.producer ||
+        song.data.songProducer ||
+        song.data.albumProducer ||
         song.data.releaseDate ||
         song.data.isrc ||
         song.data.mixingEngineer ||
@@ -75,6 +77,8 @@ const song = Astro.props;
             arranger={song.data.arranger}
             composer={song.data.composer}
             producer={song.data.producer}
+            songProducer={song.data.songProducer}
+            albumProducer={song.data.albumProducer}
             releaseDate={song.data.releaseDate}
             isrc={song.data.isrc}
             mixingEngineer={song.data.mixingEngineer}

@@ -77,6 +77,10 @@ interface Props {
   harmonica?: string[] | string;
   // 小号
   trumpet?: string[] | string;
+  // 单曲制作人
+  songProducer?: string[] | string;
+  // 专辑制作人
+  albumProducer?: string[] | string;
   // 其他
   extra?: {
     title: string;
@@ -165,6 +169,20 @@ const t = useTranslations(lang);
     props.producer && (
       <p class="break-all">
         {t("songMetadata.producer")}：<MetadataStringsItem value={props.producer} />
+      </p>
+    )
+  }
+  {
+    props.songProducer && (
+      <p class="break-all">
+        {t("songMetadata.songProducer")}：<MetadataStringsItem value={props.songProducer} />
+      </p>
+    )
+  }
+  {
+    props.albumProducer && (
+      <p class="break-all">
+        {t("songMetadata.albumProducer")}：<MetadataStringsItem value={props.albumProducer} />
       </p>
     )
   }

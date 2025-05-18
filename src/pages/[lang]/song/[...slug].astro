@@ -66,6 +66,8 @@ const song = Astro.props;
         song.data.synthesizer ||
         song.data.harmonica ||
         song.data.trumpet ||
+        song.data.songProducer ||
+        song.data.albumProducer ||
         song.data.englishTitle) && (
         <>
           <hr class="my-5 dark:bg-zinc-700/90 dark:color-zinc-700/90 dark:border-zinc-700/90" />
@@ -106,6 +108,8 @@ const song = Astro.props;
             synthesizer={song.data.synthesizer}
             harmonica={song.data.harmonica}
             trumpet={song.data.trumpet}
+            songProducer={song.data.songProducer}
+            albumProducer={song.data.albumProducer}
           />
         </>
       )
