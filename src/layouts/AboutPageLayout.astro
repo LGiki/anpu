@@ -1,16 +1,18 @@
 ---
-import type { RenderResult } from "astro:content";
+import Layout from "./Layout.astro";
+import "@/assets/markdown.css";
 
-interface Props {
-  renderResult?: RenderResult;
-}
-
-const props: Props = Astro.props;
+const { frontmatter } = Astro.props;
 ---
 
-<article class="markdown">
-  {props.renderResult && <props.renderResult.Content />}
-</article>
+<Layout
+  title={frontmatter.title}
+  hideDefaultTitle={frontmatter.hideDefaultTitle}
+>
+  <article class="markdown">
+    <slot />
+  </article>
+</Layout>
 
 <script>
   import { EMAIL } from "@/constants";

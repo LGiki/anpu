@@ -1,3 +1,8 @@
+---
+layout: ../layouts/AboutPageLayout.astro
+title: About
+hideDefaultTitle: true
+---
 # Disclaimer
 
 **本网站为粉丝自发制作，与官方无关，禁止任何人将该网站用于盈利或商业用途。**
