@@ -1,8 +1,8 @@
 export type ContentGroupItem<T> = T & {
-    url: string;
-};
+  url: string
+}
 
 export interface ContentGroup<T> {
-    key: string;
-    list: ContentGroupItem<T>[];
+  key: string
+  list: ContentGroupItem<T>[]
 }

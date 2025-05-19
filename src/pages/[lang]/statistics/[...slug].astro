@@ -1,65 +1,62 @@
 ---
-import SongPerformedStatistics from "@/components/SongPerformedStatistics.astro";
-import { defaultLang } from "@/i18n/ui";
-import Layout from "@/layouts/Layout.astro";
-import { slugify } from "@/utils";
-import { getCollection, type CollectionEntry } from "astro:content";
-import dayjs from "dayjs";
+import { type CollectionEntry, getCollection } from 'astro:content'
+import SongPerformedStatistics from '@/components/SongPerformedStatistics.astro'
+import { defaultLang } from '@/i18n/ui'
+import Layout from '@/layouts/Layout.astro'
+import { slugify } from '@/utils'
+import dayjs from 'dayjs'
 
 export async function getStaticPaths() {
-  const concerts = await getCollection("concert", (concert) => {
-    const [concertLanguage] = concert.id.split("/");
-    return concertLanguage !== defaultLang;
-  });
+  const concerts = await getCollection('concert', (concert) => {
+    const [concertLanguage] = concert.id.split('/')
+    return concertLanguage !== defaultLang
+  })
 
-  const songPerformedCountMapper: Record<string, CollectionEntry<"concert">[]> =
-    {};
+  const songPerformedCountMapper: Record<string, CollectionEntry<'concert'>[]> = {}
 
-  const concertCountByYearMapper: Record<string, number> = {};
+  const concertCountByYearMapper: Record<string, number> = {}
 
-  concerts.forEach((concert) => {
+  for (const concert of concerts) {
     if (concert.data.date) {
-      const concertYear = dayjs(concert.data.date).year().toString();
+      const concertYear = dayjs(concert.data.date).year().toString()
       if (!(concertYear in concertCountByYearMapper)) {
-        concertCountByYearMapper[concertYear] = 0;
+        concertCountByYearMapper[concertYear] = 0
       }
-      concertCountByYearMapper[concertYear]++;
+      concertCountByYearMapper[concertYear]++
     }
-    concert.data.list.forEach((lineText) => {
-      if (lineText.startsWith("*") || lineText.startsWith("Talking")) {
-        return;
+    for (const lineText of concert.data.list) {
+      if (lineText.startsWith('*') || lineText.startsWith('Talking')) {
+        continue
       }
-      let [songTitle] = lineText.split("|");
-      if (songTitle.startsWith("!")) {
-        songTitle = songTitle.slice(1);
+      let [songTitle] = lineText.split('|')
+      if (songTitle.startsWith('!')) {
+        songTitle = songTitle.slice(1)
       }
       if (!(songTitle in songPerformedCountMapper)) {
-        songPerformedCountMapper[songTitle] = [];
+        songPerformedCountMapper[songTitle] = []
       }
-      songPerformedCountMapper[songTitle].push(concert);
-    });
-  });
-
-  const [lang] = concerts[0].id.split("/");
-
-  return Object.entries(songPerformedCountMapper).map(
-    ([songTitle, songConcerts]) => {
-      return {
-        params: {
-          lang: lang,
-          slug: slugify(songTitle),
-        },
-        props: {
-          songTitle,
-          songConcerts,
-          concertCountByYearMapper,
-        },
-      };
+      songPerformedCountMapper[songTitle].push(concert)
     }
-  );
+  }
+
+  const [lang] = concerts[0].id.split('/')
+
+  return Object.entries(songPerformedCountMapper).map(([songTitle, songConcerts]) => {
+    return {
+      params: {
+        lang: lang,
+        slug: slugify(songTitle),
+      },
+      props: {
+        songTitle,
+        songConcerts,
+        concertCountByYearMapper,
+      },
+    }
+  })
 }
 
-const { songTitle, songConcerts, concertCountByYearMapper } = Astro.props;
+const { songTitle, songConcerts, concertCountByYearMapper } = Astro.props
 ---
 
 <Layout title={[songTitle, "Statistics"]}>

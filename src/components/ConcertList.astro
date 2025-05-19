@@ -1,43 +1,41 @@
 ---
-import { defaultLang, type languages } from "@/i18n/ui";
-import { useTranslatedPath } from "@/i18n/utils";
-import { Icon } from "astro-icon/components";
-import type { CollectionEntry } from "astro:content";
-import dayjs from "dayjs";
+import type { CollectionEntry } from 'astro:content'
+import { defaultLang, type languages } from '@/i18n/ui'
+import { useTranslatedPath } from '@/i18n/utils'
+import { Icon } from 'astro-icon/components'
+import dayjs from 'dayjs'
 
 interface Props {
-  concerts: CollectionEntry<"concert">[];
-  language?: keyof typeof languages;
+  concerts: CollectionEntry<'concert'>[]
+  language?: keyof typeof languages
 }
 
-const props: Props = Astro.props;
+const props: Props = Astro.props
 
 const sortedConcertsGroupByYear = props.concerts
   .sort((a, b) => {
-    return dayjs(b.data.date).diff(a.data.date);
+    return dayjs(b.data.date).diff(a.data.date)
   })
   .reduce(
     (acc, concert) => {
-      const concertYear = dayjs(concert.data.date).year().toString();
+      const concertYear = dayjs(concert.data.date).year().toString()
       if (!acc[concertYear]) {
-        acc[concertYear] = [];
+        acc[concertYear] = []
       }
-      acc[concertYear].push(concert);
-      return acc;
+      acc[concertYear].push(concert)
+      return acc
     },
     {} as Record<string, typeof props.concerts>
-  );
+  )
 
-const sortedConcertYears = Object.keys(sortedConcertsGroupByYear).sort(
-  (a, b) => Number(b) - Number(a)
-);
+const sortedConcertYears = Object.keys(sortedConcertsGroupByYear).sort((a, b) => Number(b) - Number(a))
 
 const sortedConcertsList = sortedConcertYears.flatMap((year) => ({
   year: year,
   concerts: sortedConcertsGroupByYear[year],
-}));
+}))
 
-const translatePath = useTranslatedPath(props.language || defaultLang);
+const translatePath = useTranslatedPath(props.language || defaultLang)
 ---
 
 <div class="flex flex-col gap-9">

@@ -1,24 +1,20 @@
 ---
-import {
-  getLangFromUrl,
-  useTranslations,
-  useTranslatedPath,
-} from "@/i18n/utils";
-import { cn } from "@/utils";
-import { Icon } from "astro-icon/components";
+import { getLangFromUrl, useTranslatedPath, useTranslations } from '@/i18n/utils'
+import { cn } from '@/utils'
+import { Icon } from 'astro-icon/components'
 
 interface Props {
-  labelClass?: string;
-  selectClass?: string;
-  years: number[];
+  labelClass?: string
+  selectClass?: string
+  years: number[]
 }
 
-const { year } = Astro.params;
-const props: Props = Astro.props;
+const { year } = Astro.params
+const props: Props = Astro.props
 
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
-const translatePath = useTranslatedPath(lang);
+const lang = getLangFromUrl(Astro.url)
+const t = useTranslations(lang)
+const translatePath = useTranslatedPath(lang)
 ---
 
 <label

@@ -1,51 +1,54 @@
 ---
-import type { GetStaticPaths, InferGetStaticPropsType } from "astro";
-import ConcertPerfromedSongStatisticsList from "@/components/ConcertPerfromedSongStatisticsList.astro";
-import { defaultLang } from "@/i18n/ui";
-import Layout from "@/layouts/Layout.astro";
-import { getCollection } from "astro:content";
-import StatisticsYearSelect from "@/components/StatisticsYearSelect.astro";
-import { getLangFromUrl, useTranslations } from "@/i18n/utils";
+import { getCollection } from 'astro:content'
+import ConcertPerfromedSongStatisticsList from '@/components/ConcertPerfromedSongStatisticsList.astro'
+import StatisticsYearSelect from '@/components/StatisticsYearSelect.astro'
+import { defaultLang } from '@/i18n/ui'
+import { getLangFromUrl, useTranslations } from '@/i18n/utils'
+import Layout from '@/layouts/Layout.astro'
+import type { GetStaticPaths, InferGetStaticPropsType } from 'astro'
 
 export const getStaticPaths = (async () => {
-  const concerts = await getCollection("concert", (concert) => {
-    const [concertLanguage] = concert.id.split("/");
-    return concertLanguage === defaultLang;
-  });
+  const concerts = await getCollection('concert', (concert) => {
+    const [concertLanguage] = concert.id.split('/')
+    return concertLanguage === defaultLang
+  })
 
   const uniqueYears = concerts
     .reduce<number[]>((years, concert) => {
-      const year = concert.data.date.getFullYear();
-      return years.includes(year) ? years : [...years, year];
+      const year = concert.data.date.getFullYear()
+      if (!years.includes(year)) {
+        years.push(year)
+      }
+      return years
     }, [])
-    .sort((a, b) => b - a);
+    .sort((a, b) => b - a)
 
-  const concertsByYear: Record<number, typeof concerts> = {};
+  const concertsByYear: Record<number, typeof concerts> = {}
 
-  concerts.forEach((concert) => {
-    const year = concert.data.date.getFullYear();
+  for (const concert of concerts) {
+    const year = concert.data.date.getFullYear()
     if (!concertsByYear[year]) {
-      concertsByYear[year] = [];
+      concertsByYear[year] = []
     }
-    concertsByYear[year].push(concert);
-  });
+    concertsByYear[year].push(concert)
+  }
 
   return Object.keys(concertsByYear).map((year) => ({
     params: { year },
     props: {
-      concerts: concertsByYear[parseInt(year)],
-      year: parseInt(year),
+      concerts: concertsByYear[Number.parseInt(year)],
+      year: Number.parseInt(year),
       uniqueYears: uniqueYears,
     },
-  }));
-}) satisfies GetStaticPaths;
+  }))
+}) satisfies GetStaticPaths
 
-type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+type Props = InferGetStaticPropsType<typeof getStaticPaths>
 
-const { concerts, year, uniqueYears } = Astro.props as Props;
+const { concerts, year, uniqueYears } = Astro.props as Props
 
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+const lang = getLangFromUrl(Astro.url)
+const t = useTranslations(lang)
 ---
 
 <Layout title={[`${year} ${t("year")}`, "Statistics"]}>

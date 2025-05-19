@@ -1,20 +1,20 @@
 ---
-import { generateContentGroupsByFirstLetter } from "@/utils";
-import type { CollectionEntry } from "astro:content";
-import Badge from "./Badge.astro";
-import { defaultLang } from "@/i18n/ui";
+import type { CollectionEntry } from 'astro:content'
+import { defaultLang } from '@/i18n/ui'
+import { generateContentGroupsByFirstLetter } from '@/utils'
+import Badge from './Badge.astro'
 
 interface Props {
-  songs: CollectionEntry<"song">[];
+  songs: CollectionEntry<'song'>[]
 }
 
-const props: Props = Astro.props;
+const props: Props = Astro.props
 
 const songGroups = generateContentGroupsByFirstLetter(
   props.songs,
-  (song) => song.id.replace(/(\.md)+$/, "").split("/"),
+  (song) => song.id.replace(/(\.md)+$/, '').split('/'),
   defaultLang
-);
+)
 ---
 
 <div class="flex flex-col">

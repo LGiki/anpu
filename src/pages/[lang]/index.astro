@@ -1,16 +1,16 @@
 ---
-import { getCollection } from "astro:content";
-import Layout from "@/layouts/Layout.astro";
-import { defaultLang, languages } from "@/i18n/ui";
-import { getLangFromUrl } from "@/i18n/utils";
-import SongGroupList from "@/components/SongGroupList.astro";
+import { getCollection } from 'astro:content'
+import SongGroupList from '@/components/SongGroupList.astro'
+import { defaultLang, languages } from '@/i18n/ui'
+import { getLangFromUrl } from '@/i18n/utils'
+import Layout from '@/layouts/Layout.astro'
 
-const urlLanguage = getLangFromUrl(Astro.url);
+const urlLanguage = getLangFromUrl(Astro.url)
 
-const songs = await getCollection("song", (song) => {
-  const [lyricLanguage] = song.id.split("/");
-  return lyricLanguage === urlLanguage;
-});
+const songs = await getCollection('song', (song) => {
+  const [lyricLanguage] = song.id.split('/')
+  return lyricLanguage === urlLanguage
+})
 
 export async function getStaticPaths() {
   return Object.entries(languages)
@@ -20,8 +20,8 @@ export async function getStaticPaths() {
         params: {
           lang: locale,
         },
-      };
-    });
+      }
+    })
 }
 ---
 

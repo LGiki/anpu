@@ -1,14 +1,14 @@
 ---
-import Layout from "@/layouts/Layout.astro";
+import Layout from '@/layouts/Layout.astro'
 
-import { getCollection } from "astro:content";
-import { defaultLang } from "@/i18n/ui";
-import SongGroupList from "@/components/SongGroupList.astro";
+import { getCollection } from 'astro:content'
+import SongGroupList from '@/components/SongGroupList.astro'
+import { defaultLang } from '@/i18n/ui'
 
-const songs = await getCollection("song", (song) => {
-  const [lyricLanguage] = song.id.split("/");
-  return lyricLanguage === defaultLang;
-});
+const songs = await getCollection('song', (song) => {
+  const [lyricLanguage] = song.id.split('/')
+  return lyricLanguage === defaultLang
+})
 ---
 
 <Layout title="Lyric">

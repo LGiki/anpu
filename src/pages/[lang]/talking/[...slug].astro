@@ -1,66 +1,60 @@
 ---
-import { getCollection, render } from "astro:content";
-import { slugify } from "@/utils";
-import Layout from "@/layouts/Layout.astro";
-import { defaultLang } from "@/i18n/ui";
-import { Icon } from "astro-icon/components";
-import dayjs from "dayjs";
-import {
-  getLangFromUrl,
-  useTranslatedPath,
-  useTranslations,
-} from "@/i18n/utils";
-import Button from "@/components/Button.astro";
-import TalkingPrevAndNextSongSwitcher from "@/components/TalkingPrevAndNextSongSwitcher.astro";
+import { getCollection, render } from 'astro:content'
+import Button from '@/components/Button.astro'
+import TalkingPrevAndNextSongSwitcher from '@/components/TalkingPrevAndNextSongSwitcher.astro'
+import { defaultLang } from '@/i18n/ui'
+import { getLangFromUrl, useTranslatedPath, useTranslations } from '@/i18n/utils'
+import Layout from '@/layouts/Layout.astro'
+import { slugify } from '@/utils'
+import { Icon } from 'astro-icon/components'
+import dayjs from 'dayjs'
 
-const urlLanguage = getLangFromUrl(Astro.url);
+const urlLanguage = getLangFromUrl(Astro.url)
 
 export async function getStaticPaths() {
-  const talkings = await getCollection("talking", (talking) => {
-    const [talkingLanguage] = talking.id.split("/");
-    return talkingLanguage !== defaultLang;
-  });
+  const talkings = await getCollection('talking', (talking) => {
+    const [talkingLanguage] = talking.id.split('/')
+    return talkingLanguage !== defaultLang
+  })
 
   const talkingsGroupById = talkings.reduce(
     (acc, talking) => {
-      const [_, talkingId] = talking.id.replace(/(\.md)+$/, "").split("/");
+      const [_, talkingId] = talking.id.replace(/(\.md)+$/, '').split('/')
       if (!acc[talkingId]) {
-        acc[talkingId] = [];
+        acc[talkingId] = []
       }
-      acc[talkingId].push(talking);
-      return acc;
+      acc[talkingId].push(talking)
+      return acc
     },
     {} as Record<string, typeof talkings>
-  );
+  )
 
   return Object.entries(talkingsGroupById).map(([talkingId, talkingList]) => {
-    const [talkingLanguage] = talkingList[0].id.split("/");
+    const [talkingLanguage] = talkingList[0].id.split('/')
     const talkings = talkingList.sort((a, b) => {
-      const [, , aFilename] = a.id.replace(/(\.md)+$/, "").split("/");
-      const [, , bFilename] = b.id.replace(/(\.md)+$/, "").split("/");
-      return parseInt(aFilename) - parseInt(bFilename);
-    });
+      const [, , aFilename] = a.id.replace(/(\.md)+$/, '').split('/')
+      const [, , bFilename] = b.id.replace(/(\.md)+$/, '').split('/')
+      return Number.parseInt(aFilename) - Number.parseInt(bFilename)
+    })
     return {
       params: { slug: slugify(talkingId), lang: talkingLanguage },
       props: { talkings },
-    };
-  });
+    }
+  })
 }
 
-const { talkings } = Astro.props;
+const { talkings } = Astro.props
 
 const talkingContents = await Promise.all(
   talkings.map(async (talking) => {
-    return await render(talking);
+    return await render(talking)
   })
-);
+)
 
-const t = useTranslations(urlLanguage);
-const translatePath = useTranslatedPath(urlLanguage);
+const t = useTranslations(urlLanguage)
+const translatePath = useTranslatedPath(urlLanguage)
 
-const isPrevAndNextSongExists = talkings.some(
-  (talking) => talking.data.previousSong || talking.data.nextSong
-);
+const isPrevAndNextSongExists = talkings.some((talking) => talking.data.previousSong || talking.data.nextSong)
 ---
 
 <Layout

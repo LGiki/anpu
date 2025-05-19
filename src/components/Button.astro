@@ -1,17 +1,16 @@
 ---
-import { cn } from "@/utils";
+import { cn } from '@/utils'
+import type { HTMLAttributes } from 'astro/types'
 
-interface Props {
-  id?: string;
-  disabled?: boolean;
-  square?: boolean;
-  title?: string;
-  buttonClass?: string;
-  [key: string]: any;
+interface Props extends HTMLAttributes<'button'> {
+  id?: string
+  disabled?: boolean
+  square?: boolean
+  title?: string
+  buttonClass?: string
 }
 
-const { id, disabled, square, title, buttonClass, ...rest } =
-  Astro.props as Props;
+const { id, disabled, square, title, buttonClass, ...rest } = Astro.props as Props
 ---
 
 <button

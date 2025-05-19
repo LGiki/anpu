@@ -1,22 +1,22 @@
 ---
-import { defaultLang, type languages } from "@/i18n/ui";
-import { useTranslatedPath } from "@/i18n/utils";
-import { slugify } from "@/utils";
-import type { CollectionEntry } from "astro:content";
-import dayjs from "dayjs";
+import type { CollectionEntry } from 'astro:content'
+import { defaultLang, type languages } from '@/i18n/ui'
+import { useTranslatedPath } from '@/i18n/utils'
+import { slugify } from '@/utils'
+import dayjs from 'dayjs'
 
 interface Props {
-  albums: CollectionEntry<"album">[];
-  language?: keyof typeof languages;
+  albums: CollectionEntry<'album'>[]
+  language?: keyof typeof languages
 }
 
-const props: Props = Astro.props;
+const props: Props = Astro.props
 
 const albumsSorted = props.albums.sort((a, b) => {
-  return dayjs(b.data.releaseDate).diff(a.data.releaseDate);
-});
+  return dayjs(b.data.releaseDate).diff(a.data.releaseDate)
+})
 
-const translatePath = useTranslatedPath(props.language || defaultLang);
+const translatePath = useTranslatedPath(props.language || defaultLang)
 ---
 
 <div class="flex flex-col">

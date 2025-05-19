@@ -1,89 +1,85 @@
 ---
-import { defaultLang, type languages } from "@/i18n/ui";
-import { useTranslatedPath, useTranslations } from "@/i18n/utils";
-import { slugify } from "@/utils";
-import { Icon } from "astro-icon/components";
-import type { CollectionEntry } from "astro:content";
-import dayjs from "dayjs";
+import type { CollectionEntry } from 'astro:content'
+import { defaultLang, type languages } from '@/i18n/ui'
+import { useTranslatedPath, useTranslations } from '@/i18n/utils'
+import { slugify } from '@/utils'
+import { Icon } from 'astro-icon/components'
+import dayjs from 'dayjs'
 
 interface Props {
-  talkings: CollectionEntry<"talking">[];
-  language?: keyof typeof languages;
+  talkings: CollectionEntry<'talking'>[]
+  language?: keyof typeof languages
 }
 
-const props: Props = Astro.props;
+const props: Props = Astro.props
 
 // The talking content collection is organized by date
 // for example, the first talking content in 2024-07-13 is in the file `talking/zh-hans/20240713/1.md`
 // so we need to group by date (the date is the folder name, not the frontmatter date)
 const talkingsGroupById = props.talkings.reduce(
   (acc, talking) => {
-    const [_, talkingId] = talking.id.replace(/(\.md)+$/, "").split("/");
+    const [_, talkingId] = talking.id.replace(/(\.md)+$/, '').split('/')
     if (!acc[talkingId]) {
-      acc[talkingId] = [];
+      acc[talkingId] = []
     }
-    acc[talkingId].push(talking);
-    return acc;
+    acc[talkingId].push(talking)
+    return acc
   },
   {} as Record<string, typeof props.talkings>
-);
+)
 
-const translatePath = useTranslatedPath(props.language || defaultLang);
-const t = useTranslations(props.language || defaultLang);
+const translatePath = useTranslatedPath(props.language || defaultLang)
+const t = useTranslations(props.language || defaultLang)
 
 interface Talking {
-  talking: CollectionEntry<"talking">;
-  url: string;
+  talking: CollectionEntry<'talking'>
+  url: string
 }
 
-const talkings: Talking[] = [];
+const talkings: Talking[] = []
 
-Object.keys(talkingsGroupById).forEach((talkingId) => {
+for (const talkingId of Object.keys(talkingsGroupById)) {
   if (talkingsGroupById[talkingId].length === 0) {
-    return;
+    continue
   }
-  const talking = talkingsGroupById[talkingId][0];
-  const url = translatePath(`/talking/${slugify(talkingId)}`);
+  const talking = talkingsGroupById[talkingId][0]
+  const url = translatePath(`/talking/${slugify(talkingId)}`)
   talkings.push({
     talking,
     url,
-  });
-});
+  })
+}
 
 const sortedTalkingsGroupByYear = talkings
   .sort((a, b) => {
-    return dayjs(b.talking.data.date).diff(a.talking.data.date);
+    return dayjs(b.talking.data.date).diff(a.talking.data.date)
   })
   .reduce(
     (acc, talking) => {
-      const talkingYear = talking.talking.data.date
-        ? dayjs(talking.talking.data.date).year().toString()
-        : "unknown";
+      const talkingYear = talking.talking.data.date ? dayjs(talking.talking.data.date).year().toString() : 'unknown'
       if (!acc[talkingYear]) {
-        acc[talkingYear] = [];
+        acc[talkingYear] = []
       }
-      acc[talkingYear].push(talking);
-      return acc;
+      acc[talkingYear].push(talking)
+      return acc
     },
     {} as Record<string, Talking[]>
-  );
+  )
 
-const sortedTalkingYears = Object.keys(sortedTalkingsGroupByYear).sort(
-  (a, b) => {
-    if (a === "unknown") {
-      return 1;
-    }
-    if (b === "unknown") {
-      return -1;
-    }
-    return Number(b) - Number(a);
+const sortedTalkingYears = Object.keys(sortedTalkingsGroupByYear).sort((a, b) => {
+  if (a === 'unknown') {
+    return 1
   }
-);
+  if (b === 'unknown') {
+    return -1
+  }
+  return Number(b) - Number(a)
+})
 
 const sortedTalkingsList = sortedTalkingYears.flatMap((year) => ({
   year: year,
   talkings: sortedTalkingsGroupByYear[year],
-}));
+}))
 ---
 
 <div class="flex flex-col gap-9">

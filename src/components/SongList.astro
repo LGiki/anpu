@@ -1,61 +1,63 @@
 ---
-import { getLangFromUrl, useTranslatedPath } from "@/i18n/utils";
-import { cn, slugify } from "@/utils";
-import { Icon } from "astro-icon/components";
+import { getLangFromUrl, useTranslatedPath } from '@/i18n/utils'
+import { cn, slugify } from '@/utils'
+import { Icon } from 'astro-icon/components'
 
 // This component is designed for concert setlists and album tracklists
 
-const lang = getLangFromUrl(Astro.url);
-const translatePath = useTranslatedPath(lang);
+const lang = getLangFromUrl(Astro.url)
+const translatePath = useTranslatedPath(lang)
 
 interface Props {
-  songTitles: string[];
+  songTitles: string[]
 }
 
-const props: Props = Astro.props;
+const props: Props = Astro.props
 
 interface Song {
-  type: "song" | "talking" | "text";
-  index?: number;
-  text?: string;
-  url?: string;
-  remarks?: string[];
+  type: 'song' | 'talking' | 'text'
+  index?: number
+  text?: string
+  url?: string
+  remarks?: string[]
 }
 
-let songIndex = 0;
+let songIndex = 0
 const songLists: Song[] = props.songTitles.map((lineText) => {
-  if (lineText.startsWith("*")) {
+  if (lineText.startsWith('*')) {
     // Type: text
     return {
-      type: "text",
+      type: 'text',
       text: lineText.slice(1),
-    } as Song;
-  } else if (lineText.startsWith("Talking")) {
+    } as Song
+  }
+
+  if (lineText.startsWith('Talking')) {
     // Type: talking
-    const [talkingText, url] = lineText.split("|");
+    const [talkingText, url] = lineText.split('|')
     return {
-      type: "talking",
+      type: 'talking',
       text: talkingText,
       url: url ? translatePath(url) : undefined,
-    } as Song;
-  } else {
-    // Type: song
-    let [songTitle, ...remarks] = lineText.split("|");
-    let url: string | null = null;
-    if (!lineText.startsWith("!")) {
-      url = translatePath(`/song/${slugify(songTitle)}`);
-    } else {
-      songTitle = songTitle.slice(1);
-    }
-    return {
-      type: "song",
-      index: ++songIndex,
-      text: songTitle,
-      remarks: remarks,
-      url: url,
-    } as Song;
+    } as Song
   }
-});
+
+  // Type: song
+  let [songTitle, ...remarks] = lineText.split('|')
+  let url: string | null = null
+  if (!lineText.startsWith('!')) {
+    url = translatePath(`/song/${slugify(songTitle)}`)
+  } else {
+    songTitle = songTitle.slice(1)
+  }
+  return {
+    type: 'song',
+    index: ++songIndex,
+    text: songTitle,
+    remarks: remarks,
+    url: url,
+  } as Song
+})
 ---
 
 <div class="flex flex-col">

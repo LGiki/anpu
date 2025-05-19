@@ -1,21 +1,21 @@
 ---
-import Header from "@/components/Header.astro";
-import "@/assets/main.css";
-import { DEFAULT_TITLE } from "@/constants";
-import Head from "@/components/Head.astro";
+import Header from '@/components/Header.astro'
+import '@/assets/main.css'
+import Head from '@/components/Head.astro'
+import { DEFAULT_TITLE } from '@/constants'
 
 interface Props {
-  title: string | string[];
-  hideDefaultTitle?: boolean;
+  title: string | string[]
+  hideDefaultTitle?: boolean
 }
 
-const { title, hideDefaultTitle } = Astro.props;
+const { title, hideDefaultTitle } = Astro.props
 
 const pageTitle = hideDefaultTitle
   ? title || DEFAULT_TITLE
   : title
-    ? `${Array.isArray(title) ? title.join(" | ") : title} | ${DEFAULT_TITLE}`
-    : DEFAULT_TITLE;
+    ? `${Array.isArray(title) ? title.join(' | ') : title} | ${DEFAULT_TITLE}`
+    : DEFAULT_TITLE
 ---
 
 <!doctype html>

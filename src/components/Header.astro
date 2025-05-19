@@ -1,109 +1,103 @@
 ---
-import "@fontsource/cinzel/700.css";
-import LanguageSelect from "./LanguageSelect.astro";
-import Button from "./Button.astro";
-import { Icon } from "astro-icon/components";
-import { DEFAULT_TITLE } from "@/constants";
-import {
-  getLangFromUrl,
-  useTranslations,
-  useTranslatedPath,
-} from "@/i18n/utils";
-import { getCollectionNameFromUrl } from "@/utils";
+import '@fontsource/cinzel/700.css'
+import { DEFAULT_TITLE } from '@/constants'
+import { getLangFromUrl, useTranslatedPath, useTranslations } from '@/i18n/utils'
+import { getCollectionNameFromUrl } from '@/utils'
+import { Icon } from 'astro-icon/components'
+import Button from './Button.astro'
+import LanguageSelect from './LanguageSelect.astro'
 
-const lang = getLangFromUrl(Astro.url);
-const collectionName = getCollectionNameFromUrl(Astro.url);
-const t = useTranslations(lang);
-const translatePath = useTranslatedPath(lang);
+const lang = getLangFromUrl(Astro.url)
+const collectionName = getCollectionNameFromUrl(Astro.url)
+const t = useTranslations(lang)
+const translatePath = useTranslatedPath(lang)
 
 interface HeaderTitle {
-  url: string;
-  title: string;
-  hideDefaultTitle?: boolean;
+  url: string
+  title: string
+  hideDefaultTitle?: boolean
 }
 
 const collectionNameToHeader: {
-  [key: string]: HeaderTitle;
+  [key: string]: HeaderTitle
 } = {
   song: {
-    url: "/",
-    title: "Lyric",
+    url: '/',
+    title: 'Lyric',
   },
   album: {
-    url: "/album",
-    title: "Album",
+    url: '/album',
+    title: 'Album',
   },
   concert: {
-    url: "/concert",
-    title: "Concert",
+    url: '/concert',
+    title: 'Concert',
   },
   talking: {
-    url: "/talking",
-    title: "Talking",
+    url: '/talking',
+    title: 'Talking',
   },
   statistics: {
-    url: "/statistics",
-    title: "Statistics",
+    url: '/statistics',
+    title: 'Statistics',
   },
   about: {
-    url: "/about",
-    title: "About",
+    url: '/about',
+    title: 'About',
     hideDefaultTitle: true,
   },
-};
+}
 
 interface NavigationLink {
-  iconName: string;
-  url: string;
-  title: string;
-  target?: "_self" | "_blank" | "_parent" | "_top";
+  iconName: string
+  url: string
+  title: string
+  target?: '_self' | '_blank' | '_parent' | '_top'
 }
 
 const NAVIGATION_LINKS: NavigationLink[] = [
   {
-    iconName: "ph:article-ny-times",
-    url: translatePath("/"),
-    title: t("header.lyric"),
+    iconName: 'ph:article-ny-times',
+    url: translatePath('/'),
+    title: t('header.lyric'),
   },
   {
-    iconName: "ph:vinyl-record",
-    url: translatePath("/album"),
-    title: t("header.album"),
+    iconName: 'ph:vinyl-record',
+    url: translatePath('/album'),
+    title: t('header.album'),
   },
   {
-    iconName: "ph:microphone-stage",
-    url: translatePath("/concert"),
-    title: t("header.concert"),
+    iconName: 'ph:microphone-stage',
+    url: translatePath('/concert'),
+    title: t('header.concert'),
   },
   {
-    iconName: "ph:chat-dots",
-    url: translatePath("/talking"),
-    title: t("header.talking"),
+    iconName: 'ph:chat-dots',
+    url: translatePath('/talking'),
+    title: t('header.talking'),
   },
   {
-    iconName: "ph:chart-bar",
-    url: translatePath("/statistics"),
-    title: t("header.statistics"),
+    iconName: 'ph:chart-bar',
+    url: translatePath('/statistics'),
+    title: t('header.statistics'),
   },
   {
-    iconName: "ph:info",
-    url: translatePath("/about"),
-    title: t("header.about"),
+    iconName: 'ph:info',
+    url: translatePath('/about'),
+    title: t('header.about'),
   },
   {
-    iconName: "ph:cube-focus",
-    url: "https://ar.anpu.me",
-    title: t("header.xiaoheirenAR"),
-    target: "_blank",
+    iconName: 'ph:cube-focus',
+    url: 'https://ar.anpu.me',
+    title: t('header.xiaoheirenAR'),
+    target: '_blank',
   },
-];
+]
 
 const titleUrl =
   collectionName in collectionNameToHeader
-    ? collectionNameToHeader[
-        collectionName as keyof typeof collectionNameToHeader
-      ].url
-    : "/";
+    ? collectionNameToHeader[collectionName as keyof typeof collectionNameToHeader].url
+    : '/'
 ---
 
 <header

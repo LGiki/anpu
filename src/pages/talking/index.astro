@@ -1,13 +1,13 @@
 ---
-import Layout from "@/layouts/Layout.astro";
-import { getCollection } from "astro:content";
-import { defaultLang } from "@/i18n/ui";
-import TalkingList from "@/components/TalkingList.astro";
+import { getCollection } from 'astro:content'
+import TalkingList from '@/components/TalkingList.astro'
+import { defaultLang } from '@/i18n/ui'
+import Layout from '@/layouts/Layout.astro'
 
-const talkings = await getCollection("talking", (talking) => {
-  const [talkingLanguage] = talking.id.split("/");
-  return talkingLanguage === defaultLang;
-});
+const talkings = await getCollection('talking', (talking) => {
+  const [talkingLanguage] = talking.id.split('/')
+  return talkingLanguage === defaultLang
+})
 ---
 
 <Layout title="Talking">

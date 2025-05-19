@@ -1,36 +1,36 @@
 :root {
-    --header-height: 3rem;
-    --mobile-header-height: 2.5rem;
-    --background: #fafafa;
-    /* gray-900 */
-    --foreground: #111827;
+  --header-height: 3rem;
+  --mobile-header-height: 2.5rem;
+  --background: #fafafa;
+  /* gray-900 */
+  --foreground: #111827;
 }
 
 @media (prefers-color-scheme: dark) {
-    :root {
-        /* zinc-900 */
-        --background: #18181b;
-        /* gray-200 */
-        --foreground: #e5e7eb;
-    }
+  :root {
+    /* zinc-900 */
+    --background: #18181b;
+    /* gray-200 */
+    --foreground: #e5e7eb;
+  }
 }
 
 .lyric-text-line {
-    @apply empty:after:content-['_'] empty:after:whitespace-pre;
+  @apply empty:after:content-['_'] empty:after:whitespace-pre;
 }
 
 .song-group-link {
-    @apply flex items-center border-b last:border-b-0 min-h-12 gap-2 text-[var(--foreground)] dark:border-b-zinc-700/90 py-2;
+  @apply flex items-center border-b last:border-b-0 min-h-12 gap-2 text-[var(--foreground)] dark:border-b-zinc-700/90 py-2;
 }
 
 .activable-button {
-    @apply data-[active=true]:bg-rose-100 data-[active=true]:border-rose-200 data-[active=true]:hover:bg-rose-200 data-[active=true]:text-rose-400 dark:data-[bactive=true]:bg-rose-950 dark:data-[active=true]:border-rose-700 dark:data-[active=true]:text-rose-600 dark:hover:data-[active=true]:bg-rose-900/70;
+  @apply data-[active=true]:bg-rose-100 data-[active=true]:border-rose-200 data-[active=true]:hover:bg-rose-200 data-[active=true]:text-rose-400 dark:data-[bactive=true]:bg-rose-950 dark:data-[active=true]:border-rose-700 dark:data-[active=true]:text-rose-600 dark:hover:data-[active=true]:bg-rose-900/70;
 }
 
 .drawer-item {
-    @apply transition-all text-xl duration-75 flex items-center gap-3 flex-shrink-0 px-5 py-1.5 text-gray-500 dark:text-gray-300 hover:text-gray-800 hover:bg-gray-200 cursor-pointer;
+  @apply transition-all text-xl duration-75 flex items-center gap-3 flex-shrink-0 px-5 py-1.5 text-gray-500 dark:text-gray-300 hover:text-gray-800 hover:bg-gray-200 cursor-pointer;
 }
 
 .spoiler {
-    @apply text-black bg-black hover:text-white;
+  @apply text-black bg-black hover:text-white;
 }

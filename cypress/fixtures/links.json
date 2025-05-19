@@ -18,8 +18,5 @@
       "pathname": "/statistics"
     }
   ],
-  "locales": [
-    "",
-    "/zh-hant"
-  ]
+  "locales": ["", "/zh-hant"]
 }

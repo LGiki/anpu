@@ -1,86 +1,81 @@
 ---
-import type { CollectionEntry } from "astro:content";
-import dayjs from "dayjs";
-import { getLangFromUrl, useTranslatedPath } from "@/i18n/utils";
-import { cn, slugify } from "@/utils";
+import type { CollectionEntry } from 'astro:content'
+import { getLangFromUrl, useTranslatedPath } from '@/i18n/utils'
+import { cn, slugify } from '@/utils'
+import dayjs from 'dayjs'
 
-const lang = getLangFromUrl(Astro.url);
-const translatePath = useTranslatedPath(lang);
+const lang = getLangFromUrl(Astro.url)
+const translatePath = useTranslatedPath(lang)
 
 interface Props {
-  concerts: CollectionEntry<"concert">[];
+  concerts: CollectionEntry<'concert'>[]
 }
 
-const props: Props = Astro.props;
+const props: Props = Astro.props
 
 const concertsSortedByDate = props.concerts.sort((a, b) => {
-  return dayjs(b.data.date).diff(a.data.date);
-});
+  return dayjs(b.data.date).diff(a.data.date)
+})
 
 const concertsTableHead = concertsSortedByDate.map((concert) => {
-  const [_, ...slug] = concert.id.split("/");
-  const url = translatePath(`/concert/${slug.join()}`);
+  const [_, ...slug] = concert.id.split('/')
+  const url = translatePath(`/concert/${slug.join()}`)
 
   return {
     title: concert.data.title,
-    date: dayjs(concert.data.date).format("YYYY-MM-DD"),
+    date: dayjs(concert.data.date).format('YYYY-MM-DD'),
     url: url,
-  };
-});
+  }
+})
 
 const maxSetlistLength = concertsSortedByDate.reduce((max, concert) => {
-  const songs = concert.data.list.filter(
-    (lineText) => !lineText.startsWith("Talking") && !lineText.startsWith("*")
-  );
-  return Math.max(max, songs.length);
-}, 0);
+  const songs = concert.data.list.filter((lineText) => !lineText.startsWith('Talking') && !lineText.startsWith('*'))
+  return Math.max(max, songs.length)
+}, 0)
 
 interface Song {
-  text?: string;
-  url?: string;
-  remarks?: string[];
+  text?: string
+  url?: string
+  remarks?: string[]
 }
 
-const concertTableBody: (Song | null)[][] = Array.from(
-  { length: maxSetlistLength },
-  () => Array(concertsSortedByDate.length).fill(null)
-);
+const concertTableBody: (Song | null)[][] = Array.from({ length: maxSetlistLength }, () =>
+  Array(concertsSortedByDate.length).fill(null)
+)
 
 concertsSortedByDate.forEach((concert, concertIndex) => {
   const songs: (string | null)[] = concert.data.list.filter(
     // (lineText) => !lineText.startsWith("Talking") && !lineText.startsWith("*")
-    (lineText) =>
-      !lineText.startsWith("Talking") &&
-      (lineText === "*Encore" || !lineText.startsWith("*"))
-  );
-  let isEncore = false;
-  let songIndex = 0;
-  songs.forEach((lineText) => {
+    (lineText) => !lineText.startsWith('Talking') && (lineText === '*Encore' || !lineText.startsWith('*'))
+  )
+  let isEncore = false
+  let songIndex = 0
+  for (const lineText of songs) {
     if (!lineText) {
-      return;
+      continue
     }
-    if (lineText === "*Encore") {
-      isEncore = true;
-      return;
+    if (lineText === '*Encore') {
+      isEncore = true
+      continue
     }
-    let [songTitle, ...remarks] = lineText.split("|");
-    let url: string | undefined;
-    if (!lineText.startsWith("!")) {
-      url = translatePath(`/song/${slugify(songTitle)}`);
+    let [songTitle, ...remarks] = lineText.split('|')
+    let url: string | undefined
+    if (!lineText.startsWith('!')) {
+      url = translatePath(`/song/${slugify(songTitle)}`)
     } else {
-      songTitle = songTitle.slice(1);
+      songTitle = songTitle.slice(1)
     }
     if (isEncore) {
-      remarks.push("Encore");
+      remarks.push('Encore')
     }
     concertTableBody[songIndex][concertIndex] = {
       text: songTitle,
       remarks: remarks,
       url: url,
-    };
-    songIndex++;
-  });
-});
+    }
+    songIndex++
+  }
+})
 ---
 
 <table class="table-fixed w-full">

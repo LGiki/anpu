@@ -3,11 +3,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
+      "@/*": ["src/*"]
     },
-    "types": [
-      "vite-plugin-pwa/info",
-      "vite-plugin-pwa/client"
-    ],
+    "types": ["vite-plugin-pwa/info", "vite-plugin-pwa/client"]
   }
 }

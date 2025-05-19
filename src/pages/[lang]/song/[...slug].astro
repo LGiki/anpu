@@ -1,29 +1,29 @@
 ---
-import { getCollection } from "astro:content";
-import { slugify } from "@/utils";
-import Layout from "@/layouts/Layout.astro";
-import LyricRenderer from "@/components/LyricRenderer.astro";
-import SongMetadata from "@/components/SongMetadata.astro";
-import LyricFontSizeSwitcher from "@/components/LyricFontSizeSwitcher.astro";
-import BanlamToneSwitcher from "@/components/BanlamToneSwitcher.astro";
-import { defaultLang } from "@/i18n/ui";
+import { getCollection } from 'astro:content'
+import BanlamToneSwitcher from '@/components/BanlamToneSwitcher.astro'
+import LyricFontSizeSwitcher from '@/components/LyricFontSizeSwitcher.astro'
+import LyricRenderer from '@/components/LyricRenderer.astro'
+import SongMetadata from '@/components/SongMetadata.astro'
+import { defaultLang } from '@/i18n/ui'
+import Layout from '@/layouts/Layout.astro'
+import { slugify } from '@/utils'
 
 export async function getStaticPaths() {
-  const songs = await getCollection("song", (song) => {
-    const [lyricLanguage] = song.id.split("/");
-    return lyricLanguage !== defaultLang;
-  });
+  const songs = await getCollection('song', (song) => {
+    const [lyricLanguage] = song.id.split('/')
+    return lyricLanguage !== defaultLang
+  })
 
   return songs.map((song) => {
-    const [lyricLanguage, ...slug] = song.id.replace(/(\.md)+$/, "").split("/");
+    const [lyricLanguage, ...slug] = song.id.replace(/(\.md)+$/, '').split('/')
     return {
       params: { lang: lyricLanguage, slug: slugify(slug.join()) },
       props: song,
-    };
-  });
+    }
+  })
 }
 
-const song = Astro.props;
+const song = Astro.props
 ---
 
 <Layout title={[song.data.title, "Lyric"]}>

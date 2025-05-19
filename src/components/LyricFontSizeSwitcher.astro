@@ -1,11 +1,11 @@
 ---
-import Button from "@/components/Button.astro";
-import ButtonGroup from "@/components/ButtonGroup.astro";
-import { Icon } from "astro-icon/components";
-import { getLangFromUrl, useTranslations } from "@/i18n/utils";
+import Button from '@/components/Button.astro'
+import ButtonGroup from '@/components/ButtonGroup.astro'
+import { getLangFromUrl, useTranslations } from '@/i18n/utils'
+import { Icon } from 'astro-icon/components'
 
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+const lang = getLangFromUrl(Astro.url)
+const t = useTranslations(lang)
 ---
 
 <div>

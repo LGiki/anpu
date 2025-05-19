@@ -1,38 +1,34 @@
 ---
-import Button from "@/components/Button.astro";
-import ConcertMetadata from "@/components/ConcertMetadata.astro";
-import SongList from "@/components/SongList.astro";
-import { defaultLang } from "@/i18n/ui";
-import {
-  getLangFromUrl,
-  useTranslations,
-  useTranslatedPath,
-} from "@/i18n/utils";
-import Layout from "@/layouts/Layout.astro";
-import { slugify } from "@/utils";
-import { Icon } from "astro-icon/components";
-import { getCollection } from "astro:content";
+import { getCollection } from 'astro:content'
+import Button from '@/components/Button.astro'
+import ConcertMetadata from '@/components/ConcertMetadata.astro'
+import SongList from '@/components/SongList.astro'
+import { defaultLang } from '@/i18n/ui'
+import { getLangFromUrl, useTranslatedPath, useTranslations } from '@/i18n/utils'
+import Layout from '@/layouts/Layout.astro'
+import { slugify } from '@/utils'
+import { Icon } from 'astro-icon/components'
 
 export async function getStaticPaths() {
-  const concerts = await getCollection("concert", (concert) => {
-    const [concertLanguage] = concert.id.split("/");
-    return concertLanguage !== defaultLang;
-  });
+  const concerts = await getCollection('concert', (concert) => {
+    const [concertLanguage] = concert.id.split('/')
+    return concertLanguage !== defaultLang
+  })
 
   return concerts.map((concert) => {
-    const [concertLanguage, ...slugs] = concert.id.split("/");
+    const [concertLanguage, ...slugs] = concert.id.split('/')
     return {
       params: { slug: slugify(slugs.join()), lang: concertLanguage },
       props: { concert },
-    };
-  });
+    }
+  })
 }
 
-const { concert } = Astro.props;
+const { concert } = Astro.props
 
-const urlLanguage = getLangFromUrl(Astro.url);
-const t = useTranslations(urlLanguage);
-const translatePath = useTranslatedPath(urlLanguage);
+const urlLanguage = getLangFromUrl(Astro.url)
+const t = useTranslations(urlLanguage)
+const translatePath = useTranslatedPath(urlLanguage)
 ---
 
 <Layout

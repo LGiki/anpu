@@ -1,97 +1,97 @@
 ---
-import { getLangFromUrl, useTranslations } from "@/i18n/utils";
-import { durationToHms } from "@/utils";
-import dayjs from "dayjs";
-import MetadataStringsItem from "./MetadataStringsItem.astro";
-import MetadataContentBlock from "./MetadataContentBlock.astro";
-import MetadataNotes from "./MetadataNotes.astro";
+import { getLangFromUrl, useTranslations } from '@/i18n/utils'
+import { durationToHms } from '@/utils'
+import dayjs from 'dayjs'
+import MetadataContentBlock from './MetadataContentBlock.astro'
+import MetadataNotes from './MetadataNotes.astro'
+import MetadataStringsItem from './MetadataStringsItem.astro'
 
 interface Props {
   // 英文标题
-  englishTitle?: string;
+  englishTitle?: string
   // 专辑
-  album?: string;
+  album?: string
   // 长度（秒）
-  duration?: number;
+  duration?: number
   // 歌手
-  artist?: string[] | string;
+  artist?: string[] | string
   // 作词者
-  lyricist?: string[] | string;
+  lyricist?: string[] | string
   // 编曲者
-  arranger?: string[] | string;
+  arranger?: string[] | string
   // 作曲者
-  composer?: string[] | string;
+  composer?: string[] | string
   // 制作人
-  producer?: string[] | string;
+  producer?: string[] | string
   // 发布日期
-  releaseDate?: Date;
+  releaseDate?: Date
   // ISRC, see <https://en.wikipedia.org/wiki/International_Standard_Recording_Code>.
-  isrc?: string;
+  isrc?: string
   // 混音工程师
-  mixingEngineer?: string[] | string;
+  mixingEngineer?: string[] | string
   // 电吉他
-  electricGuitar?: string[] | string;
+  electricGuitar?: string[] | string
   // 贝斯
-  bass?: string[] | string;
+  bass?: string[] | string
   // 鼓
-  drums?: string[] | string;
+  drums?: string[] | string
   // 键盘
-  keyboard?: string[] | string;
+  keyboard?: string[] | string
   // 吉他
-  guitar?: string[] | string;
+  guitar?: string[] | string
   // 木吉他
-  acousticGuitar?: string[] | string;
+  acousticGuitar?: string[] | string
   // 钢琴
-  piano?: string[] | string;
+  piano?: string[] | string
   // 电子钢琴
-  digitalPiano?: string[] | string;
+  digitalPiano?: string[] | string
   // 钢琴录制
-  pianoRecording?: string[] | string;
+  pianoRecording?: string[] | string
   // 录音工程师
-  recordingEngineer?: string[] | string;
+  recordingEngineer?: string[] | string
   // 母带工程师
-  masteringEngineer?: string[] | string;
+  masteringEngineer?: string[] | string
   // 录音室
-  recordingStudio?: string[] | string;
+  recordingStudio?: string[] | string
   // 备注
-  notes?: string[] | string;
+  notes?: string[] | string
   // 低音提琴
-  doubleBass?: string[] | string;
+  doubleBass?: string[] | string
   // 联合制作人
-  coProducer?: string[] | string;
+  coProducer?: string[] | string
   // 统筹
-  coordinator?: string[] | string;
+  coordinator?: string[] | string
   // 大提琴
-  cello?: string[] | string;
+  cello?: string[] | string
   // 大提琴编曲
-  celloArranger?: string[] | string;
+  celloArranger?: string[] | string
   // 尼龙吉他
-  nylonGuitar?: string[] | string;
+  nylonGuitar?: string[] | string
   // 和声编写
-  backingVocalArranger?: string[] | string;
+  backingVocalArranger?: string[] | string
   // 和声
-  backingVocal?: string[] | string;
+  backingVocal?: string[] | string
   // 合成器
-  synthesizer?: string[] | string;
+  synthesizer?: string[] | string
   // 口琴
-  harmonica?: string[] | string;
+  harmonica?: string[] | string
   // 小号
-  trumpet?: string[] | string;
+  trumpet?: string[] | string
   // 单曲制作人
-  songProducer?: string[] | string;
+  songProducer?: string[] | string
   // 专辑制作人
-  albumProducer?: string[] | string;
+  albumProducer?: string[] | string
   // 其他
   extra?: {
-    title: string;
-    value: string[] | string;
-  }[];
+    title: string
+    value: string[] | string
+  }[]
 }
 
-const props = Astro.props;
+const props = Astro.props
 
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+const lang = getLangFromUrl(Astro.url)
+const t = useTranslations(lang)
 ---
 
 <MetadataContentBlock>

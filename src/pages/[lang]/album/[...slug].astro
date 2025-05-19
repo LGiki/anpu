@@ -1,31 +1,31 @@
 ---
-import AlbumMetadata from "@/components/AlbumMetadata.astro";
-import SongList from "@/components/SongList.astro";
-import { defaultLang } from "@/i18n/ui";
-import Layout from "@/layouts/Layout.astro";
-import { slugify } from "@/utils";
-import { getCollection } from "astro:content";
+import { getCollection } from 'astro:content'
+import AlbumMetadata from '@/components/AlbumMetadata.astro'
+import SongList from '@/components/SongList.astro'
+import { defaultLang } from '@/i18n/ui'
+import Layout from '@/layouts/Layout.astro'
+import { slugify } from '@/utils'
 
 export async function getStaticPaths() {
-  const albums = await getCollection("album", (album) => {
-    const [albumLanguage] = album.id.split("/");
-    return albumLanguage !== defaultLang;
-  });
+  const albums = await getCollection('album', (album) => {
+    const [albumLanguage] = album.id.split('/')
+    return albumLanguage !== defaultLang
+  })
 
   return albums.map((album) => {
-    const [albumLanguage, ...slug] = album.id.split("/");
-    let url = slugify(slug.join());
+    const [albumLanguage, ...slug] = album.id.split('/')
+    let url = slugify(slug.join())
     if (album.data.customSlug) {
-      url = album.data.customSlug;
+      url = album.data.customSlug
     }
     return {
       params: { slug: url, lang: albumLanguage },
       props: album,
-    };
-  });
+    }
+  })
 }
 
-const album = Astro.props;
+const album = Astro.props
 ---
 
 <Layout title={[album.data.title, "Album"]}>

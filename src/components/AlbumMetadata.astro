@@ -1,41 +1,34 @@
 ---
-import { getLangFromUrl, useTranslations } from "@/i18n/utils";
-import MetadataContentBlock from "./MetadataContentBlock.astro";
-import MetadataStringsItem from "./MetadataStringsItem.astro";
-import MetadataNotes from "./MetadataNotes.astro";
+import { getLangFromUrl, useTranslations } from '@/i18n/utils'
+import MetadataContentBlock from './MetadataContentBlock.astro'
+import MetadataNotes from './MetadataNotes.astro'
+import MetadataStringsItem from './MetadataStringsItem.astro'
 
 interface Props {
   // 英文标题
-  englishTitle?: string;
+  englishTitle?: string
   // 总监制
-  chiefExecutiveProducer?: string;
+  chiefExecutiveProducer?: string
   // 音乐总监
-  musicDirector?: string;
+  musicDirector?: string
   // 制作人
-  producer?: string[] | string;
+  producer?: string[] | string
   // 联合制作人
-  coProducer?: string[] | string;
+  coProducer?: string[] | string
   // 统筹
-  coordinator?: string[] | string;
+  coordinator?: string[] | string
   // 专辑格式
-  albumFormat?: "CD" | "Vinyl" | "Digital" | "Cassette" | "Streaming";
+  albumFormat?: 'CD' | 'Vinyl' | 'Digital' | 'Cassette' | 'Streaming'
   // 专辑类型
-  albumType?:
-    | "EP"
-    | "LP"
-    | "Mixtape"
-    | "Single"
-    | "Compilation"
-    | "LiveAlbum"
-    | "RemixAlbum";
+  albumType?: 'EP' | 'LP' | 'Mixtape' | 'Single' | 'Compilation' | 'LiveAlbum' | 'RemixAlbum'
   // 备注
-  notes?: string[] | string;
+  notes?: string[] | string
 }
 
-const props = Astro.props;
+const props = Astro.props
 
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+const lang = getLangFromUrl(Astro.url)
+const t = useTranslations(lang)
 ---
 
 <MetadataContentBlock class="leading-7">

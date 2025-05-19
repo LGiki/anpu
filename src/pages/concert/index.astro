@@ -1,24 +1,20 @@
 ---
-import Layout from "@/layouts/Layout.astro";
-import { getCollection } from "astro:content";
-import { defaultLang } from "@/i18n/ui";
-import ConcertList from "@/components/ConcertList.astro";
-import {
-  getLangFromUrl,
-  useTranslations,
-  useTranslatedPath,
-} from "@/i18n/utils";
-import Button from "@/components/Button.astro";
-import { Icon } from "astro-icon/components";
+import { getCollection } from 'astro:content'
+import Button from '@/components/Button.astro'
+import ConcertList from '@/components/ConcertList.astro'
+import { defaultLang } from '@/i18n/ui'
+import { getLangFromUrl, useTranslatedPath, useTranslations } from '@/i18n/utils'
+import Layout from '@/layouts/Layout.astro'
+import { Icon } from 'astro-icon/components'
 
-const concerts = await getCollection("concert", (concert) => {
-  const [concertLanguage] = concert.id.split("/");
-  return concertLanguage === defaultLang;
-});
+const concerts = await getCollection('concert', (concert) => {
+  const [concertLanguage] = concert.id.split('/')
+  return concertLanguage === defaultLang
+})
 
-const urlLanguage = getLangFromUrl(Astro.url);
-const t = useTranslations(urlLanguage);
-const translatePath = useTranslatedPath(urlLanguage);
+const urlLanguage = getLangFromUrl(Astro.url)
+const t = useTranslations(urlLanguage)
+const translatePath = useTranslatedPath(urlLanguage)
 ---
 
 <Layout title="Concert">

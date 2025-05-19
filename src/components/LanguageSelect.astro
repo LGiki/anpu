@@ -1,22 +1,22 @@
 ---
-import { languages } from "@/i18n/ui";
-import { Icon } from "astro-icon/components";
-import { getLangFromUrl, localizedUrl, useTranslations } from "@/i18n/utils";
-import { cn } from "@/utils";
+import { languages } from '@/i18n/ui'
+import { getLangFromUrl, localizedUrl, useTranslations } from '@/i18n/utils'
+import { cn } from '@/utils'
+import { Icon } from 'astro-icon/components'
 
 interface Props {
-  labelClass?: string;
-  selectClass?: string;
+  labelClass?: string
+  selectClass?: string
 }
 
 function localizedPathname(locale: string): string {
-  return localizedUrl(Astro.url, locale).pathname.replace(/\/+$/, "");
+  return localizedUrl(Astro.url, locale).pathname.replace(/\/+$/, '')
 }
 
-const currentLang = getLangFromUrl(Astro.url);
-const t = useTranslations(currentLang);
+const currentLang = getLangFromUrl(Astro.url)
+const t = useTranslations(currentLang)
 
-const props: Props = Astro.props;
+const props: Props = Astro.props
 ---
 
 <label

@@ -1,25 +1,28 @@
 ---
-import ConcertPerfromedSongStatisticsList from "@/components/ConcertPerfromedSongStatisticsList.astro";
-import StatisticsYearSelect from "@/components/StatisticsYearSelect.astro";
-import { defaultLang } from "@/i18n/ui";
-import { getLangFromUrl, useTranslations } from "@/i18n/utils";
-import Layout from "@/layouts/Layout.astro";
-import { getCollection } from "astro:content";
+import { getCollection } from 'astro:content'
+import ConcertPerfromedSongStatisticsList from '@/components/ConcertPerfromedSongStatisticsList.astro'
+import StatisticsYearSelect from '@/components/StatisticsYearSelect.astro'
+import { defaultLang } from '@/i18n/ui'
+import { getLangFromUrl, useTranslations } from '@/i18n/utils'
+import Layout from '@/layouts/Layout.astro'
 
-const concerts = await getCollection("concert", (concert) => {
-  const [concertLanguage] = concert.id.split("/");
-  return concertLanguage === defaultLang;
-});
+const concerts = await getCollection('concert', (concert) => {
+  const [concertLanguage] = concert.id.split('/')
+  return concertLanguage === defaultLang
+})
 
 const uniqueYears = concerts
   .reduce<number[]>((years, concert) => {
-    const year = concert.data.date.getFullYear();
-    return years.includes(year) ? years : [...years, year];
+    const year = concert.data.date.getFullYear()
+    if (!years.includes(year)) {
+      years.push(year)
+    }
+    return years
   }, [])
-  .sort((a, b) => b - a);
+  .sort((a, b) => b - a)
 
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+const lang = getLangFromUrl(Astro.url)
+const t = useTranslations(lang)
 ---
 
 <Layout title={[t("statistics.allYears"), "Statistics"]}>

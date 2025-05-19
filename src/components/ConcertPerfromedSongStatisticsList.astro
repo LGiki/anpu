@@ -1,33 +1,29 @@
 ---
-import {
-  getLangFromUrl,
-  useTranslatedPath,
-  useTranslations,
-} from "@/i18n/utils";
-import { slugify } from "@/utils";
-import type { CollectionEntry } from "astro:content";
+import type { CollectionEntry } from 'astro:content'
+import { getLangFromUrl, useTranslatedPath, useTranslations } from '@/i18n/utils'
+import { slugify } from '@/utils'
 
 interface Props {
-  concerts: CollectionEntry<"concert">[];
-  year?: number;
+  concerts: CollectionEntry<'concert'>[]
+  year?: number
 }
 
-const { concerts, year } = Astro.props;
+const { concerts, year } = Astro.props
 
-const lang = getLangFromUrl(Astro.url);
-const translatePath = useTranslatedPath(lang);
-const t = useTranslations(lang);
+const lang = getLangFromUrl(Astro.url)
+const translatePath = useTranslatedPath(lang)
+const t = useTranslations(lang)
 
-const songPerformedCountMapper: Record<string, number> = {};
+const songPerformedCountMapper: Record<string, number> = {}
 
-concerts.forEach((concert) => {
-  concert.data.list.forEach((lineText) => {
-    if (lineText.startsWith("*") || lineText.startsWith("Talking")) {
-      return;
+for (const concert of concerts) {
+  for (const lineText of concert.data.list) {
+    if (lineText.startsWith('*') || lineText.startsWith('Talking')) {
+      continue
     }
-    let [songTitle] = lineText.split("|");
-    if (songTitle.startsWith("!")) {
-      songTitle = songTitle.slice(1);
+    let [songTitle] = lineText.split('|')
+    if (songTitle.startsWith('!')) {
+      songTitle = songTitle.slice(1)
     }
     // if (songTitle.startsWith("!")) {
     //   const realSongTitle = songTitle.slice(1);
@@ -47,31 +43,31 @@ concerts.forEach((concert) => {
     //   }
     // }
     if (!(songTitle in songPerformedCountMapper)) {
-      songPerformedCountMapper[songTitle] = 0;
+      songPerformedCountMapper[songTitle] = 0
     }
-    songPerformedCountMapper[songTitle]++;
-  });
-});
-
-interface SongStatistic {
-  songTitle: string;
-  songUrl?: string;
-  performedCount: number;
+    songPerformedCountMapper[songTitle]++
+  }
 }
 
-const songStatistics: SongStatistic[] = [];
+interface SongStatistic {
+  songTitle: string
+  songUrl?: string
+  performedCount: number
+}
+
+const songStatistics: SongStatistic[] = []
 
 Object.entries(songPerformedCountMapper).map(([songTitle, performedCount]) => {
   songStatistics.push({
-    songTitle: songTitle.startsWith("!") ? songTitle.slice(1) : songTitle,
+    songTitle: songTitle.startsWith('!') ? songTitle.slice(1) : songTitle,
     songUrl: translatePath(`/statistics/${slugify(songTitle)}`),
     performedCount: performedCount,
-  });
-});
+  })
+})
 
 songStatistics.sort((a, b) => {
-  return b.performedCount - a.performedCount;
-});
+  return b.performedCount - a.performedCount
+})
 ---
 
 <div class="flex flex-col">

@@ -1,24 +1,20 @@
 ---
-import ConcertTableView from "@/components/ConcertTableView.astro";
-import { defaultLang } from "@/i18n/ui";
-import ConcertTableLayout from "@/layouts/ConcertTableLayout.astro";
-import { getCollection } from "astro:content";
-import {
-  getLangFromUrl,
-  useTranslations,
-  useTranslatedPath,
-} from "@/i18n/utils";
-import Button from "@/components/Button.astro";
-import { Icon } from "astro-icon/components";
+import { getCollection } from 'astro:content'
+import Button from '@/components/Button.astro'
+import ConcertTableView from '@/components/ConcertTableView.astro'
+import { defaultLang } from '@/i18n/ui'
+import { getLangFromUrl, useTranslatedPath, useTranslations } from '@/i18n/utils'
+import ConcertTableLayout from '@/layouts/ConcertTableLayout.astro'
+import { Icon } from 'astro-icon/components'
 
-const concerts = await getCollection("concert", (concert) => {
-  const [concertLanguage] = concert.id.split("/");
-  return concertLanguage === defaultLang;
-});
+const concerts = await getCollection('concert', (concert) => {
+  const [concertLanguage] = concert.id.split('/')
+  return concertLanguage === defaultLang
+})
 
-const urlLanguage = getLangFromUrl(Astro.url);
-const t = useTranslations(urlLanguage);
-const translatePath = useTranslatedPath(urlLanguage);
+const urlLanguage = getLangFromUrl(Astro.url)
+const t = useTranslations(urlLanguage)
+const translatePath = useTranslatedPath(urlLanguage)
 ---
 
 <ConcertTableLayout title="Concert">

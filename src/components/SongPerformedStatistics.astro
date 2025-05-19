@@ -1,53 +1,50 @@
 ---
-import type { CollectionEntry } from "astro:content";
-import dayjs from "dayjs";
-import ConcertList from "./ConcertList.astro";
-import { getLangFromUrl, useTranslations } from "@/i18n/utils";
+import type { CollectionEntry } from 'astro:content'
+import { getLangFromUrl, useTranslations } from '@/i18n/utils'
+import dayjs from 'dayjs'
+import ConcertList from './ConcertList.astro'
 
 interface Props {
-  songTitle: string;
-  songConcerts: CollectionEntry<"concert">[];
-  concertCountByYearMapper: Record<string, number>;
+  songTitle: string
+  songConcerts: CollectionEntry<'concert'>[]
+  concertCountByYearMapper: Record<string, number>
 }
 
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+const lang = getLangFromUrl(Astro.url)
+const t = useTranslations(lang)
 
-const { songTitle, songConcerts, concertCountByYearMapper } = Astro.props;
+const { songTitle, songConcerts, concertCountByYearMapper } = Astro.props
 
 const songConcertsSorted = songConcerts.sort((a, b) => {
-  return dayjs(b.data.date).diff(a.data.date);
-});
+  return dayjs(b.data.date).diff(a.data.date)
+})
 
-const songConcertPerformedCountByYearMapper: Record<string, number> = {};
+const songConcertPerformedCountByYearMapper: Record<string, number> = {}
 
-songConcerts.forEach((concert) => {
+for (const concert of songConcerts) {
   if (concert.data.date) {
-    const concertYear = dayjs(concert.data.date).year().toString();
+    const concertYear = dayjs(concert.data.date).year().toString()
     if (!(concertYear in songConcertPerformedCountByYearMapper)) {
-      songConcertPerformedCountByYearMapper[concertYear] = 0;
+      songConcertPerformedCountByYearMapper[concertYear] = 0
     }
-    songConcertPerformedCountByYearMapper[concertYear]++;
+    songConcertPerformedCountByYearMapper[concertYear]++
   }
-});
-
-interface SongPerformedStatisticByYear {
-  year: string;
-  concertCount: number;
-  songPerformedCount: number;
 }
 
-const songPerformedStatisticsByYear: SongPerformedStatisticByYear[] = [];
+interface SongPerformedStatisticByYear {
+  year: string
+  concertCount: number
+  songPerformedCount: number
+}
+
+const songPerformedStatisticsByYear: SongPerformedStatisticByYear[] = []
 Object.entries(concertCountByYearMapper).map(([year, concertCount]) => {
   songPerformedStatisticsByYear.push({
     year: year,
     concertCount: concertCount,
-    songPerformedCount:
-      year in songConcertPerformedCountByYearMapper
-        ? songConcertPerformedCountByYearMapper[year]
-        : 0,
-  });
-});
+    songPerformedCount: year in songConcertPerformedCountByYearMapper ? songConcertPerformedCountByYearMapper[year] : 0,
+  })
+})
 ---
 
 <div class="flex flex-col">
