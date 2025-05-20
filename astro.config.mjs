@@ -1,3 +1,4 @@
+import mdx from '@astrojs/mdx'
 import sitemap from '@astrojs/sitemap'
 import tailwind from '@astrojs/tailwind'
 import AstroPWA from '@vite-pwa/astro'
@@ -92,6 +93,7 @@ export default defineConfig({
         ],
       },
     }),
+    mdx(),
   ],
   devToolbar: {
     enabled: false,

@@ -1,0 +1,26 @@
+---
+import type { HTMLAttributes } from 'astro/types'
+
+interface Props extends HTMLAttributes<'a'> {
+  title: string
+}
+
+const { title, ...rest }: Props = Astro.props
+---
+<a 
+  style={{ 
+    textDecoration: 'none', 
+    lineHeight: 'normal',
+  }}
+  class="cursor-pointer"
+  title={title}
+  aria-label={title}
+  {...rest}
+>
+  <div class="flex rounded-lg border py-3 px-3 shadow items-center gap-2 from-white to-zinc-100 dark:from-zinc-700 dark:to-zinc-900 dark:border-zinc-600 bg-gradient-to-br">
+    <slot />
+    <div class="flex flex-col flex-shrink-0">
+      <span class="text-lg">{title}</span>
+    </div>
+  </div>
+</a>

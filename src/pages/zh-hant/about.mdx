@@ -3,6 +3,11 @@ layout: ../../layouts/AboutPageLayout.astro
 title: About
 hideDefaultTitle: true
 ---
+import CardLink from '../../components/CardLink.astro';
+import Icon from 'node_modules/astro-icon/components/Icon.astro'
+import { Image } from 'astro:assets';
+import wrappedIcon2024 from '../../assets/icons/2024-wrapped.svg'
+
 # Disclaimer
 
 **本網站為粉絲自發製作，與官方無關，禁止任何人將該網站用於盈利或商業用途。**
@@ -22,3 +27,35 @@ hideDefaultTitle: true
 目前大部分歌詞已整理歸檔完畢，但仍有很多歌曲的元資料待補齊，Talking 也正在一點點整理中，歡迎各位老師提供幫助。
 
 🤝 與你握手，日後常相見！
+
+# 一些小東西
+
+## 焦安溥年度報告
+
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+  <CardLink
+    title='2024 焦安溥年度報告' 
+    target="_blank" 
+    href='https://2024.anpu.me'
+  >
+    <Image 
+        src={wrappedIcon2024} 
+        alt="2024 焦安溥年度報告" 
+        width={40}
+        height={40}
+        class="rounded"
+    />
+  </CardLink>
+</div>
+
+## 一些小玩具
+
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+  <CardLink
+    title='小黑人 AR' 
+    target="_blank" 
+    href='https://ar.anpu.me'
+  >
+    <Icon name="ph:cube-focus-duotone" size={40}/>
+  </CardLink>
+</div>

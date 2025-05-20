@@ -1,0 +1,15 @@
+.markdown {
+  @apply text-[var(--foreground)] leading-7 space-y-4 hyphens-auto;
+}
+
+.markdown a {
+  @apply underline;
+}
+
+.markdown h1 {
+  @apply font-semibold text-2xl text-[var(--foreground)] my-3 pb-1;
+}
+
+.markdown h2 {
+  @apply font-medium text-xl text-[var(--foreground)] pb-1;
+}
