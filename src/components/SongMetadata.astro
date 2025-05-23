@@ -1,4 +1,9 @@
 ---
+import type { CollectionEntry } from 'astro:content'
+import type { z } from 'astro:content'
+// biome-ignore lint/style/useImportType: <explanation>
+import { songCollectionSchema } from '@/content.config'
+import { defaultLang, ui } from '@/i18n/ui'
 import { getLangFromUrl, useTranslations } from '@/i18n/utils'
 import { durationToHms } from '@/utils'
 import dayjs from 'dayjs'
@@ -6,348 +11,52 @@ import MetadataContentBlock from './MetadataContentBlock.astro'
 import MetadataNotes from './MetadataNotes.astro'
 import MetadataStringsItem from './MetadataStringsItem.astro'
 
+type SongMetadataKey = keyof typeof songCollectionSchema.shape
+type NotesMetadataType = z.infer<(typeof songCollectionSchema.shape)['notes']>
+type ExtraMetadataType = z.infer<(typeof songCollectionSchema.shape)['extra']>
+
 interface Props {
-  // 英文标题
-  englishTitle?: string
-  // 专辑
-  album?: string
-  // 长度（秒）
-  duration?: number
-  // 歌手
-  artist?: string[] | string
-  // 作词者
-  lyricist?: string[] | string
-  // 编曲者
-  arranger?: string[] | string
-  // 作曲者
-  composer?: string[] | string
-  // 制作人
-  producer?: string[] | string
-  // 发布日期
-  releaseDate?: Date
-  // ISRC, see <https://en.wikipedia.org/wiki/International_Standard_Recording_Code>.
-  isrc?: string
-  // 混音工程师
-  mixingEngineer?: string[] | string
-  // 电吉他
-  electricGuitar?: string[] | string
-  // 贝斯
-  bass?: string[] | string
-  // 鼓
-  drums?: string[] | string
-  // 键盘
-  keyboard?: string[] | string
-  // 吉他
-  guitar?: string[] | string
-  // 木吉他
-  acousticGuitar?: string[] | string
-  // 钢琴
-  piano?: string[] | string
-  // 电子钢琴
-  digitalPiano?: string[] | string
-  // 钢琴录制
-  pianoRecording?: string[] | string
-  // 录音工程师
-  recordingEngineer?: string[] | string
-  // 母带工程师
-  masteringEngineer?: string[] | string
-  // 录音室
-  recordingStudio?: string[] | string
-  // 备注
-  notes?: string[] | string
-  // 低音提琴
-  doubleBass?: string[] | string
-  // 联合制作人
-  coProducer?: string[] | string
-  // 统筹
-  coordinator?: string[] | string
-  // 大提琴
-  cello?: string[] | string
-  // 大提琴编曲
-  celloArranger?: string[] | string
-  // 尼龙吉他
-  nylonGuitar?: string[] | string
-  // 和声编写
-  backingVocalArranger?: string[] | string
-  // 和声
-  backingVocal?: string[] | string
-  // 合成器
-  synthesizer?: string[] | string
-  // 口琴
-  harmonica?: string[] | string
-  // 小号
-  trumpet?: string[] | string
-  // 单曲制作人
-  songProducer?: string[] | string
-  // 专辑制作人
-  albumProducer?: string[] | string
-  // 其他
-  extra?: {
-    title: string
-    value: string[] | string
-  }[]
+  song: CollectionEntry<'song'>
 }
 
-const props = Astro.props
+const { song } = Astro.props
 
 const lang = getLangFromUrl(Astro.url)
 const t = useTranslations(lang)
+
+const IgnoreMetadataKeys: SongMetadataKey[] = ['title', 'hasBanlamTone']
 ---
 
 <MetadataContentBlock>
   {
-    props.englishTitle && (
-      <p class="break-all">
-        {t("songMetadata.englishTitle")}：{props.englishTitle}
-      </p>
-    )
+    Object.entries(songCollectionSchema.shape).map(([key, fieldSchema]) => {
+      const typedKey = key as SongMetadataKey
+      const fieldDescription = fieldSchema._def.description as keyof (typeof ui)[typeof defaultLang]
+      if (!IgnoreMetadataKeys.includes(typedKey)) {
+        let metadataValue = song.data[typedKey]
+        if (metadataValue && fieldDescription) {
+          if (metadataValue instanceof Date) {
+            metadataValue = dayjs(metadataValue).format('YYYY-MM-DD')
+          }
+          if (typedKey === 'duration') {
+            metadataValue = durationToHms(metadataValue as number)
+          }
+          if (typedKey === 'notes') {
+            return (<MetadataNotes notes={metadataValue as NotesMetadataType} />)
+          }
+          if (typedKey === 'extra') {
+            return (metadataValue as ExtraMetadataType)!
+              .map(extraItem => (
+                <p class="break-all">
+                  {extraItem.title}：<MetadataStringsItem value={extraItem.value}/>
+                </p>
+              ))
+          }
+          return (
+            <p class="break-all">{t(fieldDescription)}：<MetadataStringsItem value={metadataValue as string | string[] | number}/></p>
+          )
+        }
+      }
+    })
   }
-  {
-    props.duration && (
-      <p class="break-all">
-        {t("songMetadata.duration")}：{durationToHms(props.duration)}
-      </p>
-    )
-  }
-  {
-    props.album && (
-      <p class="break-all">
-        {t("songMetadata.album")}：{props.album}
-      </p>
-    )
-  }
-  {
-    props.releaseDate && (
-      <p class="break-all">
-        {t("songMetadata.releaseDate")}：{dayjs(props.releaseDate).format("YYYY-MM-DD")}
-      </p>
-    )
-  }
-  {
-    props.artist && (
-      <p class="break-all">
-        {t("songMetadata.artist")}：<MetadataStringsItem value={props.artist} />
-      </p>
-    )
-  }
-  {
-    props.lyricist && (
-      <p class="break-all">
-        {t("songMetadata.lyricist")}：<MetadataStringsItem value={props.lyricist} />
-      </p>
-    )
-  }
-  {
-    props.arranger && (
-      <p class="break-all">
-        {t("songMetadata.arranger")}：<MetadataStringsItem value={props.arranger} />
-      </p>
-    )
-  }
-  {
-    props.backingVocalArranger && (
-      <p class="break-all">
-        {t("songMetadata.backingVocalArranger")}：<MetadataStringsItem value={props.backingVocalArranger} />
-      </p>
-    )
-  }
-  {
-    props.celloArranger && (
-      <p class="break-all">
-        {t("songMetadata.celloArranger")}：<MetadataStringsItem value={props.celloArranger} />
-      </p>
-    )
-  }
-  {
-    props.composer && (
-      <p class="break-all">
-        {t("songMetadata.composer")}：<MetadataStringsItem value={props.composer} />
-      </p>
-    )
-  }
-  {
-    props.producer && (
-      <p class="break-all">
-        {t("songMetadata.producer")}：<MetadataStringsItem value={props.producer} />
-      </p>
-    )
-  }
-  {
-    props.songProducer && (
-      <p class="break-all">
-        {t("songMetadata.songProducer")}：<MetadataStringsItem value={props.songProducer} />
-      </p>
-    )
-  }
-  {
-    props.albumProducer && (
-      <p class="break-all">
-        {t("songMetadata.albumProducer")}：<MetadataStringsItem value={props.albumProducer} />
-      </p>
-    )
-  }
-  {
-    props.coProducer && (
-      <p class="break-all">
-        {t("songMetadata.coProducer")}：<MetadataStringsItem value={props.coProducer} />
-      </p>
-    )
-  }
-  {
-    props.coordinator && (
-      <p class="break-all">
-        {t("songMetadata.coordinator")}：<MetadataStringsItem value={props.coordinator} />
-      </p>
-    )
-  }
-  {
-    props.backingVocal && (
-      <p class="break-all">
-        {t("songMetadata.backingVocal")}：<MetadataStringsItem value={props.backingVocal} />
-      </p>
-    )
-  }
-  {
-    props.guitar && (
-      <p class="break-all">
-        {t("songMetadata.guitar")}：<MetadataStringsItem value={props.guitar} />
-      </p>
-    )
-  }
-  {
-    props.acousticGuitar && (
-      <p class="break-all">
-        {t("songMetadata.acousticGuitar")}：<MetadataStringsItem value={props.acousticGuitar} />
-      </p>
-    )
-  }
-  {
-    props.electricGuitar && (
-      <p class="break-all">
-        {t("songMetadata.electricGuitar")}：<MetadataStringsItem value={props.electricGuitar} />
-      </p>
-    )
-  }
-  {
-    props.nylonGuitar && (
-      <p class="break-all">
-        {t("songMetadata.nylonGuitar")}：<MetadataStringsItem value={props.nylonGuitar} />
-      </p>
-    )
-  }
-  {
-    props.bass && (
-      <p class="break-all">
-        {t("songMetadata.bass")}：<MetadataStringsItem value={props.bass} />
-      </p>
-    )
-  }
-  {
-    props.doubleBass && (
-      <p class="break-all">
-        {t("songMetadata.doubleBass")}：<MetadataStringsItem value={props.doubleBass} />
-      </p>
-    )
-  }
-  {
-    props.drums && (
-      <p class="break-all">
-        {t("songMetadata.drums")}：<MetadataStringsItem value={props.drums} />
-      </p>
-    )
-  }
-  {
-    props.piano && (
-      <p class="break-all">
-        {t("songMetadata.piano")}：<MetadataStringsItem value={props.piano} />
-      </p>
-    )
-  }
-  {
-    props.digitalPiano && (
-      <p class="break-all">
-        {t("songMetadata.digitalPiano")}：<MetadataStringsItem value={props.digitalPiano} />
-      </p>
-    )
-  }
-  {
-    props.keyboard && (
-      <p class="break-all">
-        {t("songMetadata.keyboard")}：<MetadataStringsItem value={props.keyboard} />
-      </p>
-    )
-  }
-  {
-    props.synthesizer && (
-      <p class="break-all">
-        {t("songMetadata.synthesizer")}：<MetadataStringsItem value={props.synthesizer} />
-      </p>
-    )
-  }
-  {
-    props.harmonica && (
-      <p class="break-all">
-        {t("songMetadata.harmonica")}：<MetadataStringsItem value={props.harmonica} />
-      </p>
-    )
-  }
-  {
-    props.trumpet && (
-      <p class="break-all">
-        {t("songMetadata.trumpet")}：<MetadataStringsItem value={props.trumpet} />
-      </p>
-    )
-  }
-  {
-    props.cello && (
-      <p class="break-all">
-        {t("songMetadata.cello")}：<MetadataStringsItem value={props.cello} />
-      </p>
-    )
-  }
-  {
-    props.recordingEngineer && (
-      <p class="break-all">
-        {t("songMetadata.recordingEngineer")}：<MetadataStringsItem value={props.recordingEngineer} />
-      </p>
-    )
-  }
-  {
-    props.masteringEngineer && (
-      <p class="break-all">
-        {t("songMetadata.masteringEngineer")}：<MetadataStringsItem value={props.masteringEngineer} />
-      </p>
-    )
-  }
-  {
-    props.mixingEngineer && (
-      <p class="break-all">
-        {t("songMetadata.mixingEngineer")}：<MetadataStringsItem value={props.mixingEngineer} />
-      </p>
-    )
-  }
-  {
-    props.pianoRecording && (
-      <p class="break-all">
-        {t("songMetadata.pianoRecording")}：<MetadataStringsItem value={props.pianoRecording} />
-      </p>
-    )
-  }
-  {
-    props.extra &&
-      props.extra.map((item) => (
-        <p class="break-all">
-          {item.title}：<MetadataStringsItem value={item.value} />
-        </p>
-      ))
-  }
-  {
-    props.recordingStudio && (
-      <p class="break-all">
-        {t("songMetadata.recordingStudio")}：<MetadataStringsItem value={props.recordingStudio} />
-      </p>
-    )
-  }
-  {props.isrc && <p class="break-all">ISRC：{props.isrc}</p>}
-  {props.notes && <MetadataNotes notes={props.notes} />}
 </MetadataContentBlock>

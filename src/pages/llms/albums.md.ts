@@ -1,12 +1,16 @@
 import { getCollection } from 'astro:content'
 import { albumCollectionSchema } from '@/content.config'
 import { defaultLang } from '@/i18n/ui'
+import type { ui } from '@/i18n/ui'
+import { useTranslations } from '@/i18n/utils'
 import type { APIRoute } from 'astro'
 import dayjs from 'dayjs'
 
 type AlbumInfoKey = keyof typeof albumCollectionSchema.shape
 
 export const GET: APIRoute = async () => {
+  const t = useTranslations(defaultLang)
+
   const contentSegments: string[] = []
 
   // albumInfoIgnoreKeys 为不出现在 Markdown 中的 key 列表，list 和 customSlug 用于内部
@@ -37,11 +41,11 @@ export const GET: APIRoute = async () => {
         const description = fieldSchema.description
         if (!albumInfoIgnoreKeys.includes(typedKey)) {
           if (album.data[typedKey]) {
-            const label = description || key
+            const typedLabel = (description || key) as keyof (typeof ui)[typeof defaultLang]
             if (album.data[typedKey] instanceof Date) {
-              contentSegments.push(`- ${label}: ${dayjs(album.data[typedKey] as Date).format('YYYY-MM-DD')}`)
+              contentSegments.push(`- ${t(typedLabel)}: ${dayjs(album.data[typedKey] as Date).format('YYYY-MM-DD')}`)
             } else {
-              contentSegments.push(`- ${label}: ${album.data[typedKey]}`)
+              contentSegments.push(`- ${t(typedLabel)}: ${album.data[typedKey]}`)
             }
           }
         }

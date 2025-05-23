@@ -46,25 +46,8 @@ const translatePath = useTranslatedPath(urlLanguage)
       )
     }
     <SongList songTitles={concert.data.list} />
-    {
-      (concert.data.tour ||
-        concert.data.startTime ||
-        concert.data.endTime ||
-        concert.data.guests ||
-        concert.data.place ||
-        concert.data.location ||
-        concert.data.date) && (
-        <ConcertMetadata
-          tour={concert.data.tour}
-          startTime={concert.data.startTime}
-          endTime={concert.data.endTime}
-          guests={concert.data.guests}
-          place={concert.data.place}
-          location={concert.data.location}
-          date={concert.data.date}
-        />
-      )
-    }
+    <hr class="my-1 dark:bg-zinc-700/90 dark:color-zinc-700/90 dark:border-zinc-700/90" />
+    <ConcertMetadata concert={concert} />
   </div>
   {
     concert.data.talkingPageSlug && (

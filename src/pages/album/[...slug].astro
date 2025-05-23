@@ -41,28 +41,7 @@ const album = Astro.props
       )
     }
     <SongList songTitles={album.data.list} />
-    {
-      (album.data.englishTitle ||
-        album.data.chiefExecutiveProducer ||
-        album.data.musicDirector ||
-        album.data.producer ||
-        album.data.coProducer ||
-        album.data.coordinator ||
-        album.data.albumFormat ||
-        album.data.notes ||
-        album.data.albumType) && (
-        <AlbumMetadata
-          englishTitle={album.data.englishTitle}
-          chiefExecutiveProducer={album.data.chiefExecutiveProducer}
-          musicDirector={album.data.musicDirector}
-          producer={album.data.producer}
-          albumFormat={album.data.albumFormat}
-          albumType={album.data.albumType}
-          notes={album.data.notes}
-          coProducer={album.data.coProducer}
-          coordinator={album.data.coordinator}
-        />
-      )
-    }
+    <hr class="my-1 dark:bg-zinc-700/90 dark:color-zinc-700/90 dark:border-zinc-700/90" />
+    <AlbumMetadata album={album} />
   </div>
 </Layout>

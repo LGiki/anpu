@@ -1,96 +1,49 @@
 ---
+import type { CollectionEntry } from 'astro:content'
+import type { z } from 'astro:content'
+// biome-ignore lint/style/useImportType: <explanation>
+import { albumCollectionSchema } from '@/content.config'
+import type { defaultLang, ui } from '@/i18n/ui'
 import { getLangFromUrl, useTranslations } from '@/i18n/utils'
+import dayjs from 'dayjs'
 import MetadataContentBlock from './MetadataContentBlock.astro'
 import MetadataNotes from './MetadataNotes.astro'
 import MetadataStringsItem from './MetadataStringsItem.astro'
 
+type AlbumMetadataKey = keyof typeof albumCollectionSchema.shape
+type NotesMetadataType = z.infer<(typeof albumCollectionSchema.shape)['notes']>
+
 interface Props {
-  // 英文标题
-  englishTitle?: string
-  // 总监制
-  chiefExecutiveProducer?: string
-  // 音乐总监
-  musicDirector?: string
-  // 制作人
-  producer?: string[] | string
-  // 联合制作人
-  coProducer?: string[] | string
-  // 统筹
-  coordinator?: string[] | string
-  // 专辑格式
-  albumFormat?: 'CD' | 'Vinyl' | 'Digital' | 'Cassette' | 'Streaming'
-  // 专辑类型
-  albumType?: 'EP' | 'LP' | 'Mixtape' | 'Single' | 'Compilation' | 'LiveAlbum' | 'RemixAlbum'
-  // 备注
-  notes?: string[] | string
+  album: CollectionEntry<'album'>
 }
 
-const props = Astro.props
+const { album } = Astro.props
 
 const lang = getLangFromUrl(Astro.url)
 const t = useTranslations(lang)
+
+const IgnoreMetadataKeys: AlbumMetadataKey[] = ['list']
 ---
 
 <MetadataContentBlock class="leading-7">
   {
-    props.englishTitle && (
-      <p class="break-all">
-        {t("albumMetadata.englishTitle")}：{props.englishTitle}
-      </p>
-    )
+    Object.entries(albumCollectionSchema.shape).map(([key, fieldSchema]) => {
+      const typedKey = key as keyof typeof albumCollectionSchema.shape
+      const fieldDescription = fieldSchema._def.description as keyof (typeof ui)[typeof defaultLang]
+      if (!IgnoreMetadataKeys.includes(typedKey)) {
+        let metadataValue = album.data[typedKey]
+        if (metadataValue && fieldDescription) {
+          if (metadataValue instanceof Date) {
+            metadataValue = dayjs(metadataValue).format('YYYY-MM-DD')
+          }
+          if (typedKey === 'notes') {
+            return (<MetadataNotes notes={metadataValue as NotesMetadataType} />)
+          }
+          return (
+            <p class="break-all">{t(fieldDescription)}：<MetadataStringsItem value={metadataValue as string | string[] | number}/></p>
+          )
+        }
+      }
+    })
   }
-  {
-    props.chiefExecutiveProducer && (
-      <p class="break-all">
-        {t("albumMetadata.chiefExecutiveProducer")}：
-        {props.chiefExecutiveProducer}
-      </p>
-    )
-  }
-  {
-    props.musicDirector && (
-      <p class="break-all">
-        {t("albumMetadata.musicDirector")}：{props.musicDirector}
-      </p>
-    )
-  }
-  {
-    props.producer && (
-      <p class="break-all">
-        {t("albumMetadata.producer")}：
-        <MetadataStringsItem value={props.producer} />
-      </p>
-    )
-  }
-  {
-    props.coProducer && (
-      <p class="break-all">
-        {t("albumMetadata.coProducer")}：
-        <MetadataStringsItem value={props.coProducer} />
-      </p>
-    )
-  }
-  {
-    props.coordinator && (
-      <p class="break-all">
-        {t("albumMetadata.coordinator")}：
-        <MetadataStringsItem value={props.coordinator} />
-      </p>
-    )
-  }
-  {
-    props.albumFormat && (
-      <p class="break-all">
-        {t("albumMetadata.albumFormat")}：{props.albumFormat}
-      </p>
-    )
-  }
-  {
-    props.albumType && (
-      <p class="break-all">
-        {t("albumMetadata.albumType")}：{props.albumType}
-      </p>
-    )
-  }
-  {props.notes && <MetadataNotes notes={props.notes} />}
 </MetadataContentBlock>

@@ -1,12 +1,17 @@
 import { getCollection } from 'astro:content'
 import { songCollectionSchema } from '@/content.config'
 import { defaultLang } from '@/i18n/ui'
+import type { ui } from '@/i18n/ui'
+import { useTranslations } from '@/i18n/utils'
 import type { APIRoute } from 'astro'
 import dayjs from 'dayjs'
+import { durationToHms } from '@/utils'
 
 type SongInfoKey = keyof typeof songCollectionSchema.shape
 
 export const GET: APIRoute = async () => {
+  const t = useTranslations(defaultLang)
+
   const contentSegments: string[] = []
 
   const songInfoIgnoreKeys: SongInfoKey[] = ['hasBanlamTone']
@@ -31,16 +36,18 @@ export const GET: APIRoute = async () => {
         const description = fieldSchema.description
         if (!songInfoIgnoreKeys.includes(typedKey)) {
           if (song.data[typedKey]) {
+            const typedLabel = (description || key) as keyof (typeof ui)[typeof defaultLang]
             if (typedKey === 'extra') {
               for (const extraInfo of song.data[typedKey]) {
                 contentSegments.push(`- ${extraInfo.title}: ${extraInfo.value}`)
               }
+            } else if (typedKey === 'duration') {
+              contentSegments.push(`- ${t(typedLabel)}: ${durationToHms(song.data[typedKey])}`)
             } else {
-              const label = description || key
               if (song.data[typedKey] instanceof Date) {
-                contentSegments.push(`- ${label}: ${dayjs(song.data[typedKey] as Date).format('YYYY-MM-DD')}`)
+                contentSegments.push(`- ${t(typedLabel)}: ${dayjs(song.data[typedKey] as Date).format('YYYY-MM-DD')}`)
               } else {
-                contentSegments.push(`- ${label}: ${song.data[typedKey]}`)
+                contentSegments.push(`- ${t(typedLabel)}: ${song.data[typedKey]}`)
               }
             }
           }

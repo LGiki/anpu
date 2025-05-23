@@ -14,9 +14,9 @@ const t = useTranslations(lang)
 {
   props.notes && (
     <p class="break-all">
-      {t("metadata.notes")}：
+      {t("notes")}：
       {Array.isArray(props.notes) ? (
-        <ul class="list-disc list-inside">
+        <ul class="list-disc list-inside indent-2">
           {props.notes.map((note) => (
             <li>{note}</li>
           ))}

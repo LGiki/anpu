@@ -14,106 +14,39 @@ export async function getStaticPaths() {
     return lyricLanguage !== defaultLang
   })
 
-  return songs.map((song) => {
-    const [lyricLanguage, ...slug] = song.id.replace(/(\.md)+$/, '').split('/')
-    return {
-      params: { lang: lyricLanguage, slug: slugify(slug.join()) },
-      props: song,
-    }
-  })
+  return Promise.all(
+    songs.map(async (song) => {
+      let album = null
+      const [lyricLanguage, ...slug] = song.id.replace(/(\.md)+$/, '').split('/')
+      if (song.data.album) {
+        const albums = await getCollection('album', (album) => {
+          const [albumLanguage] = album.id.split('/')
+          return song.data.album === album.data.title && albumLanguage === lyricLanguage
+        })
+        if (albums.length > 0) {
+          album = albums[0]
+        }
+      }
+      return {
+        params: { lang: lyricLanguage, slug: slugify(slug.join()) },
+        props: {
+          song: song,
+          album: album,
+        },
+      }
+    })
+  )
 }
 
-const song = Astro.props
+const { song, album } = Astro.props
 ---
 
 <Layout title={[song.data.title, "Lyric"]}>
   <article class="text-base leading-7 text-[var(--foreground)]" id="lyric-text">
     <h1 class="font-medium text-2xl mb-4" id="song-title">{song.data.title}</h1>
     {song.body && <LyricRenderer data={song.body} />}
-    {
-      (song.data.album ||
-        song.data.duration ||
-        song.data.artist ||
-        song.data.lyricist ||
-        song.data.arranger ||
-        song.data.composer ||
-        song.data.producer ||
-        song.data.releaseDate ||
-        song.data.isrc ||
-        song.data.mixingEngineer ||
-        song.data.electricGuitar ||
-        song.data.guitar ||
-        song.data.bass ||
-        song.data.piano ||
-        song.data.digitalPiano ||
-        song.data.drums ||
-        song.data.acousticGuitar ||
-        song.data.keyboard ||
-        song.data.recordingEngineer ||
-        song.data.masteringEngineer ||
-        song.data.pianoRecording ||
-        song.data.recordingStudio ||
-        song.data.doubleBass ||
-        song.data.extra ||
-        song.data.coProducer ||
-        song.data.coordinator ||
-        song.data.cello ||
-        song.data.nylonGuitar ||
-        song.data.notes ||
-        song.data.backingVocalArranger ||
-        song.data.backingVocal ||
-        song.data.celloArranger ||
-        song.data.synthesizer ||
-        song.data.harmonica ||
-        song.data.trumpet ||
-        song.data.songProducer ||
-        song.data.albumProducer ||
-        song.data.englishTitle) && (
-        <>
-          <hr class="my-5 dark:bg-zinc-700/90 dark:color-zinc-700/90 dark:border-zinc-700/90" />
-          <SongMetadata
-            englishTitle={song.data.englishTitle}
-            album={song.data.album}
-            duration={song.data.duration}
-            artist={song.data.artist}
-            lyricist={song.data.lyricist}
-            arranger={song.data.arranger}
-            composer={song.data.composer}
-            producer={song.data.producer}
-            releaseDate={song.data.releaseDate}
-            isrc={song.data.isrc}
-            mixingEngineer={song.data.mixingEngineer}
-            electricGuitar={song.data.electricGuitar}
-            bass={song.data.bass}
-            piano={song.data.piano}
-            digitalPiano={song.data.digitalPiano}
-            drums={song.data.drums}
-            acousticGuitar={song.data.acousticGuitar}
-            guitar={song.data.guitar}
-            keyboard={song.data.keyboard}
-            recordingEngineer={song.data.recordingEngineer}
-            masteringEngineer={song.data.masteringEngineer}
-            recordingStudio={song.data.recordingStudio}
-            pianoRecording={song.data.pianoRecording}
-            notes={song.data.notes}
-            doubleBass={song.data.doubleBass}
-            extra={song.data.extra}
-            coProducer={song.data.coProducer}
-            coordinator={song.data.coordinator}
-            cello={song.data.cello}
-            nylonGuitar={song.data.nylonGuitar}
-            backingVocalArranger={song.data.backingVocalArranger}
-            backingVocal={song.data.backingVocal}
-            celloArranger={song.data.celloArranger}
-            synthesizer={song.data.synthesizer}
-            harmonica={song.data.harmonica}
-            trumpet={song.data.trumpet}
-            songProducer={song.data.songProducer}
-            albumProducer={song.data.albumProducer}
-          />
-        </>
-      )
-    }
+    <hr class="my-5 dark:bg-zinc-700/90 dark:color-zinc-700/90 dark:border-zinc-700/90" />
+    <SongMetadata song={song} />
   </article>
   <slot slot="header-right">
     <LyricFontSizeSwitcher />

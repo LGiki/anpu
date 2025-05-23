@@ -78,7 +78,7 @@ const isPrevAndNextSongExists = talkings.some((talking) => talking.data.previous
             <div class="flex gap-1 items-center justify-center rounded-full border border-gray-500 text-gray-500 dark:border-gray-300 dark:text-gray-300 px-2 py-0.5 text-sm">
               <Icon name="ph:map-pin" class="w-4 h-4 flex-shrink-0" />
               <span>
-                {t("talking.place")}：{talkings[0].data.place}
+                {t("place")}：{talkings[0].data.place}
               </span>
             </div>
           )}
@@ -86,7 +86,7 @@ const isPrevAndNextSongExists = talkings.some((talking) => talking.data.previous
             <div class="flex gap-1 items-center justify-center rounded-full border border-gray-500 text-gray-500 dark:border-gray-300 dark:text-gray-300 px-2 py-0.5 text-sm">
               <Icon name="ph:calendar-dots" class="w-4 h-4 flex-shrink-0" />
               <span>
-                {t("talking.date")}：
+                {t("date")}：
                 {dayjs(talkings[0].data.date).format("YYYY-MM-DD")}
               </span>
             </div>
@@ -95,7 +95,7 @@ const isPrevAndNextSongExists = talkings.some((talking) => talking.data.previous
             <div class="flex gap-1 items-center justify-center rounded-full border border-gray-500 text-gray-500 dark:border-gray-300 dark:text-gray-300 px-2 py-0.5 text-sm">
               <Icon name="ph:navigation-arrow" class="w-4 h-4 flex-shrink-0" />
               <span>
-                {t("talking.location")}：{talkings[0].data.location}
+                {t("location")}：{talkings[0].data.location}
               </span>
             </div>
           )}

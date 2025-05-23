@@ -1,80 +1,43 @@
 ---
+import type { CollectionEntry } from 'astro:content'
+// biome-ignore lint/style/useImportType: <explanation>
+import { concertCollectionSchema } from '@/content.config'
+import type { defaultLang, ui } from '@/i18n/ui'
 import { getLangFromUrl, useTranslations } from '@/i18n/utils'
 import dayjs from 'dayjs'
 import MetadataContentBlock from './MetadataContentBlock.astro'
 import MetadataStringsItem from './MetadataStringsItem.astro'
 
+type ConcertMetadataKey = keyof typeof concertCollectionSchema.shape
+
 interface Props {
-  // 巡演
-  tour?: string
-  // 开始时间
-  startTime?: string
-  // 结束时间
-  endTime?: string
-  // 嘉宾
-  guests?: string | string[]
-  // 地点
-  place?: string
-  // 地址
-  location?: string
-  // 日期
-  date?: Date
+  concert: CollectionEntry<'concert'>
 }
 
-const props: Props = Astro.props
+const { concert } = Astro.props
 
 const lang = getLangFromUrl(Astro.url)
 const t = useTranslations(lang)
+
+const IgnoreMetadataKeys: ConcertMetadataKey[] = ['list', 'talkingPageSlug', 'title']
 ---
 
 <MetadataContentBlock class="leading-7">
   {
-    props.tour && (
-      <p class="break-all">
-        {t("concertMetadata.tour")}：{props.tour}
-      </p>
-    )
-  }
-  {
-    props.place && (
-      <p class="break-all">
-        {t("concertMetadata.place")}：{props.place}
-      </p>
-    )
-  }
-  {
-    props.location && (
-      <p class="break-all">
-        {t("concertMetadata.location")}：{props.location}
-      </p>
-    )
-  }
-  {
-    props.date && (
-      <p class="break-all">
-        {t("concertMetadata.date")}：{dayjs(props.date).format("YYYY-MM-DD")}
-      </p>
-    )
-  }
-  {
-    props.startTime && (
-      <p class="break-all">
-        {t("concertMetadata.startTime")}：<span>{props.startTime}</span>
-      </p>
-    )
-  }
-  {
-    props.endTime && (
-      <p class="break-all">
-        {t("concertMetadata.endTime")}：<span>{props.endTime}</span>
-      </p>
-    )
-  }
-  {
-    props.guests && (
-      <p class="break-all">
-        {t("concertMetadata.guests")}：<MetadataStringsItem value={props.guests} />
-      </p>
-    )
+    Object.entries(concertCollectionSchema.shape).map(([key, fieldSchema]) => {
+      const typedKey = key as keyof typeof concertCollectionSchema.shape
+      const fieldDescription = fieldSchema._def.description as keyof (typeof ui)[typeof defaultLang]
+      if (!IgnoreMetadataKeys.includes(typedKey)) {
+        let metadataValue = concert.data[typedKey]
+        if (metadataValue && fieldDescription) {
+          if (metadataValue instanceof Date) {
+            metadataValue = dayjs(metadataValue).format('YYYY-MM-DD')
+          }
+          return (
+            <p class="break-all">{t(fieldDescription)}：<MetadataStringsItem value={metadataValue as string | string[] | number}/></p>
+          )
+        }
+      }
+    })
   }
 </MetadataContentBlock>

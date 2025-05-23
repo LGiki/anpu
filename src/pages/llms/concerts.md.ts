@@ -1,12 +1,16 @@
 import { getCollection } from 'astro:content'
 import { concertCollectionSchema } from '@/content.config'
 import { defaultLang } from '@/i18n/ui'
+import type { ui } from '@/i18n/ui'
+import { useTranslations } from '@/i18n/utils'
 import type { APIRoute } from 'astro'
 import dayjs from 'dayjs'
 
 type ConcertInfoKey = keyof typeof concertCollectionSchema.shape
 
 export const GET: APIRoute = async () => {
+  const t = useTranslations(defaultLang)
+
   const contentSegments: string[] = []
 
   const concertInfoIgnoreKeys: ConcertInfoKey[] = ['list', 'talkingPageSlug']
@@ -53,11 +57,11 @@ export const GET: APIRoute = async () => {
         const description = fieldSchema.description
         if (!concertInfoIgnoreKeys.includes(typedKey)) {
           if (concert.data[typedKey]) {
-            const label = description || key
+            const typedLabel = (description || key) as keyof (typeof ui)[typeof defaultLang]
             if (concert.data[typedKey] instanceof Date) {
-              contentSegments.push(`- ${label}: ${dayjs(concert.data[typedKey] as Date).format('YYYY-MM-DD')}`)
+              contentSegments.push(`- ${t(typedLabel)}: ${dayjs(concert.data[typedKey] as Date).format('YYYY-MM-DD')}`)
             } else {
-              contentSegments.push(`- ${label}: ${concert.data[typedKey]}`)
+              contentSegments.push(`- ${t(typedLabel)}: ${concert.data[typedKey]}`)
             }
           }
         }
