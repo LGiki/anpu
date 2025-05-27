@@ -1,0 +1,47 @@
+---
+import type { CollectionEntry } from 'astro:content'
+import { getLangFromUrl, useTranslatedPath, useTranslations } from '@/i18n/utils'
+import { slugify } from '@/utils'
+
+interface Props {
+  album: CollectionEntry<'album'>
+  currentSong?: CollectionEntry<'song'>
+}
+
+const { album, currentSong }: Props = Astro.props
+
+const lang = getLangFromUrl(Astro.url)
+const t = useTranslations(lang)
+const translatePath = useTranslatedPath(lang)
+---
+
+<div>
+  <p>{t("songMetadata.otherTracksInAlbum")}：</p>
+  {
+    album.data.list.map((albumSong, index) => (
+      <>
+        {!albumSong.startsWith("*") && (
+          <>
+            <a
+              class="hover:text-black dark:hover:text-white transition-colors duration-200 ease-in-out"
+              class:list={[
+                { "text-gray-400": currentSong?.data.title !== albumSong },
+              ]}
+              href={
+                currentSong?.data.title !== albumSong
+                  ? translatePath(`/song/${slugify(albumSong)}`)
+                  : undefined
+              }
+              title={albumSong}
+            >
+              {albumSong}
+            </a>
+            <span class="text-gray-400">
+              {index < album.data.list.length - 1 && "／"}
+            </span>
+          </>
+        )}
+      </>
+    ))
+  }
+</div>

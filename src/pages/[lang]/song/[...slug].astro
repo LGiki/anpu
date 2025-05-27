@@ -46,7 +46,7 @@ const { song, album } = Astro.props
     <h1 class="font-medium text-2xl mb-4" id="song-title">{song.data.title}</h1>
     {song.body && <LyricRenderer data={song.body} />}
     <hr class="my-5 dark:bg-zinc-700/90 dark:color-zinc-700/90 dark:border-zinc-700/90" />
-    <SongMetadata song={song} />
+    <SongMetadata song={song} album={album} />
   </article>
   <slot slot="header-right">
     <LyricFontSizeSwitcher />

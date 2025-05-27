@@ -5,7 +5,7 @@ import { concertCollectionSchema } from '@/content.config'
 import type { defaultLang, ui } from '@/i18n/ui'
 import { getLangFromUrl, useTranslations } from '@/i18n/utils'
 import dayjs from 'dayjs'
-import MetadataContentBlock from './MetadataContentBlock.astro'
+import ContentCard from './ContentCard.astro'
 import MetadataStringsItem from './MetadataStringsItem.astro'
 
 type ConcertMetadataKey = keyof typeof concertCollectionSchema.shape
@@ -22,7 +22,7 @@ const t = useTranslations(lang)
 const IgnoreMetadataKeys: ConcertMetadataKey[] = ['list', 'talkingPageSlug', 'title']
 ---
 
-<MetadataContentBlock class="leading-7">
+<ContentCard class="leading-7 mt-2">
   {
     Object.entries(concertCollectionSchema.shape).map(([key, fieldSchema]) => {
       const typedKey = key as keyof typeof concertCollectionSchema.shape
@@ -40,4 +40,4 @@ const IgnoreMetadataKeys: ConcertMetadataKey[] = ['list', 'talkingPageSlug', 'ti
       }
     })
   }
-</MetadataContentBlock>
+</ContentCard>

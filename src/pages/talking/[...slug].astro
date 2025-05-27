@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content'
 import Button from '@/components/Button.astro'
+import ContentCard from '@/components/ContentCard.astro'
 import TalkingPrevAndNextSongSwitcher from '@/components/TalkingPrevAndNextSongSwitcher.astro'
 import { defaultLang } from '@/i18n/ui'
 import { useTranslatedPath, useTranslations } from '@/i18n/utils'
@@ -83,8 +84,7 @@ const isPrevAndNextSongExists = talkings.some((talking) => talking.data.previous
             <div class="flex gap-1 items-center justify-center rounded-full border border-gray-500 text-gray-500 dark:border-gray-300 dark:text-gray-300 px-2 py-0.5 text-sm">
               <Icon name="ph:calendar-dots" class="w-4 h-4 flex-shrink-0" />
               <span>
-                {t("date")}：
-                {dayjs(talkings[0].data.date).format("YYYY-MM-DD")}
+                {t("date")}：{dayjs(talkings[0].data.date).format("YYYY-MM-DD")}
               </span>
             </div>
           )}
@@ -103,9 +103,9 @@ const isPrevAndNextSongExists = talkings.some((talking) => talking.data.previous
       talkingContents.map((talkingContent, index: number) => {
         const talking = talkings[index];
         return (
-          <div
+          <ContentCard
             id={`talking-${index + 1}`}
-            class="scroll-mt-[calc(var(--mobile-header-height)+1rem)] sm:scroll-mt-[calc(var(--header-height)+1rem)] p-5 border-s-4 rounded-md border-gray-300 bg-gray-100 dark:border-gray-500 dark:bg-gray-800 text-justify"
+            class="scroll-mt-[calc(var(--mobile-header-height)+1rem)] sm:scroll-mt-[calc(var(--header-height)+1rem)] p-5 pr-[calc(1.25rem+4px)] text-justify"
           >
             <h2 class="font-['Cinzel'] text-2xl opacity-50 mb-2 text-[var(--foreground)] dark:opacity-70">
               Talking #{index + 1}
@@ -205,7 +205,7 @@ const isPrevAndNextSongExists = talkings.some((talking) => talking.data.previous
                   </ul>
                 </>
               )}
-          </div>
+          </ContentCard>
         );
       })
     }

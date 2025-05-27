@@ -4,10 +4,13 @@ import type { z } from 'astro:content'
 // biome-ignore lint/style/useImportType: <explanation>
 import { songCollectionSchema } from '@/content.config'
 import { defaultLang, ui } from '@/i18n/ui'
-import { getLangFromUrl, useTranslations } from '@/i18n/utils'
+import { getLangFromUrl, useTranslatedPath, useTranslations } from '@/i18n/utils'
 import { durationToHms } from '@/utils'
+import { slugify } from '@/utils'
 import dayjs from 'dayjs'
-import MetadataContentBlock from './MetadataContentBlock.astro'
+import AlbumBadge from './AlbumBadge.astro'
+import AlbumOtherTracks from './AlbumOtherTracks.astro'
+import ContentCard from './ContentCard.astro'
 import MetadataNotes from './MetadataNotes.astro'
 import MetadataStringsItem from './MetadataStringsItem.astro'
 
@@ -17,17 +20,19 @@ type ExtraMetadataType = z.infer<(typeof songCollectionSchema.shape)['extra']>
 
 interface Props {
   song: CollectionEntry<'song'>
+  album?: CollectionEntry<'album'> | null
 }
 
-const { song } = Astro.props
+const { song, album } = Astro.props
 
 const lang = getLangFromUrl(Astro.url)
 const t = useTranslations(lang)
+const translatePath = useTranslatedPath(lang)
 
 const IgnoreMetadataKeys: SongMetadataKey[] = ['title', 'hasBanlamTone']
 ---
 
-<MetadataContentBlock>
+<ContentCard>
   {
     Object.entries(songCollectionSchema.shape).map(([key, fieldSchema]) => {
       const typedKey = key as SongMetadataKey
@@ -52,6 +57,19 @@ const IgnoreMetadataKeys: SongMetadataKey[] = ['title', 'hasBanlamTone']
                 </p>
               ))
           }
+          if (album && typedKey === 'album') {
+            const [_, ...albumSlug] = album.id.split('/')
+            const albumUrl = translatePath(`/album/${album.data.customSlug || slugify(albumSlug.join())}`)
+            return (
+              <p class="break-all flex items-center">
+                <span class="flex-shrink-0">{t(fieldDescription)}：</span>
+                <AlbumBadge 
+                  albumTitle={metadataValue as string}
+                  albumUrl={albumUrl} 
+                />
+              </p>
+            )
+          }
           return (
             <p class="break-all">{t(fieldDescription)}：<MetadataStringsItem value={metadataValue as string | string[] | number}/></p>
           )
@@ -59,4 +77,10 @@ const IgnoreMetadataKeys: SongMetadataKey[] = ['title', 'hasBanlamTone']
       }
     })
   }
-</MetadataContentBlock>
+  {
+    album && <>
+      <hr class="my-3 dark:bg-zinc-700/90 dark:color-zinc-700/90 dark:border-zinc-700/90"/>
+      <AlbumOtherTracks album={album} currentSong={song}/>
+    </>
+  }
+</ContentCard>

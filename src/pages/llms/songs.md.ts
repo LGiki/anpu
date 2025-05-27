@@ -3,9 +3,9 @@ import { songCollectionSchema } from '@/content.config'
 import { defaultLang } from '@/i18n/ui'
 import type { ui } from '@/i18n/ui'
 import { useTranslations } from '@/i18n/utils'
+import { durationToHms } from '@/utils'
 import type { APIRoute } from 'astro'
 import dayjs from 'dayjs'
-import { durationToHms } from '@/utils'
 
 type SongInfoKey = keyof typeof songCollectionSchema.shape
 

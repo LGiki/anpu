@@ -1,0 +1,18 @@
+---
+import { Icon } from 'astro-icon/components'
+
+interface Props {
+  albumTitle: string
+  albumUrl?: string
+}
+
+const props: Props = Astro.props
+---
+<a 
+    href={props.albumUrl} 
+    class="break-all px-2 rounded-xl leading-normal border border-gray-400/50 bg-gray-200 dark:bg-slate-700 dark:hover:bg-slate-600 hover:bg-gray-300 transition-colors duration-200 ease-in-out inline-flex items-center gap-1"
+    title={props.albumTitle}
+>
+    <Icon name="ph:vinyl-record" />
+    <span>{props.albumTitle}</span>
+</a>
