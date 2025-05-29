@@ -1,7 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content'
 import type { z } from 'astro:content'
-// biome-ignore lint/style/useImportType: <explanation>
 import { songCollectionSchema } from '@/content.config'
 import { defaultLang, ui } from '@/i18n/ui'
 import { getLangFromUrl, useTranslatedPath, useTranslations } from '@/i18n/utils'
@@ -78,7 +77,7 @@ const IgnoreMetadataKeys: SongMetadataKey[] = ['title', 'hasBanlamTone']
     })
   }
   {
-    album && <>
+    (album && album.data.list.length > 1) && <>
       <hr class="my-3 dark:bg-zinc-700/90 dark:color-zinc-700/90 dark:border-zinc-700/90"/>
       <AlbumOtherTracks album={album} currentSong={song}/>
     </>
