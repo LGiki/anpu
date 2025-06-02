@@ -3,7 +3,7 @@ import type { ContentGroup, ContentGroupItem } from '@/types'
 import { type ClassValue, clsx } from 'clsx'
 import limax from 'limax'
 import { twMerge } from 'tailwind-merge'
-import { ui } from './i18n/ui'
+import { ui } from '../i18n/ui'
 
 export function getCollectionNameFromUrl(url: URL) {
   // URL 可能为 /album/my-life-will 或 /zh-hant/album/my-life-will

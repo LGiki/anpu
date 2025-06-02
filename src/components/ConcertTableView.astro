@@ -1,7 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content'
 import { getLangFromUrl, useTranslatedPath } from '@/i18n/utils'
-import { cn, slugify } from '@/utils'
+import { cn, slugify } from '@/utils/utils'
 import dayjs from 'dayjs'
 
 const lang = getLangFromUrl(Astro.url)

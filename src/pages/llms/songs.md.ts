@@ -3,7 +3,7 @@ import { songCollectionSchema } from '@/content.config'
 import { defaultLang } from '@/i18n/ui'
 import type { ui } from '@/i18n/ui'
 import { useTranslations } from '@/i18n/utils'
-import { durationToHms } from '@/utils'
+import { durationToHms } from '@/utils/utils'
 import type { APIRoute } from 'astro'
 import dayjs from 'dayjs'
 

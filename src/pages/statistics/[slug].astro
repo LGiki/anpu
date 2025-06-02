@@ -3,7 +3,7 @@ import { type CollectionEntry, getCollection } from 'astro:content'
 import SongPerformedStatistics from '@/components/SongPerformedStatistics.astro'
 import { defaultLang } from '@/i18n/ui'
 import Layout from '@/layouts/Layout.astro'
-import { slugify } from '@/utils'
+import { slugify } from '@/utils/utils'
 import dayjs from 'dayjs'
 
 export async function getStaticPaths() {

@@ -1,12 +1,16 @@
 ---
 import { getCollection } from 'astro:content'
 import BanlamToneSwitcher from '@/components/BanlamToneSwitcher.astro'
+import Button from '@/components/Button.astro'
 import LyricFontSizeSwitcher from '@/components/LyricFontSizeSwitcher.astro'
 import LyricRenderer from '@/components/LyricRenderer.astro'
+import LyricsShareModal from '@/components/LyricsShareModal.astro'
 import SongMetadata from '@/components/SongMetadata.astro'
 import { defaultLang } from '@/i18n/ui'
+import { getLangFromUrl, useTranslations } from '@/i18n/utils'
 import Layout from '@/layouts/Layout.astro'
-import { slugify } from '@/utils'
+import { slugify } from '@/utils/utils'
+import { Icon } from 'astro-icon/components'
 
 export async function getStaticPaths() {
   const songs = await getCollection('song', (song) => {
@@ -40,18 +44,26 @@ export async function getStaticPaths() {
   )
 }
 
+const lang = getLangFromUrl(Astro.url)
+const t = useTranslations(lang)
+
 const { song, album } = Astro.props
 ---
 
 <Layout title={[song.data.title, "Lyric"]}>
   <article class="text-base leading-7 text-[var(--foreground)]" id="lyric-text">
     <h1 class="font-medium text-2xl mb-4" id="song-title">{song.data.title}</h1>
-    {song.body && <LyricRenderer data={song.body} />}
+    {song.body && <LyricRenderer lyricsBody={song.body} />}
     <hr class="my-5 dark:bg-zinc-700/90 dark:color-zinc-700/90 dark:border-zinc-700/90" />
     <SongMetadata song={song} album={album} />
   </article>
+  <LyricsShareModal song={song}/>
   <slot slot="header-right">
     <LyricFontSizeSwitcher />
+    <Button data-modal-open-trigger="share-lyrics-select">
+      <Icon name="ph:share-network" class="mr-0 sm:mr-1" />
+      <span class="sm:block hidden">{t("song.shareLyrics")}</span>
+    </Button>
     {song.data.hasBanlamTone && <BanlamToneSwitcher />}
   </slot>
 </Layout>

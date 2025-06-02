@@ -24,8 +24,9 @@ const pageTitle = hideDefaultTitle
     <Head pageTitle={pageTitle} />
   </head>
   <body
-    class="bg-[var(--background)] data-[drawer-visible=true]:overflow-hidden mt-[var(--mobile-header-height)] sm:mt-[var(--header-height)] print:mt-0 print:bg-white"
+    class="bg-[var(--background)] data-[modal-visible=true]:overflow-hidden data-[drawer-visible=true]:overflow-hidden mt-[var(--mobile-header-height)] sm:mt-[var(--header-height)] print:mt-0 print:bg-white"
     data-drawer-visible="false"
+    data-modal-visible="false"
   >
     <Header>
       <slot slot="header-right" name="header-right" />

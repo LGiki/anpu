@@ -1,0 +1,121 @@
+---
+import { cn } from '@/utils/utils'
+import { Icon } from 'astro-icon/components'
+import type { HTMLAttributes } from 'astro/types'
+
+interface Props extends HTMLAttributes<'div'> {
+  modalTitle: string
+  modalId: string
+  mainContainerClass?: string
+  titleContainerClass?: string
+}
+
+const { modalTitle, modalId, mainContainerClass, titleContainerClass, ...rest } = Astro.props as Props
+---
+
+<div
+  data-modal-id={modalId}
+  id={`${modalId}-container`}
+  class="hidden w-full h-screen supports-[height:100svh]:h-svh fixed top-0 left-0 z-[9999] items-center justify-center"
+  {...rest}
+>
+  <div
+    data-modal-close-trigger={modalId}
+    id={`${modalId}-bg`}
+    class="w-full h-full transition-all ease-in-out duration-200 backdrop-blur-sm bg-gray-600/10 dark:bg-black/80 fixed top-0 left-0"
+  >
+  </div>
+  <div
+    class={cn(
+      "transition-all ease-in-out duration-200 opacity-0 translate-y-8 z-10 w-[80%] max-w-[520px] rounded-xl p-5 shadow-lg bg-[var(--background)]",
+      mainContainerClass
+    )}
+    id={`${modalId}-main`}
+  >
+    <div class={cn("flex justify-between items-center text-[var(--foreground)]", titleContainerClass)}>
+      <span class="leading-none font-medium"
+        >{modalTitle}</span
+      >
+      <Icon
+        data-modal-close-trigger={modalId}
+        name="ph:x-bold"
+        class="h-4 w-4 cursor-pointer"
+      />
+    </div>
+    <slot />
+  </div>
+</div>
+
+<style>
+  .modal-bg-active {
+    backdrop-filter: blur(12px);
+    background-color: rgb(75 85 99 / 0.3);
+  }
+
+  .modal-active {
+    transform: translateY(0);
+    opacity: 1;
+  }
+</style>
+
+<script>
+  const modals = document.querySelectorAll(
+    "[data-modal-id]"
+  ) as NodeListOf<HTMLDivElement>;
+
+  modals.forEach((modal) => {
+    const modalId = modal.dataset.modalId;
+    const modalContainer = document.getElementById(`${modalId}-container`);
+    const modalBackground = document.getElementById(`${modalId}-bg`);
+    const modalMain = document.getElementById(`${modalId}-main`);
+
+    const modalCloseTriggers = document.querySelectorAll(
+      `[data-modal-close-trigger="${modalId}"]`
+    );
+    const modalOpenTriggers = document.querySelectorAll(
+      `[data-modal-open-trigger="${modalId}"]`
+    );
+
+    const openModal = () => {
+      if (modalContainer) {
+        modalContainer.classList.remove("hidden");
+        modalContainer.classList.add("flex");
+      }
+      if (modalBackground) {
+        setTimeout(() => {
+          modalBackground.classList.add("modal-bg-active");
+        }, 0);
+      }
+      if (modalMain) {
+        setTimeout(() => {
+          modalMain.classList.add("modal-active");
+        }, 0);
+      }
+      document.body.dataset.modalVisible = "true";
+    };
+
+    const closeModal = () => {
+      if (modalContainer) {
+        setTimeout(() => {
+          modalContainer.classList.remove("flex");
+          modalContainer.classList.add("hidden");
+        }, 150);
+      }
+      if (modalBackground) {
+        modalBackground.classList.remove("modal-bg-active");
+      }
+      if (modalMain) {
+        modalMain.classList.remove("modal-active");
+      }
+      document.body.dataset.modalVisible = "false";
+    };
+
+    modalOpenTriggers.forEach((modalTrigger) =>
+      modalTrigger.addEventListener("click", openModal)
+    );
+
+    modalCloseTriggers.forEach((modalCloseTrigger) =>
+      modalCloseTrigger.addEventListener("click", closeModal)
+    );
+  });
+</script>

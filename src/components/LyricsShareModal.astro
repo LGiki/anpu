@@ -1,0 +1,439 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { getLangFromUrl, useTranslations } from "@/i18n/utils";
+import { formatLyricsLines } from "@/utils/lyrics";
+import { Icon } from "astro-icon/components";
+import Button from "./Button.astro";
+import MetadataStringsItem from "./MetadataStringsItem.astro";
+import Modal from "./Modal.astro";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+interface Props {
+  song: CollectionEntry<"song">;
+}
+
+const { song } = Astro.props;
+
+const lyricsLines = song.body ? formatLyricsLines(song.body) : [];
+
+const ShareLyricsSelectModalId = "share-lyrics-select";
+const SaveLyricsCardModalId = "save-lyrics-card";
+---
+
+<Modal
+  modalId={ShareLyricsSelectModalId}
+  modalTitle={t("song.shareLyrics")}
+  mainContainerClass="max-h-[80%] flex flex-col gap-3"
+  titleContainerClass="text-md"
+>
+  <div
+    class="lyric-lines-container group"
+    id="share-lyric-lines-container"
+    data-any-lyric-selected="0"
+  >
+    {
+      lyricsLines
+        .filter((lyricLine) => lyricLine.text)
+        .map((lyricLine, index) => {
+          if (lyricLine.text) {
+            return (
+              <p
+                data-share-lyric-index={index}
+                data-share-lyric-selected="0"
+                data-share-lyric-candidate="0"
+                class="share-lyric-line"
+              >
+                {lyricLine.text}
+              </p>
+            );
+          }
+        })
+    }
+  </div>
+  <div class="flex justify-end items-center gap-1 flex-shrink-0">
+    <Button data-modal-close-trigger={ShareLyricsSelectModalId}>
+      <Icon name="ph:x" class="mr-2" />
+      {t("cancel")}
+    </Button>
+    <Button
+      buttonClass="generate-button"
+      id="generate-lyrics-card-button"
+      data-modal-close-trigger={ShareLyricsSelectModalId}
+      data-modal-open-trigger={SaveLyricsCardModalId}
+      disabled
+    >
+      <Icon name="ph:check" class="mr-2" />
+      {t("song.generateLyricsCard")}
+    </Button>
+  </div>
+</Modal>
+
+<Modal
+  modalId={SaveLyricsCardModalId}
+  modalTitle={t("song.saveShareLyricsCard")}
+  mainContainerClass="max-h-[65%] h-full flex flex-col gap-3  w-[85%]"
+>
+  <div class="flex flex-col h-0 flex-1 gap-2">
+    <div class="overflow-y-auto flex-1 h-0 flex">
+      <img id="preview-image" class="max-w-[400px] w-full m-auto" />
+    </div>
+    <div
+      class="flex items-center justify-center gap-1 sm:gap-2 flex-shrink-0 text-sm text-center text-gray-900/50 dark:text-gray-100/50 flex-col sm:flex-row"
+    >
+      <div class="inline-flex items-center gap-0.5">
+        <Icon name="ph:device-mobile" />{t("song.saveImageHintMobile")}
+      </div>
+      <span class="hidden sm:inline">/</span>
+      <div class="inline-flex items-center gap-0.5">
+        <Icon name="ph:desktop" />{t("song.saveImageHintDesktop")}
+      </div>
+    </div>
+    <Button id="shuffle-color-schema-button" buttonClass="flex-shrink-0">
+      <Icon name="ph:shuffle" class="mr-2" />
+      {t("song.shuffleColorSchema")}
+    </Button>
+  </div>
+</Modal>
+
+<div class="h-0 overflow-hidden">
+  <div id="lyric-card-container">
+    <div class="flex flex-col gap-4 rounded-lg bg-white/60 backdrop-blur p-4">
+      <p class="font-bold text-xl leading-6">{song.data.title}</p>
+      <div
+        class="flex flex-col leading-7 text-left text-lg"
+        id="selected-lyrics-container"
+      >
+      </div>
+      <div class="text-end text-sm">
+        <p>{song.data.album}</p>
+        <p><MetadataStringsItem value={song.data.artist!} /></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .lyric-lines-container {
+    @apply flex flex-col gap-1 overflow-y-auto h-full flex-1 pr-2
+    [&::-webkit-scrollbar]:w-2 
+    [&::-webkit-scrollbar-track]:rounded-full
+    [&::-webkit-scrollbar-track]:bg-gray-100
+    [&::-webkit-scrollbar-thumb]:rounded-full
+    [&::-webkit-scrollbar-thumb]:bg-gray-300 
+    dark:[&::-webkit-scrollbar-track]:bg-neutral-700 
+    dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500;
+  }
+
+  .share-lyric-line {
+    @apply px-3 py-1 rounded-md leading-6 cursor-pointer text-base transition-all ease-in-out duration-100
+    hover:bg-gray-200
+    group-data-[any-lyric-selected=1]:text-gray-500/90
+    data-[share-lyric-selected=1]:!bg-gray-900
+    data-[share-lyric-selected=1]:!text-gray-100
+    data-[share-lyric-candidate=1]:!bg-gray-200
+    data-[share-lyric-candidate=1]:!text-gray-900
+    dark:group-data-[any-lyric-selected=1]:text-gray-400/85
+    dark:data-[share-lyric-selected=1]:!bg-zinc-600
+    dark:data-[share-lyric-selected=1]:!text-white
+    dark:data-[share-lyric-candidate=1]:!bg-zinc-800
+    dark:data-[share-lyric-candidate=1]:!text-gray-200
+    dark:hover:bg-zinc-800
+    dark:text-gray-200;
+  }
+
+  @media (pointer: coarse) {
+    .share-lyric-line:hover {
+      background: revert-layer;
+    }
+  }
+
+  .generate-button {
+    @apply bg-green-600 text-white border-green-700/50 enabled:hover:bg-green-700 enabled:hover:border-green-800/50 dark:bg-green-900 dark:border-green-800/50 enabled:dark:hover:bg-green-800 enabled:dark:hover:border-green-700/50;
+  }
+</style>
+
+<script>
+  import { toPng } from "html-to-image";
+
+  const generateLyricsCardButton = document.getElementById(
+    "generate-lyrics-card-button"
+  ) as HTMLButtonElement;
+
+  function randomChoose<T>(choices: T[]): T {
+    var index = Math.floor(Math.random() * choices.length);
+    return choices[index];
+  }
+
+  function shuffleLyricCardStyle() {
+    const lyricCardContainer = document.getElementById("lyric-card-container");
+
+    if (!lyricCardContainer) {
+      return;
+    }
+
+    const LyricCardBasicClass =
+      "flex flex-col p-4 max-w-[400px] rounded-xl min-w-[260px]";
+    const colorSchemas = [
+      "bg-rainbow-1 text-[#303030]",
+      "bg-rainbow-2 text-[#303030]",
+      "bg-rainbow-3 text-[#303030]",
+      "bg-purple-1 text-[#303030]",
+      "bg-dawn text-[#303030]",
+      "bg-fire text-[#303030]",
+      // Pink 1
+      "text-[#9d174d] bg-gradient-to-br from-[#fad0c4] to-[#ffd1ff]",
+      // Blue
+      "text-[#374151] bg-gradient-to-br from-[#bae6fd] to-[#f0f9ff]",
+      // Pink 2
+      "text-[#9d174d] bg-gradient-to-br from-[#fff0f7] to-[#fdaad4]",
+      // Teal
+      "text-[#115e59] bg-gradient-to-br from-[#f0fffc] to-[#aafdeb]",
+      // Yellow
+      "text-[#854d0e] bg-gradient-to-br from-[#fffef0] to-[#fdf9aa]",
+      // Purple
+      "text-[#6b21a8] bg-gradient-to-br from-[#f3f0ff] to-[#beaafd]",
+      // Green
+      "text-[#166534] bg-gradient-to-br from-[#f0fff0] to-[#aafdad]",
+    ];
+    lyricCardContainer.className = `${LyricCardBasicClass} ${randomChoose(colorSchemas)}`;
+  }
+
+  function generatePreviewImage() {
+    const lyricCardContainer = document.getElementById("lyric-card-container");
+    if (!lyricCardContainer) return;
+
+    toPng(lyricCardContainer, {
+      pixelRatio: 3,
+      skipFonts: true,
+    })
+      .then((dataUrl) => {
+        const previewImage = document.getElementById(
+          "preview-image"
+        ) as HTMLImageElement;
+        if (previewImage) {
+          previewImage.src = dataUrl;
+        }
+      })
+      .catch(console.error);
+  }
+
+  (function () {
+    const lyricsContainer = document.getElementById(
+      "share-lyric-lines-container"
+    ) as HTMLDivElement;
+
+    if (!lyricsContainer) {
+      return;
+    }
+
+    lyricsContainer.addEventListener("click", (event) => {
+      if (!event.target) {
+        return;
+      }
+      const target = (event.target as HTMLDivElement).closest(
+        "[data-share-lyric-index]"
+      ) as HTMLParagraphElement;
+      if (!target) {
+        return;
+      }
+
+      const clickedIndex = parseInt(
+        target.dataset.shareLyricIndex as string,
+        10
+      );
+      const allLyrics = Array.from(
+        document.querySelectorAll(
+          "[data-share-lyric-index]"
+        ) as NodeListOf<HTMLParagraphElement>
+      );
+
+      // 获取当前选中的歌词索引
+      const selectedIndices = allLyrics
+        .filter((el) => el.dataset.shareLyricSelected === "1")
+        .map((el) => parseInt(el.dataset.shareLyricIndex as string, 10));
+
+      // 处理歌词选择逻辑
+      handleSelection(clickedIndex, selectedIndices, allLyrics);
+
+      // 更新候选歌词状态
+      updateCandidates(allLyrics);
+    });
+
+    /**
+     * 处理歌词选择逻辑
+     * @param {number} clickedIndex 点击的歌词索引
+     * @param {number[]} selectedIndices 当前已选索引数组
+     * @param {HTMLParagraphElement[]} allLyrics 所有歌词元素
+     */
+    function handleSelection(
+      clickedIndex: number,
+      selectedIndices: number[],
+      allLyrics: HTMLParagraphElement[]
+    ) {
+      const minSelected = Math.min(...selectedIndices);
+      const maxSelected = Math.max(...selectedIndices);
+
+      // 情况1: 当前无选中项
+      if (selectedIndices.length === 0) {
+        allLyrics[clickedIndex].dataset.shareLyricSelected = "1";
+      } else {
+        // 情况2: 点击在选中范围边界附近
+        if (
+          clickedIndex === minSelected - 1 ||
+          clickedIndex === maxSelected + 1
+        ) {
+          allLyrics[clickedIndex].dataset.shareLyricSelected = "1";
+        }
+        // 情况3: 点击在边界上
+        else if (clickedIndex === minSelected || clickedIndex === maxSelected) {
+          allLyrics[clickedIndex].dataset.shareLyricSelected = "0";
+        }
+        // 情况4: 点击在非连续区域
+        else {
+          // 清除所有选中状态
+          selectedIndices.forEach((idx) => {
+            allLyrics[idx].dataset.shareLyricSelected = "0";
+          });
+          allLyrics[clickedIndex].dataset.shareLyricSelected = "1";
+        }
+      }
+
+      const anyLyricSelected =
+        document.querySelectorAll('[data-share-lyric-selected="1"]').length > 0;
+
+      lyricsContainer.dataset.anyLyricSelected = anyLyricSelected ? "1" : "0";
+
+      generateLyricsCardButton.disabled = !anyLyricSelected;
+    }
+
+    /**
+     * 更新候选歌词状态（选中范围前后的歌词）
+     * @param {HTMLParagraphElement[]} allLyrics 所有歌词元素
+     */
+    function updateCandidates(allLyrics: HTMLParagraphElement[]) {
+      // 重置所有候选状态
+      allLyrics.forEach((el) => {
+        el.dataset.shareLyricCandidate = "0";
+      });
+
+      // 获取当前选中项
+      const selectedIndices = allLyrics
+        .filter((el) => el.dataset.shareLyricSelected === "1")
+        .map((el) => parseInt(el.dataset.shareLyricIndex as string, 10));
+
+      if (selectedIndices.length === 0) return;
+
+      const minIdx = Math.min(...selectedIndices);
+      const maxIdx = Math.max(...selectedIndices);
+
+      // 设置候选歌词（选中范围前后）
+      if (minIdx > 0) {
+        allLyrics[minIdx - 1].dataset.shareLyricCandidate = "1";
+      }
+      if (maxIdx < allLyrics.length - 1) {
+        allLyrics[maxIdx + 1].dataset.shareLyricCandidate = "1";
+      }
+    }
+  })();
+
+  (function initGenerateButton() {
+    if (!generateLyricsCardButton) {
+      return;
+    }
+
+    generateLyricsCardButton.addEventListener("click", () => {
+      shuffleLyricCardStyle();
+
+      // 获取选中的歌词行
+      const selectedLines = Array.from(
+        document.querySelectorAll(
+          '[data-share-lyric-selected="1"]'
+        ) as NodeListOf<HTMLParagraphElement>
+      );
+
+      // 按索引排序
+      const sortedLines = selectedLines.sort(
+        (a, b) =>
+          parseInt(a.dataset.shareLyricIndex as string) -
+          parseInt(b.dataset.shareLyricIndex as string)
+      );
+
+      // 提取歌词文本
+      const lyricsTexts = sortedLines.map((line) => line.textContent);
+
+      // 更新歌词卡片内容
+      const lyricsContainer = document.getElementById(
+        "selected-lyrics-container"
+      );
+      if (lyricsContainer) {
+        lyricsContainer.innerHTML = ""; // 清空容器
+
+        lyricsTexts.forEach((text) => {
+          const p = document.createElement("p");
+          p.textContent = text;
+          lyricsContainer.appendChild(p);
+        });
+      }
+
+      // 重置预览图片
+      const previewImage = document.getElementById(
+        "preview-image"
+      ) as HTMLImageElement;
+      if (previewImage) {
+        previewImage.src = "";
+      }
+
+      generatePreviewImage();
+    });
+  })();
+
+  (function initModalCleanup() {
+    document
+      .querySelectorAll('[data-modal-close-trigger="share-lyrics-select"]')
+      .forEach((btn) => {
+        btn.addEventListener("click", () => {
+          // 当关闭选择模态框时重置选择状态
+          document
+            .querySelectorAll("[data-share-lyric-index]")
+            .forEach((el) => {
+              const typedEl = el as HTMLParagraphElement;
+              typedEl.dataset.shareLyricSelected = "0";
+              typedEl.dataset.shareLyricCandidate = "0";
+            });
+          document
+            .getElementById("share-lyric-lines-container")
+            ?.setAttribute("data-any-lyric-selected", "0");
+
+          // 当关闭卡片模态框时重置预览图片
+          const previewImage = document.getElementById(
+            "preview-image"
+          ) as HTMLImageElement;
+          if (previewImage) {
+            previewImage.src = "";
+          }
+
+          // 当关闭选择模态框时重置生成歌词卡片按钮禁用状态
+          if (generateLyricsCardButton) {
+            generateLyricsCardButton.disabled = true;
+          }
+        });
+      });
+  })();
+
+  (function initShuffleColorSchemaButton() {
+    const shuffleColorSchemaButton = document.getElementById(
+      "shuffle-color-schema-button"
+    );
+
+    if (!shuffleColorSchemaButton) {
+      return;
+    }
+
+    shuffleColorSchemaButton.addEventListener("click", () => {
+      shuffleLyricCardStyle();
+      generatePreviewImage();
+    });
+  })();
+</script>
