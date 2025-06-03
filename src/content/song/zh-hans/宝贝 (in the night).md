@@ -1,8 +1,6 @@
 ---
 title: 宝贝 (in the night)
-album: ["My Life Will...", "宝贝 in life"]
 artist: 张悬
-releaseDate: 2006-06-09
 duration: 161
 ---
 我的宝贝 宝贝 给你一点甜甜

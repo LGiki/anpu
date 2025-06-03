@@ -1,8 +1,6 @@
 ---
 title: 宝贝 (in life)
-album: 宝贝 in life
 artist: 张悬
-releaseDate: 2007-06-08
 duration: 326
 ---
 我的宝贝 宝贝 给你一点甜甜

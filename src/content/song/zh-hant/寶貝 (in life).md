@@ -1,8 +1,6 @@
 ---
 title: 寶貝 (in life)
-album: 寶貝 in life
 artist: 張懸
-releaseDate: 2007-06-08
 duration: 326
 ---
 我的寶貝 寶貝 給你一點甜甜

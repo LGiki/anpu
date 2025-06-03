@@ -1,8 +1,6 @@
 ---
 title: 寶貝 (in a day)
-album: My Life Will...
 artist: 張懸
-releaseDate: 2006-06-09
 duration: 149
 ---
 我的寶貝寶貝 給你一點甜甜

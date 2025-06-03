@@ -1,8 +1,6 @@
 ---
 title: 寶貝 (in the night)
-album: My Life Will...
 artist: 張懸
-releaseDate: 2006-06-09
 duration: 161
 ---
 我的寶貝 寶貝 給你一點甜甜

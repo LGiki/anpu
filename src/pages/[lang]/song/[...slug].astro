@@ -11,6 +11,7 @@ import { getLangFromUrl, useTranslations } from '@/i18n/utils'
 import Layout from '@/layouts/Layout.astro'
 import { slugify } from '@/utils/utils'
 import { Icon } from 'astro-icon/components'
+import dayjs from 'dayjs'
 
 export async function getStaticPaths() {
   const songs = await getCollection('song', (song) => {
@@ -22,16 +23,11 @@ export async function getStaticPaths() {
     songs.map(async (song) => {
       let albums = null
       const [lyricLanguage, ...slug] = song.id.replace(/(\.md)+$/, '').split('/')
-      if (song.data.album) {
-        albums = await getCollection('album', (album) => {
-          const [albumLanguage] = album.id.split('/')
-          return (
-            albumLanguage === defaultLang &&
-            ((typeof song.data.album === 'string' && song.data.album === album.data.title) ||
-              (Array.isArray(song.data.album) && song.data.album.includes(album.data.title)))
-          )
-        })
-      }
+      albums = await getCollection('album', (album) => {
+        const [albumLanguage] = album.id.split('/')
+        return albumLanguage !== defaultLang && album.data.list.includes(song.data.title)
+      })
+      albums.sort((a, b) => dayjs(b.data.releaseDate).diff(dayjs(a.data.releaseDate)))
       return {
         params: { lang: lyricLanguage, slug: slugify(slug.join()) },
         props: {
@@ -53,10 +49,12 @@ const { song, albums } = Astro.props
   <article class="text-base leading-7 text-[var(--foreground)]" id="lyric-text">
     <h1 class="font-medium text-2xl mb-4" id="song-title">{song.data.title}</h1>
     {song.body && <LyricRenderer lyricsBody={song.body} />}
-    <hr class="my-5 dark:bg-zinc-700/90 dark:color-zinc-700/90 dark:border-zinc-700/90" />
+    <hr
+      class="my-5 dark:bg-zinc-700/90 dark:color-zinc-700/90 dark:border-zinc-700/90"
+    />
     <SongMetadata song={song} albums={albums} />
   </article>
-  <LyricsShareModal song={song}/>
+  <LyricsShareModal song={song} />
   <slot slot="header-right">
     <LyricFontSizeSwitcher />
     <Button data-modal-open-trigger="share-lyrics-select">
