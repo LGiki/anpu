@@ -16,7 +16,7 @@ const translatePath = useTranslatedPath(lang)
 ---
 
 <div>
-  <p>{t("songMetadata.otherTracksInAlbum")}：</p>
+  <p>「{album.data.title}」{t("songMetadata.otherTracksInAlbum")}：</p>
   {
     album.data.list.map((albumSong, index) => (
       <>

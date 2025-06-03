@@ -20,22 +20,23 @@ export async function getStaticPaths() {
 
   return Promise.all(
     songs.map(async (song) => {
-      let album = null
+      let albums = null
       const [lyricLanguage, ...slug] = song.id.replace(/(\.md)+$/, '').split('/')
       if (song.data.album) {
-        const albums = await getCollection('album', (album) => {
+        albums = await getCollection('album', (album) => {
           const [albumLanguage] = album.id.split('/')
-          return song.data.album === album.data.title && albumLanguage === lyricLanguage
+          return (
+            albumLanguage === defaultLang &&
+            ((typeof song.data.album === 'string' && song.data.album === album.data.title) ||
+              (Array.isArray(song.data.album) && song.data.album.includes(album.data.title)))
+          )
         })
-        if (albums.length > 0) {
-          album = albums[0]
-        }
       }
       return {
         params: { lang: lyricLanguage, slug: slugify(slug.join()) },
         props: {
           song: song,
-          album: album,
+          albums: albums,
         },
       }
     })
@@ -45,7 +46,7 @@ export async function getStaticPaths() {
 const lang = getLangFromUrl(Astro.url)
 const t = useTranslations(lang)
 
-const { song, album } = Astro.props
+const { song, albums } = Astro.props
 ---
 
 <Layout title={[song.data.title, "Lyric"]}>
@@ -53,7 +54,7 @@ const { song, album } = Astro.props
     <h1 class="font-medium text-2xl mb-4" id="song-title">{song.data.title}</h1>
     {song.body && <LyricRenderer lyricsBody={song.body} />}
     <hr class="my-5 dark:bg-zinc-700/90 dark:color-zinc-700/90 dark:border-zinc-700/90" />
-    <SongMetadata song={song} album={album} />
+    <SongMetadata song={song} albums={albums} />
   </article>
   <LyricsShareModal song={song}/>
   <slot slot="header-right">

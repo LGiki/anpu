@@ -19,10 +19,10 @@ type ExtraMetadataType = z.infer<(typeof songCollectionSchema.shape)['extra']>
 
 interface Props {
   song: CollectionEntry<'song'>
-  album?: CollectionEntry<'album'> | null
+  albums?: CollectionEntry<'album'>[] | null
 }
 
-const { song, album } = Astro.props
+const { song, albums } = Astro.props
 
 const lang = getLangFromUrl(Astro.url)
 const t = useTranslations(lang)
@@ -34,52 +34,74 @@ const IgnoreMetadataKeys: SongMetadataKey[] = ['title', 'hasBanlamTone']
 <ContentCard>
   {
     Object.entries(songCollectionSchema.shape).map(([key, fieldSchema]) => {
-      const typedKey = key as SongMetadataKey
-      const fieldDescription = fieldSchema._def.description as keyof (typeof ui)[typeof defaultLang]
+      const typedKey = key as SongMetadataKey;
+      const fieldDescription = fieldSchema._def
+        .description as keyof (typeof ui)[typeof defaultLang];
       if (!IgnoreMetadataKeys.includes(typedKey)) {
-        let metadataValue = song.data[typedKey]
+        let metadataValue = song.data[typedKey];
         if (metadataValue && fieldDescription) {
           if (metadataValue instanceof Date) {
-            metadataValue = dayjs(metadataValue).format('YYYY-MM-DD')
+            metadataValue = dayjs(metadataValue).format("YYYY-MM-DD");
           }
-          if (typedKey === 'duration') {
-            metadataValue = durationToHms(metadataValue as number)
+          if (typedKey === "duration") {
+            metadataValue = durationToHms(metadataValue as number);
           }
-          if (typedKey === 'notes') {
-            return (<MetadataNotes notes={metadataValue as NotesMetadataType} />)
+          if (typedKey === "notes") {
+            return <MetadataNotes notes={metadataValue as NotesMetadataType} />;
           }
-          if (typedKey === 'extra') {
-            return (metadataValue as ExtraMetadataType)!
-              .map(extraItem => (
-                <p class="break-all">
-                  {extraItem.title}：<MetadataStringsItem value={extraItem.value}/>
-                </p>
-              ))
-          }
-          if (album && typedKey === 'album') {
-            const [_, ...albumSlug] = album.id.split('/')
-            const albumUrl = translatePath(`/album/${album.data.customSlug || slugify(albumSlug.join())}`)
-            return (
-              <p class="break-all flex items-center">
-                <span class="flex-shrink-0">{t(fieldDescription)}：</span>
-                <AlbumBadge 
-                  albumTitle={metadataValue as string}
-                  albumUrl={albumUrl} 
-                />
+          if (typedKey === "extra") {
+            return (metadataValue as ExtraMetadataType)!.map((extraItem) => (
+              <p class="break-all">
+                {extraItem.title}：
+                <MetadataStringsItem value={extraItem.value} />
               </p>
-            )
+            ));
+          }
+          if (albums && albums.length !== 0 && typedKey === "album") {
+            return (
+              <div class="break-all flex items-center">
+                <span class="flex-shrink-0">{t(fieldDescription)}：</span>
+                <div class="inline-flex items-center gap-2 flex-wrap">
+                  {albums.map((album) => {
+                    const [_, ...albumSlug] = album.id.split("/");
+                    const albumUrl = translatePath(
+                      `/album/${album.data.customSlug || slugify(albumSlug.join())}`
+                    );
+                    return (
+                      <AlbumBadge
+                        albumTitle={album.data.title}
+                        albumUrl={albumUrl}
+                      />
+                    );
+                  })}
+                </div>
+              </div>
+            );
           }
           return (
-            <p class="break-all">{t(fieldDescription)}：<MetadataStringsItem value={metadataValue as string | string[] | number}/></p>
-          )
+            <p class="break-all">
+              {t(fieldDescription)}：
+              <MetadataStringsItem
+                value={metadataValue as string | string[] | number}
+              />
+            </p>
+          );
         }
       }
     })
   }
   {
-    (album && album.data.list.length > 1) && <>
-      <hr class="my-3 dark:bg-zinc-700/90 dark:color-zinc-700/90 dark:border-zinc-700/90"/>
-      <AlbumOtherTracks album={album} currentSong={song}/>
-    </>
+    albums && albums.length > 0 && (
+      <>
+        {albums.map((album) => {
+          if (album.data.list.length > 1) {
+            return (
+              <hr class="my-3 dark:bg-zinc-700/90 dark:color-zinc-700/90 dark:border-zinc-700/90" />
+              <AlbumOtherTracks album={album} currentSong={song} />
+            );
+          }
+        })}
+      </>
+    )
   }
 </ContentCard>

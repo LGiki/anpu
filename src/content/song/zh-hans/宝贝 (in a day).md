@@ -1,6 +1,6 @@
 ---
 title: 宝贝 (in a day)
-album: My Life Will...
+album: ["My Life Will...", "宝贝 in life"]
 artist: 张悬
 releaseDate: 2006-06-09
 duration: 149

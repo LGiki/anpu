@@ -8,7 +8,7 @@ export const songCollectionSchema = z.object({
   // 英文标题
   englishTitle: z.string().optional().describe('englishTitle'),
   // 专辑
-  album: z.string().optional().describe('album'),
+  album: z.array(z.string()).or(z.string()).optional().describe('album'),
   // 发布日期
   releaseDate: z.date().optional().describe('releaseDate'),
   // 时长（秒）

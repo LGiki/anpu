@@ -1,25 +1,25 @@
 ---
-import type { CollectionEntry } from "astro:content";
-import { getLangFromUrl, useTranslations } from "@/i18n/utils";
-import { formatLyricsLines } from "@/utils/lyrics";
-import { Icon } from "astro-icon/components";
-import Button from "./Button.astro";
-import MetadataStringsItem from "./MetadataStringsItem.astro";
-import Modal from "./Modal.astro";
+import type { CollectionEntry } from 'astro:content'
+import { getLangFromUrl, useTranslations } from '@/i18n/utils'
+import { formatLyricsLines } from '@/utils/lyrics'
+import { Icon } from 'astro-icon/components'
+import Button from './Button.astro'
+import MetadataStringsItem from './MetadataStringsItem.astro'
+import Modal from './Modal.astro'
 
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+const lang = getLangFromUrl(Astro.url)
+const t = useTranslations(lang)
 
 interface Props {
-  song: CollectionEntry<"song">;
+  song: CollectionEntry<'song'>
 }
 
-const { song } = Astro.props;
+const { song } = Astro.props
 
-const lyricsLines = song.body ? formatLyricsLines(song.body) : [];
+const lyricsLines = song.body ? formatLyricsLines(song.body) : []
 
-const ShareLyricsSelectModalId = "share-lyrics-select";
-const SaveLyricsCardModalId = "save-lyrics-card";
+const ShareLyricsSelectModalId = 'share-lyrics-select'
+const SaveLyricsCardModalId = 'save-lyrics-card'
 ---
 
 <Modal
