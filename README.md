@@ -9,6 +9,7 @@
   - 演出歌单
   - Talking
   - 演出统计
+- 可生成歌词分享卡片
 - 支持 PWA，可在离线状态下查看全部歌词
 - 支持 [llms.txt](https://llmstxt.org/)：[https://anpu.me/llms.txt](https://anpu.me/llms.txt)
 
