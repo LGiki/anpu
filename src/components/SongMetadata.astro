@@ -74,7 +74,7 @@ const IgnoreMetadataKeys: SongMetadataKey[] = ['title', 'hasBanlamTone']
                 <p class="flex-shrink-0">{t(fieldDescription)}：</p>
                 <ul class="list-disc list-inside indent-2">
                   {albums.map(album => (
-                    <li>「{album.data.title}」：{dayjs(album.data.releaseDate).format("YYYY-MM-DD")}</li>
+                    album.data.releaseDate && <li>「{album.data.title}」：{dayjs(album.data.releaseDate).format("YYYY-MM-DD")}</li>
                   ))}
                 </ul>
               )

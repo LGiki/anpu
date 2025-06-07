@@ -1,14 +1,12 @@
 ---
+import { joinIfArray } from "@/utils/utils";
+
 interface Props {
-  value: string | string[] | number
-  separator?: string
+  value: string | string[] | number | number[];
+  separator?: string;
 }
 
-const props: Props = Astro.props
+const props: Props = Astro.props;
 ---
 
-{
-  Array.isArray(props.value)
-    ? props.value.join(props.separator || "、")
-    : props.value
-}
+{joinIfArray(props.value, props.separator)}

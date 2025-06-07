@@ -101,3 +101,7 @@ export function sortBySlug<T extends CollectionEntry<'song'>>(list: ContentGroup
     return aSlugify[0].toUpperCase().localeCompare(bSlugify[0].toUpperCase())
   })
 }
+
+export function joinIfArray(value: string | string[] | number | number[], separator?: string): string | number {
+  return Array.isArray(value) ? value.join(separator || "、") : value
+}
