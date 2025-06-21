@@ -2,6 +2,18 @@ import { defineCollection, z } from 'astro:content'
 
 import { glob } from 'astro/loaders'
 
+const ReferencesSchema = z
+  .array(
+    z.object({
+      title: z.string().optional(),
+      url: z.string().optional(),
+    })
+  )
+  .optional()
+  .describe('references')
+
+export type Refernences = z.infer<typeof ReferencesSchema>
+
 export const songCollectionSchema = z.object({
   // 标题
   title: z.string().describe('title'),
@@ -115,15 +127,7 @@ export const talkingCollectionSchema = z.object({
   // Talking 的后一首歌
   nextSong: z.string().optional(),
   // 引用
-  references: z
-    .array(
-      z.object({
-        title: z.string().optional(),
-        url: z.string().optional(),
-      })
-    )
-    .optional()
-    .describe('references'),
+  references: ReferencesSchema,
 })
 
 const talkingCollection = defineCollection({
@@ -147,11 +151,13 @@ export const concertCollectionSchema = z.object({
   // Talking 页面的 Slug
   talkingPageSlug: z.string().optional(),
   // 演出曲目列表
-  list: z.array(z.string()),
+  list: z.array(z.string()).optional(),
   // 地点
   place: z.string().optional().describe('place'),
   // 地址
   location: z.string().optional().describe('location'),
+  // 引用
+  references: ReferencesSchema,
 })
 
 const concertCollection = defineCollection({

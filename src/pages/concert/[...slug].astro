@@ -44,7 +44,13 @@ const translatePath = useTranslatedPath(defaultLang)
         </h1>
       )
     }
-    <SongList songTitles={concert.data.list} />
+    {
+      concert.data.list ? (
+        <SongList songTitles={concert.data.list} />
+      ) : (
+        <p>{t("concert.noSongList")}</p>
+      )
+    }
     <ConcertMetadata concert={concert} />
   </div>
   {

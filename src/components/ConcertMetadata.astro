@@ -1,6 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content'
-import { concertCollectionSchema } from '@/content.config'
+import { type Refernences, concertCollectionSchema } from '@/content.config'
 import type { defaultLang, ui } from '@/i18n/ui'
 import { getLangFromUrl, useTranslations } from '@/i18n/utils'
 import dayjs from 'dayjs'
@@ -24,17 +24,46 @@ const IgnoreMetadataKeys: ConcertMetadataKey[] = ['list', 'talkingPageSlug', 'ti
 <ContentCard class="leading-7 mt-2">
   {
     Object.entries(concertCollectionSchema.shape).map(([key, fieldSchema]) => {
-      const typedKey = key as keyof typeof concertCollectionSchema.shape
-      const fieldDescription = fieldSchema._def.description as keyof (typeof ui)[typeof defaultLang]
+      const typedKey = key as keyof typeof concertCollectionSchema.shape;
+      const fieldDescription = fieldSchema._def
+        .description as keyof (typeof ui)[typeof defaultLang];
       if (!IgnoreMetadataKeys.includes(typedKey)) {
-        let metadataValue = concert.data[typedKey]
+        let metadataValue = concert.data[typedKey];
         if (metadataValue && fieldDescription) {
           if (metadataValue instanceof Date) {
-            metadataValue = dayjs(metadataValue).format('YYYY-MM-DD')
+            metadataValue = dayjs(metadataValue).format("YYYY-MM-DD");
+          }
+          if (typedKey === "references") {
+            const typedMetadataValue = metadataValue as Refernences;
+            return (
+              <>
+                <p class="break-all">{t(fieldDescription)}：</p>
+                <ul class="list-disc list-inside text-[var(--foreground)]">
+                  {typedMetadataValue &&
+                    typedMetadataValue.map((reference) => {
+                      if (!reference.title && !reference.url) {
+                        return null
+                      }
+                      return (
+                        <li>
+                          <a href={reference.url} target="_blank">
+                            {reference.title || reference.url}
+                          </a>
+                        </li>
+                      );
+                    })}
+                </ul>
+              </>
+            );
           }
           return (
-            <p class="break-all">{t(fieldDescription)}：<MetadataStringsItem value={metadataValue as string | string[] | number}/></p>
-          )
+            <p class="break-all">
+              {t(fieldDescription)}：
+              <MetadataStringsItem
+                value={metadataValue as string | string[] | number}
+              />
+            </p>
+          );
         }
       }
     })

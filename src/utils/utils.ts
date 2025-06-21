@@ -103,5 +103,5 @@ export function sortBySlug<T extends CollectionEntry<'song'>>(list: ContentGroup
 }
 
 export function joinIfArray(value: string | string[] | number | number[], separator?: string): string | number {
-  return Array.isArray(value) ? value.join(separator || "、") : value
+  return Array.isArray(value) ? value.join(separator || '、') : value
 }

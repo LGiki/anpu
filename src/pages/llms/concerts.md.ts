@@ -28,9 +28,12 @@ export const GET: APIRoute = async () => {
 
   for (const concert of sortedConcerts) {
     contentSegments.push(`## ${concert.data.title}`)
-    contentSegments.push('### 曲目列表')
+    const concertSongList = concert.data.list || []
+    if (concertSongList.length !== 0) {
+      contentSegments.push('### 曲目列表')
+    }
     let isMeetEncoreSign = false
-    for (let song of concert.data.list) {
+    for (let song of concertSongList) {
       if (!song.startsWith('Talking #')) {
         if (song === '*Encore') {
           isMeetEncoreSign = true

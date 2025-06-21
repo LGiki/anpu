@@ -17,7 +17,8 @@ const t = useTranslations(lang)
 const songPerformedCountMapper: Record<string, number> = {}
 
 for (const concert of concerts) {
-  for (const lineText of concert.data.list) {
+  const concertSongList = concert.data.list || []
+  for (const lineText of concertSongList) {
     if (lineText.startsWith('*') || lineText.startsWith('Talking')) {
       continue
     }

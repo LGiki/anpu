@@ -45,19 +45,26 @@ export const GET: APIRoute = async () => {
           if (typedKey === 'album' && albums && albums.length !== 0) {
             if (albums.length > 1) {
               contentSegments.push(`- ${t(typedLabel)}：`)
-              contentSegments.push(...albums.map(album => `\t- ${album.data.title}`))
+              contentSegments.push(...albums.map((album) => `\t- ${album.data.title}`))
             } else {
               contentSegments.push(`- ${t(typedLabel)}：${albums[0].data.title}`)
             }
             continue
           }
           if (typedKey === 'releaseDate' && albums && albums.length !== 0) {
-            const albumsWithReleaseDate = albums.filter(album => typeof album.data.releaseDate !== 'undefined')
+            const albumsWithReleaseDate = albums.filter((album) => typeof album.data.releaseDate !== 'undefined')
             if (albumsWithReleaseDate.length > 1) {
               contentSegments.push(`- ${t(typedLabel)}：`)
-              contentSegments.push(...albumsWithReleaseDate.map(album => `\t- 「${album.data.title}」：${dayjs(album.data.releaseDate as Date).format('YYYY-MM-DD')}`))
+              contentSegments.push(
+                ...albumsWithReleaseDate.map(
+                  (album) =>
+                    `\t- 「${album.data.title}」：${dayjs(album.data.releaseDate as Date).format('YYYY-MM-DD')}`
+                )
+              )
             } else {
-              contentSegments.push(`- ${t(typedLabel)}：${dayjs(albumsWithReleaseDate[0].data.releaseDate as Date).format('YYYY-MM-DD')}`)
+              contentSegments.push(
+                `- ${t(typedLabel)}：${dayjs(albumsWithReleaseDate[0].data.releaseDate as Date).format('YYYY-MM-DD')}`
+              )
             }
             continue
           }

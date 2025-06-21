@@ -24,7 +24,8 @@ export async function getStaticPaths() {
       }
       concertCountByYearMapper[concertYear]++
     }
-    for (const lineText of concert.data.list) {
+    const concertSongList = concert.data.list || []
+    for (const lineText of concertSongList) {
       if (lineText.startsWith('*') || lineText.startsWith('Talking')) {
         continue
       }

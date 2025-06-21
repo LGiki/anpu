@@ -103,6 +103,7 @@ export const ui = {
     'song.shuffleColorSchema': '随机配色',
     'song.saveImageHintMobile': '手机请长按以上图片保存',
     'song.saveImageHintDesktop': '电脑请右键图片选择保存',
+    'concert.noSongList': '暂无演出歌单，需要你的帮助',
   },
   'zh-hant': {
     'lyricFontSizeSwitcher.enlarge': '放大字體',
@@ -199,5 +200,6 @@ export const ui = {
     'song.shuffleColorSchema': '隨機配色',
     'song.saveImageHintMobile': '手機請長按以上圖片保存',
     'song.saveImageHintDesktop': '電腦請右鍵圖片選擇保存',
+    'concert.noSongList': '暫無演出歌單，需要你的幫助',
   },
 }

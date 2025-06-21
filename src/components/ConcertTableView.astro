@@ -29,7 +29,9 @@ const concertsTableHead = concertsSortedByDate.map((concert) => {
 })
 
 const maxSetlistLength = concertsSortedByDate.reduce((max, concert) => {
-  const songs = concert.data.list.filter((lineText) => !lineText.startsWith('Talking') && !lineText.startsWith('*'))
+  const songs = concert.data.list
+    ? concert.data.list.filter((lineText) => !lineText.startsWith('Talking') && !lineText.startsWith('*'))
+    : []
   return Math.max(max, songs.length)
 }, 0)
 
@@ -44,10 +46,12 @@ const concertTableBody: (Song | null)[][] = Array.from({ length: maxSetlistLengt
 )
 
 concertsSortedByDate.forEach((concert, concertIndex) => {
-  const songs: (string | null)[] = concert.data.list.filter(
-    // (lineText) => !lineText.startsWith("Talking") && !lineText.startsWith("*")
-    (lineText) => !lineText.startsWith('Talking') && (lineText === '*Encore' || !lineText.startsWith('*'))
-  )
+  const songs: (string | null)[] = concert.data.list
+    ? concert.data.list.filter(
+        // (lineText) => !lineText.startsWith("Talking") && !lineText.startsWith("*")
+        (lineText) => !lineText.startsWith('Talking') && (lineText === '*Encore' || !lineText.startsWith('*'))
+      )
+    : []
   let isEncore = false
   let songIndex = 0
   for (const lineText of songs) {
