@@ -13,7 +13,7 @@ export const GET: APIRoute = async () => {
 
   const contentSegments: string[] = []
 
-  const concertInfoIgnoreKeys: ConcertInfoKey[] = ['list', 'talkingPageSlug']
+  const concertInfoIgnoreKeys: ConcertInfoKey[] = ['list', 'talkingPageSlug', 'references']
 
   contentSegments.push('# 焦安溥演出')
   const concerts = await getCollection('concert', (concert) => {
